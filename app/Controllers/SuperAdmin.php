@@ -140,4 +140,13 @@ class SuperAdmin extends BaseController
         session()->setFlashdata('pesan', 'User berhasil dihapus');
         return redirect()->to(base_url('SuperAdmin/roleAkun'));
     }
+    public function arsip()
+    {
+        $data = [
+            'title' => 'Dashboard',
+            'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+        ];
+
+        return view('sadmin/arsip', $data);
+    }
 }

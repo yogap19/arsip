@@ -4,16 +4,19 @@ namespace App\Controllers;
 
 use \App\Models\UserModel;
 use \App\Models\MenuModel;
+use \App\Models\BerkasModel;
 use PhpParser\Node\Stmt\Echo_;
 
 class Admin extends BaseController
 {
     protected $UserModel;
     protected $MenuModel;
+    protected $BerkasModel;
     public function __construct()
     {
         $this->UserModel = new UserModel();
         $this->MenuModel = new MenuModel();
+        $this->BerkasModel = new BerkasModel();
         $this->cekSession();
     }
     public function index()
@@ -92,6 +95,10 @@ class Admin extends BaseController
         $data = [
             'title' => 'Berkas',
             'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'requested' => $this->BerkasModel->where(['approved_admin' => 2])->find(),
+            'confirmed' => $this->BerkasModel->where(['approved_admin' => 1])->find(),
+            'rejected' => $this->BerkasModel->where(['approved_admin' => 3])->find(),
+            'validation' => \Config\Services::validation()
         ];
         // dd($data);
         $this->cekSession2();
@@ -133,5 +140,59 @@ class Admin extends BaseController
         $this->UserModel->delete(['id' => $id]);
         session()->setFlashdata('pesan', 'User berhasil dihapus');
         return redirect()->to(base_url('Admin'));
+    }
+    public function download($id)
+    {
+        $berkas = $this->BerkasModel->find($id);
+        $data = 'Here is some text!';
+        return $this->response->download('doc/' . $berkas['title'], $data);
+        return redirect()->to('/Admin/berkas')->withInput();
+    }
+    public function approved($id)
+    {
+        $data = [
+            'title' => 'Berkas',
+            'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'berkas' => $this->BerkasModel->find($id),
+            'validation' => \Config\Services::validation()
+        ];
+        return view('admin/approved', $data);
+    }
+    public function approve()
+    {
+        $data = $this->BerkasModel->where(['nim' => session()->get('nim')])->first();
+        if (!$this->validate([
+            'keterangan'     => [
+                'rules'        => 'required',
+                'errors'    => ['required'      => 'Keterangan harus di isi!']
+            ],
+        ])) {
+            return redirect()->to('approved/' . $data['id'])->withInput();
+        }
+        // type
+        if ($data['type'] == 1) {
+            $type = 'Proposal';
+        } elseif ($data['type'] == 2) {
+            $type = 'Laporan';
+        } elseif ($data['type'] == 3) {
+            $type = 'Formulir beasiswa';
+        } elseif ($data['type'] == 4) {
+            $type = 'Document';
+        }
+        $approve = intval($this->request->getVar('approved_admin'));
+        if ($approve === 0) {
+            $approve = 3;
+        }
+        $this->BerkasModel->save([
+            'id'        => $data['id'],
+            'approved_admin' => $approve,
+            'keterangan' => $this->request->getVar('keterangan')
+        ]);
+        if ($approve == 1) {
+            session()->setFlashdata('success', $type . ' dengan nama ' . $data['title'] .  ' Confirmed');
+        } elseif ($approve == 3) {
+            session()->setFlashdata('success', $type . ' dengan nama ' . $data['title'] .  ' Rejected');
+        }
+        return redirect()->to(base_url('Admin/berkas'));
     }
 }

@@ -67,15 +67,17 @@
                         <tr>
                             <?php if ($menu['id'] == '1') : ?>
                             <?php else : ?>
-                                <td>Change Role</td>
-                                <td>
-                                    <form action="<?= base_url(); ?>/Admin/updateActivation/<?= $menu['id']; ?>" method="post" class="d-inline">
-                                        <?= csrf_field(); ?>
-                                        <div class="custom-control custom-switch">
-                                            <input type="checkbox" class="custom-control-input" id="is_active" <?= ($menu['is_active'] == '1') ? 'checked' : ''; ?> name="is_active" value="1">
-                                            <label class="custom-control-label" for="is_active"><?= ($menu['is_active'] == 1) ? 'Enable' : 'Disable' ?></label>
-                                        </div>
-                                </td>
+                                <?php if ($menu['role_id'] != 2) : ?>
+                                    <td>Change Role</td>
+                                    <td>
+                                        <form action="<?= base_url(); ?>/Admin/updateActivation/<?= $menu['id']; ?>" method="post" class="d-inline">
+                                            <?= csrf_field(); ?>
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input" id="is_active" <?= ($menu['is_active'] == '1') ? 'checked' : ''; ?> name="is_active" value="1">
+                                                <label class="custom-control-label" for="is_active"><?= ($menu['is_active'] == 1) ? 'Enable' : 'Disable' ?></label>
+                                            </div>
+                                        <?php endif; ?>
+                                    </td>
                         </tr>
                         <tr>
                             <td colspan="2">

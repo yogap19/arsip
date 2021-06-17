@@ -86,7 +86,7 @@ class Auth extends BaseController
 			}
 		}
 
-		return redirect()->to('/Auth')->withInput('validation', $validation);
+		return redirect()->to('/Auth')->withInput();
 	}
 
 	public function register()
