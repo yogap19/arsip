@@ -31,6 +31,16 @@
                                         <?= session()->getFlashdata('pesan'); ?>
                                     </div>
                                 <?php endif; ?>
+                                <?php if (session()->getFlashdata('success')) : ?>
+                                    <div class="alert alert-success" role="alert">
+                                        <?= session()->getFlashdata('success'); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if (session()->getFlashdata('danger')) : ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?= session()->getFlashdata('danger'); ?>
+                                    </div>
+                                <?php endif; ?>
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
                                         <th>NO</th>

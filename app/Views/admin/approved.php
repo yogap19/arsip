@@ -14,21 +14,10 @@
                         <!-- isi -->
                         <div class="card">
                             <div class="col-lg-6"></div>
-                            <?php if (session()->getFlashdata('success')) : ?>
-                                <div class="alert alert-success" role="alert">
-                                    <?= session()->getFlashdata('success'); ?>
-                                </div>
-                            <?php endif; ?>
-                            <?php if (session()->getFlashdata('danger')) : ?>
-                                <div class="alert alert-danger" role="alert">
-                                    <?= session()->getFlashdata('danger'); ?>
-                                </div>
-                            <?php endif; ?>
-                            <form action="<?= base_url('Admin/approve'); ?>" method="post" class="m-5" enctype="multipart/form-data">
+                            <form action="<?= base_url('Admin/approve/' . $berkas['id']); ?>" method="post" class="m-5" enctype="multipart/form-data">
                                 <?= csrf_field(); ?>
                                 <div class="mb-3 row">
                                     <table class="table col-6">
-                                        <input type="hidden" value="<?= $berkas['nim']; ?>" name="nim">
                                         <tr>
                                             <td> <label for="keterangan" class="custom-control">Pengirim</label> </td>
                                             <!-- <td> <label for="keterangan" class="custom-control">:</label> </td> -->

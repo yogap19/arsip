@@ -154,7 +154,7 @@
                                             <?php elseif ($u['approved_admin'] == '3') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
-                                            <td><?= $u['keterangan']; ?></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
                                         </tr>
                                         <?php $i++ ?>
                                     <?php endforeach; ?>
@@ -190,7 +190,7 @@
                                             <?php elseif ($u['approved_admin'] == '3') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
-                                            <td><?= $u['keterangan']; ?></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
                                         </tr>
                                         <?php $i++ ?>
                                     <?php endforeach; ?>
@@ -257,7 +257,7 @@
                                             <?php elseif ($u['approved_admin'] == '3') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
-                                            <td><?= $u['keterangan']; ?></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
                                         </tr>
                                         <?php $i++ ?>
                                     <?php endforeach; ?>
@@ -293,7 +293,7 @@
                                             <?php elseif ($u['approved_admin'] == '3') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
-                                            <td><?= $u['keterangan']; ?></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
                                         </tr>
                                         <?php $i++ ?>
                                     <?php endforeach; ?>
@@ -360,7 +360,7 @@
                                             <?php elseif ($u['approved_admin'] == '3') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
-                                            <td><?= $u['keterangan']; ?></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
                                         </tr>
                                         <?php $i++ ?>
                                     <?php endforeach; ?>

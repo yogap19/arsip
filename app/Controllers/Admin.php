@@ -158,18 +158,18 @@ class Admin extends BaseController
         ];
         return view('admin/approved', $data);
     }
-    public function approve()
+    public function approve($id)
     {
-        $data = $this->BerkasModel->where(['nim' => session()->get('nim')])->first();
+        $data = $this->BerkasModel->find($id);
         if (!$this->validate([
             'keterangan'     => [
                 'rules'        => 'required',
                 'errors'    => ['required'      => 'Keterangan harus di isi!']
             ],
         ])) {
-            return redirect()->to('approved/' . $data['id'])->withInput();
+            return redirect()->to('/Admin/approved/' . $data['id'])->withInput();
         }
-        // type
+        // // type
         if ($data['type'] == 1) {
             $type = 'Proposal';
         } elseif ($data['type'] == 2) {
@@ -179,20 +179,28 @@ class Admin extends BaseController
         } elseif ($data['type'] == 4) {
             $type = 'Document';
         }
-        $approve = intval($this->request->getVar('approved_admin'));
-        if ($approve === 0) {
-            $approve = 3;
+        // ambil status approved
+        $approved = $this->request->getVar('approved_admin');
+        if ($approved == null) {
+            $approved = 3;
         }
+        // ambil keterangan
+        $keterangan = $this->request->getVar('keterangan');
+
+        // save database
         $this->BerkasModel->save([
-            'id'        => $data['id'],
-            'approved_admin' => $approve,
-            'keterangan' => $this->request->getVar('keterangan')
+            'id'        => $id,
+            'approved_admin' => $approved,
+            'keterangan' => $keterangan,
         ]);
-        if ($approve == 1) {
+
+        // jikia confirmed dan rejected
+        if ($approved == 1) {
             session()->setFlashdata('success', $type . ' dengan nama ' . $data['title'] .  ' Confirmed');
-        } elseif ($approve == 3) {
-            session()->setFlashdata('success', $type . ' dengan nama ' . $data['title'] .  ' Rejected');
+        } else {
+            session()->setFlashdata('danger', $type . ' dengan nama ' . $data['title'] .  ' Rejected');
         }
+
         return redirect()->to(base_url('Admin/berkas'));
     }
 }
