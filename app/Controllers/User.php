@@ -128,23 +128,7 @@ class User extends BaseController
         session()->setFlashdata('pesan', 'Profile berhasil dirubah');
         return redirect()->to('/User/edit')->withInput();
     }
-    public function upload()
-    {
-        $data = [
-            'title' => 'Upload Berkas',
-            'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
-            'berkas' => $this->BerkasModel->where(['nim' => session()->get('nim')])->first(),
-            'confirmed' => $this->BerkasModel->where(['nim' => session()->get('nim')])->where(['approved_Sadmin' => 1])->where(['approved_admin' => 1])->find(),
-            'requested' => $this->BerkasModel->where(['nim' => session()->get('nim')])->where(['approved_Sadmin' => 2])->where(['approved_admin' => 2])->find(),
-            'requestedB' => $this->BerkasModel->where(['nim' => session()->get('nim')])->where(['approved_Sadmin' => 2])->where(['approved_admin' => 1])->find(),
-            'rejectedA' => $this->BerkasModel->where(['nim' => session()->get('nim')])->where(['approved_admin' => 3])->find(),
-            'rejectedS' => $this->BerkasModel->where(['nim' => session()->get('nim')])->where(['approved_Sadmin' => 3])->find(),
-            'validation' => \Config\Services::validation()
-        ];
-        // dd($data);
-        $this->cekSession();
-        return view('user/uploadBerkas', $data);
-    }
+
     private  function cekSession($segment = '')
     {
         $request = \Config\Services::request();
@@ -242,9 +226,27 @@ class User extends BaseController
             }
         }
     }
+    public function upload()
+    {
+        $data = [
+            'title' => 'Upload Berkas',
+            'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'berkas' => $this->BerkasModel->where(['nim' => session()->get('nim')])->first(),
+            'confirmed' => $this->BerkasModel->where(['nim' => session()->get('nim')])->where(['approved_Sadmin' => 1])->where(['approved_admin' => 1])->find(),
+            'requested' => $this->BerkasModel->where(['nim' => session()->get('nim')])->where(['approved_Sadmin' => 2])->where(['approved_admin' => 2])->find(),
+            'requestedB' => $this->BerkasModel->where(['nim' => session()->get('nim')])->where(['approved_Sadmin' => 2])->where(['approved_admin' => 1])->find(),
+            'rejectedA' => $this->BerkasModel->where(['nim' => session()->get('nim')])->where(['approved_admin' => 3])->find(),
+            'rejectedS' => $this->BerkasModel->where(['nim' => session()->get('nim')])->where(['approved_Sadmin' => 3])->find(),
+            'validation' => \Config\Services::validation()
+        ];
+        // dd($data);
+        $this->cekSession();
+        return view('user/upload', $data);
+    }
     public function doc()
     {
         $data = $this->UserModel->where(['nim' => session()->get('nim')])->first();
+        $berkas = $this->BerkasModel->where(['nim' => session()->get('nim')])->find();
         if (!$this->validate([
             'title'         => [
                 'rules'     => 'uploaded[title]|max_size[title,30720]|ext_in[title,doc,docx,pdf]',
@@ -264,14 +266,15 @@ class User extends BaseController
         // get name
         $name = $getFile->getName();
 
+        // beri nama type
         if ($type == '1') {
-            $upload = 'PRP_' . $name;
+            $upload = $data['nim'] . '_PRP_' . $name;
         } elseif ($type == '2') {
-            $upload = 'LPR_' . $name;
+            $upload = $data['nim'] . '_LPR_' . $name;
         } elseif ($type == '3') {
-            $upload = 'BWK_' . $name;
+            $upload = $data['nim'] . '_BWK_' . $name;
         } elseif ($type == '4') {
-            $upload = 'ALL_' . $name;
+            $upload = $data['nim'] . '_ALL_' . $name;
         }
 
         // cek role_id
@@ -281,20 +284,151 @@ class User extends BaseController
             $accAdmin = 2;
         }
 
+        // keterangan
+        if ($data['role_id'] == 2) {
+            $keterangan =  $this->request->getVar('keterangan');
+        } elseif ($data['role_id'] == 3) {
+            $keterangan =  '';
+        }
+
+
+        // cek isi berkas
+        if ($berkas == null) {
+            // simpad file
+            $getFile->move('doc', $upload);
+            // save ke database
+            $this->BerkasModel->save([
+                'nim' => $data['nim'],
+                'title' => $upload,
+                'type' => $this->request->getVar('type'),
+                'organisasi' => '-',
+                'keteranganA' => $keterangan,
+                'keterangan' => $this->request->getVar('keterangan'),
+                'approved_Sadmin' => 2,
+                'approved_admin' => $accAdmin,
+            ]);
+            session()->setFlashdata('success', 'File dengan nama ' . $upload . ' Berhasil dikirim, harap menunggu konfirmasi Kemahasiswaan dan Administrator');
+            return redirect()->to('/User/upload')->withInput();
+        } else {
+            // cek apakah ada file pernah dikirim sebelumnya
+            foreach ($berkas as $key => $value) {
+                if ($value['title'] == $upload) {
+                    session()->setFlashdata('danger', 'File dengan nama ' . $upload . ' pernah dikirim sebelumnya');
+                    return redirect()->to('/User/upload')->withInput();
+                } else {
+                    // simpad file
+                    $getFile->move('doc', $upload);
+                    // save ke database
+                    $this->BerkasModel->save([
+                        'nim' => $data['nim'],
+                        'title' => $upload,
+                        'type' => $this->request->getVar('type'),
+                        'organisasi' => '-',
+                        'keteranganA' => $keterangan,
+                        'keterangan' => $this->request->getVar('keterangan'),
+                        'approved_Sadmin' => 2,
+                        'approved_admin' => $accAdmin,
+                    ]);
+                    session()->setFlashdata('success', 'File dengan nama ' . $upload . ' Berhasil dikirim, harap menunggu konfirmasi Kemahasiswaan dan Administrator');
+                    return redirect()->to('/User/upload')->withInput();
+                }
+            }
+        }
+    }
+
+    public function revisi($id)
+    {
+        $data = [
+            'title' => 'Form revisi',
+            'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'berkas' => $this->BerkasModel->find($id),
+            'validation' => \Config\Services::validation()
+        ];
+        return view('User/revisi', $data);
+    }
+    public function revisiUpload($id)
+    {
+        if (!$this->validate([
+            'title'         => [
+                'rules'     => 'uploaded[title]|max_size[title,30720]|ext_in[title,doc,docx,pdf]',
+                'errors'    => [
+                    'uploaded'      => 'File belum di pilih!',
+                    'max_size'      => 'Ukuran file terlalu besar!',
+                    'ext_in'        => 'Type file tidak dizinkan!'
+                ]
+            ],
+            'keterangan'         => [
+                'rules'     => 'required',
+                'errors'    => [
+                    'required'      => 'Keterangan pembaruan belum di isi!',
+                ]
+            ],
+        ])) {
+            return redirect()->to('/User/revisi/' . $id)->withInput();
+        }
+        $berkas = $this->BerkasModel->find($id);
+        $user = $this->UserModel->where(['nim' => session()->get('nim')])->first();
+        // // get file
+        $getFile = $this->request->getFile('title');
+        // get name
+        $name = $getFile->getName();
+        // beri nama type
+        if ($berkas['type'] == '1') {
+            $upload = $berkas['nim'] . '_PRP_' . $name;
+        } elseif ($berkas['type'] == '2') {
+            $upload = $berkas['nim'] . '_LPR_' . $name;
+        } elseif ($berkas['type'] == '3') {
+            $upload = $berkas['nim'] . '_BWK_' . $name;
+        } elseif ($berkas['type'] == '4') {
+            $upload = $berkas['nim'] . '_ALL_' . $name;
+        }
+        // hapus file lama
+        unlink('doc/' . $berkas['title']);
+
         // simpad file
         $getFile->move('doc', $upload);
-        // save ke database
+
+        // cek user role id
+        if ($user['role_id'] == 2) {
+            $approvedA = 1;
+        } else {
+            $approvedA = 2;
+        }
+        // keterangan
+        if ($user['role_id'] == 2) {
+            $keterangan =  $this->request->getVar('keterangan');
+        } elseif ($user['role_id'] == 3) {
+            $keterangan =  '';
+        }
+
+        // update database
         $this->BerkasModel->save([
-            'nim' => $data['nim'],
+            'id' => $id,
             'title' => $upload,
-            'type' => $this->request->getVar('type'),
-            'organisasi' => '-',
-            'keterangan' => $this->request->getVar('keterangan'),
             'approved_Sadmin' => 2,
-            'approved_admin' => $accAdmin,
+            'approved_admin' => $approvedA,
+            'keteranganA' => $keterangan,
+            'keterangan' => $this->request->getVar('keterangan'),
         ]);
-        session()->setFlashdata('success', 'File Berhasil dikirim, harap menunggu konfirmasi Kemahasiswaan dan Administrator');
+        session()->setFlashdata('success', 'File dengan nama ' . $upload . ' Berhasil direvisi, harap menunggu konfirmasi ulang');
         return redirect()->to('/User/upload')->withInput();
+    }
+
+    public function download($id)
+    {
+        $berkas = $this->BerkasModel->find($id);
+        $data = 'Here is some text!';
+        return $this->response->download($berkas['title'], $data);
+        return redirect()->to('/User/upload')->withInput();
+    }
+
+    public function delete($id)
+    {
+        $data = $this->BerkasModel->find($id);
+        $this->BerkasModel->delete(['id' => $id]);
+        unlink('doc/' . $data['title']);
+        session()->setFlashdata('danger', 'Berkas dengan nama ' . $data['title'] . ' berhasil dihapus');
+        return redirect()->to(base_url('User/upload'));
     }
 }
 

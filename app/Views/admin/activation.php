@@ -85,9 +85,11 @@
                                     <a href="<?= base_url('Admin'); ?>" class="btn-circle text-white" style="background: linear-gradient(grey,black);"><i class="fas fa-arrow-left"></i></a>
                                     <button type="submit" class="btn-circle text-white" style="background: linear-gradient(blue,black);"><i class="far fa-check-circle"></i></button>
                                     </form>
-                                    <!-- <a class="nav-link btn-circle text-white" style="background: linear-gradient(red,black);" href="#" data-toggle="modal" data-target="#delete">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </a> -->
+                                    <?php if ($menu['role_id'] != 2) : ?>
+                                        <a class="nav-link btn-circle text-white" style="background: linear-gradient(red,black);" href="#" data-toggle="modal" data-target="#delete">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    <?php endif; ?>
                                 </div>
                             </td>
                         <?php endif; ?>

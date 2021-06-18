@@ -8,12 +8,12 @@
         <div class="nav-tabs-boxed">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#index" role="tab" aria-controls="Profile"><i class="fas fa-upload"> Upload </i></a>
+                    <a class="nav-link active" data-toggle="tab" href="#upload" role="tab" aria-controls="Profile"><i class="fas fa-upload"> Upload </i></a>
                 </li>
                 <li class="nav-item">
                     <?php $a = count($requested) ?>
                     <?php $b = count($requestedB) ?>
-                    <a class="nav-link" data-toggle="tab" href="#service" role="tab" aria-controls="Profile"><i class="fas fa-list-ol"> Waiting list <?= $a + $b ?></i></i></a>
+                    <a class="nav-link" data-toggle="tab" href="#waiting" role="tab" aria-controls="Profile"><i class="fas fa-list-ol"> Waiting list <?= $a + $b ?></i></i></a>
                 </li>
                 <li class="nav-item">
                     <?php $c = count($rejectedA) ?>
@@ -25,8 +25,8 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <!-- service 1 -->
-                <div class="tab-pane active" id="index" role="tabpanel" active>
+                <!-- Upload -->
+                <div class="tab-pane active" id="upload" role="tabpanel" active>
                     <!-- header -->
                     <div class="card shadow mb-4">
                         <!-- isi -->
@@ -35,6 +35,11 @@
                             <?php if (session()->getFlashdata('success')) : ?>
                                 <div class="alert alert-success" role="alert">
                                     <?= session()->getFlashdata('success'); ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (session()->getFlashdata('danger')) : ?>
+                                <div class="alert alert-danger" role="alert">
+                                    <?= session()->getFlashdata('danger'); ?>
                                 </div>
                             <?php endif; ?>
                             <form action="<?= base_url('User/doc'); ?>" method="post" class="m-5" enctype="multipart/form-data">
@@ -100,33 +105,39 @@
                     </div>
                     <!-- end service 1 -->
                 </div>
-                <!-- service2 -->
-                <div class="tab-pane" id="service" role="tabpanel">
+                <!-- Waiting List -->
+                <div class="tab-pane" id="waiting" role="tabpanel">
                     <div class="card shadow mb-4">
                         <!-- isi -->
                         <div class="card">
-                            <div class="m-3">
-                                <?php if (session()->getFlashdata('pesan')) : ?>
+                            <div class="table-responsive">
+                                <?php if (session()->getFlashdata('success')) : ?>
                                     <div class="alert alert-success" role="alert">
-                                        <?= session()->getFlashdata('pesan'); ?>
+                                        <?= session()->getFlashdata('success'); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if (session()->getFlashdata('danger')) : ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?= session()->getFlashdata('danger'); ?>
                                     </div>
                                 <?php endif; ?>
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
-                                        <th>NO</th>
-                                        <th>NIM</th>
-                                        <th>Nama surat</th>
+                                        <th class="text-center">NO</th>
+                                        <th class="text-center">Nama surat</th>
                                         <th class="text-center">Jenis surat</th>
                                         <th>kemahasiswaan</th>
                                         <th>Administrator</th>
                                         <th>Keterangan</th>
+                                        <th>Keterangan kemahasiswaan</th>
+                                        <th>Keterangan Administrator</th>
+                                        <th>Action</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($requested as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
-                                            <td><?= $u['nim']; ?></td>
-                                            <td><?= $u['title']; ?></td>
+                                            <td class="text-center" style="width: 150px;"><?= $u['title']; ?></td>
                                             <!-- cek type surat -->
                                             <?php if ($u['type'] == '1') {
                                                 $type = 'Proposal kegiatan';
@@ -155,13 +166,19 @@
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
+                                            <td>
+                                                <a href="<?= base_url('User/revisi/') . '/' . $u['id']; ?>" style="background: linear-gradient(green,black);" class="btn-circle">
+                                                    <i class="fas fa-fw fa-cog text-white"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                         <?php $i++ ?>
                                     <?php endforeach; ?>
                                     <?php foreach ($requestedB as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
-                                            <td><?= $u['nim']; ?></td>
                                             <td><?= $u['title']; ?></td>
                                             <!-- cek type surat -->
                                             <?php if ($u['type'] == '1') {
@@ -191,44 +208,53 @@
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
+                                            <td>
+                                                <a href="<?= base_url('User/revisi/') . '/' . $u['id']; ?>" style="background: linear-gradient(green,black);" class="btn-circle">
+                                                    <i class="fas fa-fw fa-cog text-white"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                         <?php $i++ ?>
                                     <?php endforeach; ?>
                                 </table>
                             </div>
-                            <!-- session alert -->
-
-                            <!-- <div class="text-center">
-                            </div> -->
                         </div>
                     </div>
                 </div>
-                <!-- service3 -->
+                <!-- Rejected -->
                 <div class="tab-pane" id="profile" role="tabpanel">
                     <div class="card shadow mb-4">
                         <!-- isi -->
                         <div class="card">
-                            <div class="m-3">
-                                <?php if (session()->getFlashdata('pesan')) : ?>
+                            <div class="table-responsive">
+                                <?php if (session()->getFlashdata('success')) : ?>
                                     <div class="alert alert-success" role="alert">
-                                        <?= session()->getFlashdata('pesan'); ?>
+                                        <?= session()->getFlashdata('success'); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if (session()->getFlashdata('danger')) : ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?= session()->getFlashdata('danger'); ?>
                                     </div>
                                 <?php endif; ?>
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
                                         <th>NO</th>
-                                        <th>NIM</th>
-                                        <th>Nama surat</th>
+                                        <th class="text-center">Nama surat</th>
                                         <th class="text-center">Jenis surat</th>
                                         <th>kemahasiswaan</th>
                                         <th>Administrator</th>
                                         <th>Keterangan</th>
+                                        <th>Keterangan Administrator</th>
+                                        <th>Keterangan kemahasiswaan</th>
+                                        <th>Action</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($rejectedA as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
-                                            <td><?= $u['nim']; ?></td>
                                             <td><?= $u['title']; ?></td>
                                             <!-- cek type surat -->
                                             <?php if ($u['type'] == '1') {
@@ -258,13 +284,20 @@
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
+                                            <td>
+                                                <a href="<?= base_url('User/revisi/') . '/' . $u['id']; ?>" style="background: linear-gradient(green,black);" class="btn-circle">
+                                                    <i class="fas fa-fw fa-cog text-white"></i>
+                                                </a>
+                                                <a href="#" class="btn-circle" style="background: linear-gradient(red,black);" data-toggle="modal" data-target="#delete"><i class="fas fa-trash" style="color: white;"></i></a>
+                                            </td>
                                         </tr>
                                         <?php $i++ ?>
                                     <?php endforeach; ?>
                                     <?php foreach ($rejectedS as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
-                                            <td><?= $u['nim']; ?></td>
                                             <td><?= $u['title']; ?></td>
                                             <!-- cek type surat -->
                                             <?php if ($u['type'] == '1') {
@@ -294,6 +327,37 @@
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
+                                            <td>
+                                                <a href="<?= base_url('User/revisi/') . '/' . $u['id']; ?>" style="background: linear-gradient(green,black);" class="btn-circle">
+                                                    <i class="fas fa-fw fa-cog text-white"></i>
+                                                </a>
+                                                <a href="#" style="background: linear-gradient(red,black);" class="btn-circle" data-toggle="modal" data-target="#delete">
+                                                    <i class="fas fa-fw fa-trash text-white"></i>
+                                                </a>
+                                                <!-- Delete Modal-->
+                                                <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus</h5>
+                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">Anda yakin ingin menghapus berkas dengan nama <?= $u['title']; ?>.</div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                                                <form action="<?= base_url(); ?>/User/delete/<?= $u['id']; ?>" method="post" class="d-inline">
+                                                                    <?= csrf_field(); ?>
+                                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                         <?php $i++ ?>
                                     <?php endforeach; ?>
@@ -306,33 +370,39 @@
                         </div>
                     </div>
                 </div>
-                <!-- service4 -->
+                <!-- Confirmed -->
                 <div class="tab-pane" id="confirmed" role="tabpanel">
                     <div class="card shadow mb-4">
                         <!-- isi -->
                         <div class="card">
-                            <div class="m-3">
-                                <?php if (session()->getFlashdata('pesan')) : ?>
+                            <div class="table-responsive">
+                                <?php if (session()->getFlashdata('success')) : ?>
                                     <div class="alert alert-success" role="alert">
-                                        <?= session()->getFlashdata('pesan'); ?>
+                                        <?= session()->getFlashdata('success'); ?>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if (session()->getFlashdata('danger')) : ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?= session()->getFlashdata('danger'); ?>
                                     </div>
                                 <?php endif; ?>
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
                                         <th>NO</th>
-                                        <th>NIM</th>
-                                        <th>Nama surat</th>
+                                        <th class="text-center">Nama surat</th>
                                         <th class="text-center">Jenis surat</th>
                                         <th>kemahasiswaan</th>
                                         <th>Administrator</th>
                                         <th>Keterangan</th>
+                                        <th>Keterangan Administrator</th>
+                                        <th>Keterangan kemahasiswaan</th>
+                                        <th>download</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($confirmed as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
-                                            <td><?= $u['nim']; ?></td>
-                                            <td><?= $u['title']; ?></td>
+                                            <td><a href="<?= base_url('User/download/' . $u['id']); ?>"><?= $u['title']; ?></a></td>
                                             <!-- cek type surat -->
                                             <?php if ($u['type'] == '1') {
                                                 $type = 'Proposal kegiatan';
@@ -361,15 +431,14 @@
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
+                                            <td class="text-center"><a href="<?= base_url('User/download/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download text-white"></i></a></td>
                                         </tr>
                                         <?php $i++ ?>
                                     <?php endforeach; ?>
                                 </table>
                             </div>
-                            <!-- session alert -->
-
-                            <!-- <div class="text-center">
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -378,6 +447,8 @@
         <!-- end table navigasi -->
     </div>
 </div>
+
+
 
 
 <?= $this->endSection(); ?>

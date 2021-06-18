@@ -4,16 +4,19 @@ namespace App\Controllers;
 
 use \App\Models\UserModel;
 use \App\Models\MenuModel;
+use \App\Models\BerkasModel;
 use PhpParser\Node\Stmt\Echo_;
 
 class SuperAdmin extends BaseController
 {
     protected $UserModel;
     protected $MenuModel;
+    protected $BerkasModel;
     public function __construct()
     {
         $this->UserModel = new UserModel();
         $this->MenuModel = new MenuModel();
+        $this->BerkasModel = new BerkasModel();
         $this->cekSession();
         if (!session('nim')) {
             header('Location: ' . base_url('Auth'));
@@ -22,11 +25,14 @@ class SuperAdmin extends BaseController
     }
     public function index()
     {
+        $id =  '351701002';
         $data = [
             'title' => 'Dashboard',
             'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'berkas' => $this->BerkasModel->findAll(),
+            'lpr' => $this->BerkasModel->where(['type' => 1])->where(['nim' => $id])->find(),
         ];
-
+        // dd($data);
         return view('sadmin/index', $data);
     }
     public function manageMenu()
@@ -143,10 +149,69 @@ class SuperAdmin extends BaseController
     public function arsip()
     {
         $data = [
-            'title' => 'Dashboard',
+            'title' => 'Arsip',
             'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'requested' => $this->BerkasModel->where(['approved_Sadmin' => 2])->where(['approved_admin' => 1])->find(),
+            'confirmed' => $this->BerkasModel->where(['approved_Sadmin' => 1])->find(),
+            'rejected' => $this->BerkasModel->where(['approved_Sadmin' => 3])->find(),
+            'validation' => \Config\Services::validation()
         ];
-
+        // dd($data);
         return view('sadmin/arsip', $data);
+    }
+    public function approved($id)
+    {
+        $data = [
+            'title' => 'Berkas',
+            'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'berkas' => $this->BerkasModel->find($id),
+            'validation' => \Config\Services::validation()
+        ];
+        return view('Sadmin/approved', $data);
+    }
+    public function approve($id)
+    {
+        $data = $this->BerkasModel->find($id);
+        if (!$this->validate([
+            'keterangan'     => [
+                'rules'        => 'required',
+                'errors'    => ['required'      => 'Keterangan harus di isi!']
+            ],
+        ])) {
+            return redirect()->to('/SuperAdmin/approved/' . $data['id'])->withInput();
+        }
+        // // type
+        if ($data['type'] == 1) {
+            $type = 'Proposal';
+        } elseif ($data['type'] == 2) {
+            $type = 'Laporan';
+        } elseif ($data['type'] == 3) {
+            $type = 'Formulir beasiswa';
+        } elseif ($data['type'] == 4) {
+            $type = 'Document';
+        }
+        // ambil status approved
+        $approved = $this->request->getVar('approved_Sadmin');
+        if ($approved == null) {
+            $approved = 3;
+        }
+        // ambil keterangan
+        $keterangan = $this->request->getVar('keterangan');
+
+        // save database
+        $this->BerkasModel->save([
+            'id'        => $id,
+            'approved_Sadmin' => $approved,
+            'keteranganS' => $keterangan,
+        ]);
+
+        // jikia confirmed dan rejected
+        if ($approved == 1) {
+            session()->setFlashdata('success', $type . ' dengan nama ' . $data['title'] .  ' Confirmed');
+        } else {
+            session()->setFlashdata('danger', $type . ' dengan nama ' . $data['title'] .  ' Rejected');
+        }
+
+        return redirect()->to(base_url('SuperAdmin/arsip'));
     }
 }

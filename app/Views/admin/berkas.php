@@ -25,7 +25,7 @@
                     <div class="card shadow mb-4">
                         <!-- isi -->
                         <div class="card">
-                            <div class="m-3">
+                            <div class="">
                                 <?php if (session()->getFlashdata('pesan')) : ?>
                                     <div class="alert alert-success" role="alert">
                                         <?= session()->getFlashdata('pesan'); ?>
@@ -86,10 +86,6 @@
                                     <?php endforeach; ?>
                                 </table>
                             </div>
-                            <!-- session alert -->
-
-                            <!-- <div class="text-center">
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -98,7 +94,7 @@
                     <div class="card shadow mb-4">
                         <!-- isi -->
                         <div class="card">
-                            <div class="m-3">
+                            <div class="">
                                 <?php if (session()->getFlashdata('pesan')) : ?>
                                     <div class="alert alert-success" role="alert">
                                         <?= session()->getFlashdata('pesan'); ?>
@@ -161,7 +157,7 @@
                     <div class="card shadow mb-4">
                         <!-- isi -->
                         <div class="card">
-                            <div class="m-3">
+                            <div class="">
                                 <?php if (session()->getFlashdata('pesan')) : ?>
                                     <div class="alert alert-success" role="alert">
                                         <?= session()->getFlashdata('pesan'); ?>
@@ -175,7 +171,8 @@
                                         <th>Jenis surat</th>
                                         <th>kemahasiswaan</th>
                                         <th>Administrator</th>
-                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Keterangan Kemahasiswaan</th>
+                                        <th class="text-center">Keterangan User</th>
                                         <th>action</th>
                                     </tr>
                                     <?php $i = 1; ?>
@@ -212,6 +209,9 @@
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
                                             <td>
+                                                <textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea>
+                                            </td>
+                                            <td>
                                                 <textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea>
                                             </td>
                                             <td>
@@ -223,10 +223,6 @@
                                     <?php endforeach; ?>
                                 </table>
                             </div>
-                            <!-- session alert -->
-
-                            <!-- <div class="text-center">
-                            </div> -->
                         </div>
                     </div>
                 </div>

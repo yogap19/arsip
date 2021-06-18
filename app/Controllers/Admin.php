@@ -92,6 +92,7 @@ class Admin extends BaseController
     }
     public function berkas()
     {
+        $this->cekSession2();
         $data = [
             'title' => 'Berkas',
             'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
@@ -145,11 +146,12 @@ class Admin extends BaseController
     {
         $berkas = $this->BerkasModel->find($id);
         $data = 'Here is some text!';
-        return $this->response->download('doc/' . $berkas['title'], $data);
+        return $this->response->download($berkas['title'], $data);
         return redirect()->to('/Admin/berkas')->withInput();
     }
     public function approved($id)
     {
+        $this->cekSession2();
         $data = [
             'title' => 'Berkas',
             'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
@@ -191,7 +193,7 @@ class Admin extends BaseController
         $this->BerkasModel->save([
             'id'        => $id,
             'approved_admin' => $approved,
-            'keterangan' => $keterangan,
+            'keteranganA' => $keterangan,
         ]);
 
         // jikia confirmed dan rejected
@@ -201,6 +203,14 @@ class Admin extends BaseController
             session()->setFlashdata('danger', $type . ' dengan nama ' . $data['title'] .  ' Rejected');
         }
 
+        return redirect()->to(base_url('Admin/berkas'));
+    }
+    public function delete($id)
+    {
+        $data = $this->BerkasModel->find($id);
+        $this->BerkasModel->delete(['id' => $id]);
+        unlink('doc/' . $data['title']);
+        session()->setFlashdata('danger', 'Berkas dengan nama ' . $data['title'] . ' berhasil dihapus');
         return redirect()->to(base_url('Admin/berkas'));
     }
 }
