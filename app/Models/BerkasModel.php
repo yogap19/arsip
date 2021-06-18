@@ -8,5 +8,5 @@ class BerkasModel extends Model
 {
     protected $table      = 'berkas';
     protected $useTimestamps = true;
-    protected $allowedFields = ['nim', 'title', 'type', 'approved_Sadmin', 'approved_admin', 'organisasi', 'keterangan', 'keteranganA', 'keteranganS'];
+    protected $allowedFields = ['nim', 'title', 'type', 'approved_Sadmin', 'approved_admin', 'jurusan', 'keterangan', 'keteranganA', 'keteranganS'];
 }

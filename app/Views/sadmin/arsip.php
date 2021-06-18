@@ -7,9 +7,9 @@
     <div class="col-md-12 mb-12">
         <div class="nav-tabs-boxed">
             <ul class="nav nav-tabs">
+                <?php $a = count($requested) ?>
                 <li class="nav-item active">
-                    <?php $a = count($requested) ?>
-                    <a class="nav-link" data-toggle="tab" href="#requested" role="tab" aria-controls="Profile"><i class="fas fa-list-ol"> Waiting list <?= $a  ?></i></i></a>
+                    <a class="nav-link active" data-toggle="tab" href="#requested" role="tab" aria-controls="Profile"><i class="fas fa-list-ol"> Waiting list <?= $a;  ?></i></i></a>
                 </li>
                 <li class="nav-item">
                     <?php $c = count($rejected) ?>
@@ -43,13 +43,13 @@
                                 <?php endif; ?>
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
-                                        <th>NO</th>
+                                        <th class="text-center">NO</th>
                                         <th class="text-center">NIM</th>
-                                        <th>Nama surat</th>
-                                        <th>Jenis surat</th>
+                                        <th class="text-center">Nama surat</th>
+                                        <th class="text-center">Jenis surat</th>
                                         <th class="text-center">kemahasiswaan</th>
                                         <th class="text-center">Keterangan</th>
-                                        <th>Action</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($requested as $key => $u) : ?>
@@ -86,10 +86,6 @@
                                     <?php endforeach; ?>
                                 </table>
                             </div>
-                            <!-- session alert -->
-
-                            <!-- <div class="text-center">
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -106,13 +102,13 @@
                                 <?php endif; ?>
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
-                                        <th>NO</th>
+                                        <th class="text-center">NO</th>
                                         <th class="text-center">NIM</th>
-                                        <th>Nama surat</th>
-                                        <th>Jenis surat</th>
+                                        <th class="text-center">Nama surat</th>
+                                        <th class="text-center">Jenis surat</th>
                                         <th class="text-center">kemahasiswaan</th>
                                         <th class="text-center">Keterangan</th>
-                                        <th>Action</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($rejected as $key => $u) : ?>
@@ -165,14 +161,14 @@
                                 <?php endif; ?>
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
-                                        <th>NO</th>
+                                        <th class="text-center">NO</th>
                                         <th class="text-center">NIM</th>
-                                        <th>Nama surat</th>
-                                        <th>Jenis surat</th>
+                                        <th class="text-center">Nama surat</th>
+                                        <th class="text-center">Jenis surat</th>
                                         <th class="text-center">kemahasiswaan</th>
-                                        <th>Administrator</th>
+                                        <th class="text-center">Administrator</th>
                                         <th class="text-center">Keterangan</th>
-                                        <th>action</th>
+                                        <th class="text-center">action</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($confirmed as $key => $u) : ?>

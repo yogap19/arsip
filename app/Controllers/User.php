@@ -291,6 +291,16 @@ class User extends BaseController
             $keterangan =  '';
         }
 
+        // isi jurusan
+        if (substr($data['nim'], 0, 2) == '35') {
+            $jurusan = 1;
+        } elseif (substr($data['nim'], 0, 2) == '36') {
+            $jurusan = 2;
+        } elseif (substr($data['nim'], 0, 2) == '37') {
+            $jurusan = 3;
+        } elseif (substr($data['nim'], 0, 2) == '38') {
+            $jurusan = 4;
+        }
 
         // cek isi berkas
         if ($berkas == null) {
@@ -301,7 +311,7 @@ class User extends BaseController
                 'nim' => $data['nim'],
                 'title' => $upload,
                 'type' => $this->request->getVar('type'),
-                'organisasi' => '-',
+                'jurusan' => $jurusan,
                 'keteranganA' => $keterangan,
                 'keterangan' => $this->request->getVar('keterangan'),
                 'approved_Sadmin' => 2,
@@ -323,7 +333,7 @@ class User extends BaseController
                         'nim' => $data['nim'],
                         'title' => $upload,
                         'type' => $this->request->getVar('type'),
-                        'organisasi' => '-',
+                        'jurusan' => $jurusan,
                         'keteranganA' => $keterangan,
                         'keterangan' => $this->request->getVar('keterangan'),
                         'approved_Sadmin' => 2,

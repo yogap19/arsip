@@ -43,13 +43,13 @@
                                 <?php endif; ?>
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
-                                        <th>NO</th>
+                                        <th class="text-center">NO</th>
                                         <th class="text-center">NIM</th>
-                                        <th>Nama surat</th>
-                                        <th>Jenis surat</th>
-                                        <th>Administrator</th>
+                                        <th class="text-center">Nama surat</th>
+                                        <th class="text-center">Jenis surat</th>
+                                        <th class="text-center">Administrator</th>
                                         <th class="text-center">Keterangan</th>
-                                        <th>Action</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($requested as $key => $u) : ?>
@@ -94,7 +94,7 @@
                     <div class="card shadow mb-4">
                         <!-- isi -->
                         <div class="card">
-                            <div class="">
+                            <div class="table-responsive">
                                 <?php if (session()->getFlashdata('pesan')) : ?>
                                     <div class="alert alert-success" role="alert">
                                         <?= session()->getFlashdata('pesan'); ?>
@@ -102,13 +102,13 @@
                                 <?php endif; ?>
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
-                                        <th>NO</th>
+                                        <th class="text-center">NO</th>
                                         <th class="text-center">NIM</th>
-                                        <th>Nama surat</th>
-                                        <th>Jenis surat</th>
-                                        <th>Administrator</th>
+                                        <th class="text-center">Nama surat</th>
+                                        <th class="text-center">Jenis surat</th>
+                                        <th class="text-center">Administrator</th>
                                         <th class="text-center">Keterangan</th>
-                                        <th>Action</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($rejected as $key => $u) : ?>
@@ -157,7 +157,7 @@
                     <div class="card shadow mb-4">
                         <!-- isi -->
                         <div class="card">
-                            <div class="">
+                            <div class="table-responsive">
                                 <?php if (session()->getFlashdata('pesan')) : ?>
                                     <div class="alert alert-success" role="alert">
                                         <?= session()->getFlashdata('pesan'); ?>
@@ -165,15 +165,15 @@
                                 <?php endif; ?>
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
-                                        <th>NO</th>
+                                        <th class="text-center">NO</th>
                                         <th class="text-center">NIM</th>
-                                        <th>Nama surat</th>
-                                        <th>Jenis surat</th>
-                                        <th>kemahasiswaan</th>
-                                        <th>Administrator</th>
+                                        <th class="text-center">Nama surat</th>
+                                        <th class="text-center">Jenis surat</th>
+                                        <th class="text-center">kemahasiswaan</th>
+                                        <th class="text-center">Administrator</th>
                                         <th class="text-center">Keterangan Kemahasiswaan</th>
                                         <th class="text-center">Keterangan User</th>
-                                        <th>action</th>
+                                        <th class="text-center">action</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($confirmed as $key => $u) : ?>
@@ -215,7 +215,7 @@
                                                 <textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea>
                                             </td>
                                             <td>
-                                                <a href="<?= base_url('Admin/approved/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(green,black);"><i class="fas fa-cog" style="color: white;"></i></a>
+                                                <!-- <a href="<?= base_url('Admin/approved/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(green,black);"><i class="fas fa-cog" style="color: white;"></i></a> -->
                                                 <a href="<?= base_url('Admin/download/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download" style="color: white;"></i></a>
                                             </td>
                                         </tr>

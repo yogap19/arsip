@@ -7,9 +7,9 @@
         <div class="row m-5">
             <div class="col-md-5" style="padding-top: 30px;">
                 <?php if ($menu['image'] == 'default.svg') : ?>
-                    <img src="<?= base_url(); ?>/img/<?= ($menu['gender'] == '1') ? 'boy.svg' : 'girl.svg'; ?>" width="400px" height="400px">
+                    <img src="<?= base_url(); ?>/img/<?= ($menu['gender'] == '1') ? 'boy.svg' : 'girl.svg'; ?>" class="img-thumbnail">
                 <?php else : ?>
-                    <img src="<?= base_url(); ?>/img/<?= $menu['image']; ?>" width="400px" height="400px">
+                    <img src="<?= base_url(); ?>/img/<?= $menu['image']; ?>" class="img-thumbnail">
                 <?php endif; ?>
             </div>
             <div class="col-md-7">
