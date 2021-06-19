@@ -48,7 +48,8 @@
                                         <th class="text-center">Nama surat</th>
                                         <th class="text-center">Jenis surat</th>
                                         <th class="text-center">kemahasiswaan</th>
-                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Keterangan Administrator</th>
+                                        <th class="text-center">Keterangan User</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                     <?php $i = 1; ?>
@@ -76,6 +77,7 @@
                                             <?php elseif ($u['approved_Sadmin'] == '3') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
                                             <td>
                                                 <a href="<?= base_url('SuperAdmin/approved/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(green,black);"><i class="fas fa-cog" style="color: white;"></i></a>
@@ -107,7 +109,8 @@
                                         <th class="text-center">Nama surat</th>
                                         <th class="text-center">Jenis surat</th>
                                         <th class="text-center">kemahasiswaan</th>
-                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Keterangan Administrator</th>
+                                        <th class="text-center">Keterangan User</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                     <?php $i = 1; ?>
@@ -135,6 +138,7 @@
                                             <?php elseif ($u['approved_Sadmin'] == '3') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
                                             <td>
                                                 <a href="<?= base_url('SuperAdmin/approved/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(green,black);"><i class="fas fa-cog" style="color: white;"></i></a>
@@ -153,7 +157,7 @@
                     <div class="card shadow mb-4">
                         <!-- isi -->
                         <div class="card">
-                            <div class="">
+                            <div class="table-responsive">
                                 <?php if (session()->getFlashdata('pesan')) : ?>
                                     <div class="alert alert-success" role="alert">
                                         <?= session()->getFlashdata('pesan'); ?>
@@ -166,9 +170,10 @@
                                         <th class="text-center">Nama surat</th>
                                         <th class="text-center">Jenis surat</th>
                                         <th class="text-center">kemahasiswaan</th>
-                                        <th class="text-center">Administrator</th>
-                                        <th class="text-center">Keterangan</th>
-                                        <th class="text-center">action</th>
+                                        <th class="text-center">Keterangan Kemahasiswaan</th>
+                                        <th class="text-center">Keterangan Administrator</th>
+                                        <th class="text-center">Keterangan User</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($confirmed as $key => $u) : ?>
@@ -195,14 +200,12 @@
                                             <?php elseif ($u['approved_Sadmin'] == '3') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
-                                            <!-- cek status approved kemahasiswaan -->
-                                            <?php if ($u['approved_Sadmin'] == '1') : ?>
-                                                <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
-                                            <?php elseif ($u['approved_Sadmin'] == '2') : ?>
-                                                <td class="text-center"><i class="fas fa-minus-circle" style="color: grey;"></i></td>
-                                            <?php elseif ($u['approved_Sadmin'] == '3') : ?>
-                                                <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
-                                            <?php endif; ?>
+                                            <td>
+                                                <textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea>
+                                            </td>
+                                            <td>
+                                                <textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea>
+                                            </td>
                                             <td>
                                                 <textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea>
                                             </td>

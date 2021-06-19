@@ -41,21 +41,21 @@
                                             <?= $validation->getError('password'); ?>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <div class="custom-control custom-checkbox small">
                                             <input type="checkbox" class="custom-control-input" id="customCheck">
                                             <label class="custom-control-label" for="customCheck">Remember
                                                 Me</label>
                                         </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                    </div> -->
+                                    <button type="submit" class="btn btn-user btn-block text-white" style="background: linear-gradient(blue,black);">
                                         Login
                                     </button>
                                 </form>
                                 <hr>
-                                <div class="text-center">
+                                <!-- <div class="text-center">
                                     <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                </div>
+                                </div> -->
                                 <div class="text-center">
                                     <a class="small" href="<?= base_url(); ?>/auth/register">Create an Account!</a>
                                 </div>

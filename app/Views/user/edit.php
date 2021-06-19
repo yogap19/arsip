@@ -39,7 +39,7 @@
                             <div class="mb-3 row">
                                 <label for="telepon" class="col-sm-3 col-form-label">No telepon</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control <?= ($validation->hasError('telepon')) ? 'is-invalid' : ''; ?>" id="telepon" name="telepon" placeholder="No telepon" value="<?= $user['telepon']; ?>">
+                                    <input type="text" class="form-control <?= ($validation->hasError('telepon')) ? 'is-invalid' : ''; ?>" id="telepon" name="telepon" placeholder="No telepon" value="<?= $user['telepon']; ?>" onkeypress="return event.charCode >= 48 && event.charCode <=57">
                                     <div id="validationServer03Feedback" class="invalid-feedback mx-3">
                                         <?= $validation->getError('telepon'); ?>
                                     </div>

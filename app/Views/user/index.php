@@ -66,7 +66,14 @@
                             <td><?= $user['rtrw']; ?>, <?= $user['desa']; ?>, <?= $user['kecamatan']; ?>, <?= $user['kota']; ?></td>
                         </tr>
                     </table>
-                    <p class="text-right"><small class="text-muted">Diperbarui pada <?= $user['updated_at']; ?></small></p>
+                    <div class="row">
+                        <div class="col">
+                            <p class="text-left"><small class="text-muted">Dibuat pada <?= $user['created_at']; ?></small></p>
+                        </div>
+                        <div class="col">
+                            <p class="text-right"><small class="text-muted">Diperbarui pada <?= $user['updated_at']; ?></small></p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

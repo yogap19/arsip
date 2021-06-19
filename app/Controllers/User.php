@@ -286,9 +286,11 @@ class User extends BaseController
 
         // keterangan
         if ($data['role_id'] == 2) {
-            $keterangan =  $this->request->getVar('keterangan');
+            $keteranganA =  $this->request->getVar('keterangan');
+            $keterangan = '';
         } elseif ($data['role_id'] == 3) {
-            $keterangan =  '';
+            $keteranganA =  '';
+            $keterangan = $this->request->getVar('keterangan');
         }
 
         // isi jurusan
@@ -312,36 +314,46 @@ class User extends BaseController
                 'title' => $upload,
                 'type' => $this->request->getVar('type'),
                 'jurusan' => $jurusan,
-                'keteranganA' => $keterangan,
-                'keterangan' => $this->request->getVar('keterangan'),
+                'keteranganA' => $keteranganA,
+                'keterangan' => $keterangan,
                 'approved_Sadmin' => 2,
                 'approved_admin' => $accAdmin,
             ]);
             session()->setFlashdata('success', 'File dengan nama ' . $upload . ' Berhasil dikirim, harap menunggu konfirmasi Kemahasiswaan dan Administrator');
             return redirect()->to('/User/upload')->withInput();
         } else {
+            $t = false;
             // cek apakah ada file pernah dikirim sebelumnya
             foreach ($berkas as $key => $value) {
                 if ($value['title'] == $upload) {
-                    session()->setFlashdata('danger', 'File dengan nama ' . $upload . ' pernah dikirim sebelumnya');
-                    return redirect()->to('/User/upload')->withInput();
+                    $t = true;
                 } else {
-                    // simpad file
-                    $getFile->move('doc', $upload);
-                    // save ke database
-                    $this->BerkasModel->save([
-                        'nim' => $data['nim'],
-                        'title' => $upload,
-                        'type' => $this->request->getVar('type'),
-                        'jurusan' => $jurusan,
-                        'keteranganA' => $keterangan,
-                        'keterangan' => $this->request->getVar('keterangan'),
-                        'approved_Sadmin' => 2,
-                        'approved_admin' => $accAdmin,
-                    ]);
-                    session()->setFlashdata('success', 'File dengan nama ' . $upload . ' Berhasil dikirim, harap menunggu konfirmasi Kemahasiswaan dan Administrator');
-                    return redirect()->to('/User/upload')->withInput();
+                    if ($t == true) {
+                        $t = true;
+                    } else {
+                        $t = false;
+                    }
                 }
+            }
+            if ($t === true) {
+                session()->setFlashdata('danger', 'File dengan nama ' . $upload . ' pernah dikirim sebelumnya');
+                return redirect()->to('/User/upload')->withInput();
+            } else {
+                // simpad file
+                $getFile->move('doc', $upload);
+                // save ke database
+                $this->BerkasModel->save([
+                    'nim' => $data['nim'],
+                    'title' => $upload,
+                    'type' => $this->request->getVar('type'),
+                    'jurusan' => $jurusan,
+                    'keteranganA' => $keteranganA,
+                    'keterangan' => $keterangan,
+                    'approved_Sadmin' => 2,
+                    'approved_admin' => $accAdmin,
+                ]);
+                session()->setFlashdata('success', 'File dengan nama ' . $upload . ' Berhasil dikirim, harap menunggu konfirmasi Kemahasiswaan dan Administrator');
+                return redirect()->to('/User/upload')->withInput();
             }
         }
     }

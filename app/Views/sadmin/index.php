@@ -15,31 +15,31 @@
                 <!-- by type  -->
                 <tr>
                     <td>
-                        <input type="radio" name="type1" id="type_1" value="0" checked>
+                        <input type="radio" name="type1" id="type_1" value="0" <?= ($type == 0) ? 'checked' : ''; ?>>
                         <label for="type_1">
                             All
                         </label>
                     </td>
                     <td>
-                        <input type="radio" name="type1" id="type_2" value="1">
+                        <input type="radio" name="type1" id="type_2" value="1" <?= ($type == 1) ? 'checked' : ''; ?>>
                         <label for="type_2">
                             Proposal Kegiatan
                         </label>
                     </td>
                     <td>
-                        <input type="radio" name="type1" id="type_3" value="2">
+                        <input type="radio" name="type1" id="type_3" value="2" <?= ($type == 2) ? 'checked' : ''; ?>>
                         <label for="type_3">
                             Laporan Kegiatan
                         </label>
                     </td>
                     <td>
-                        <input type="radio" name="type1" id="type_4" value="3">
+                        <input type="radio" name="type1" id="type_4" value="3" <?= ($type == 3) ? 'checked' : ''; ?>>
                         <label for="type_4">
                             Beasiswa BAWAKU
                         </label>
                     </td>
                     <td>
-                        <input type="radio" name="type1" id="type_5" value="4">
+                        <input type="radio" name="type1" id="type_5" value="4" <?= ($type == 4) ? 'checked' : ''; ?>>
                         <label for="type_5">
                             Dokument Lain-lain
                         </label>
@@ -48,31 +48,31 @@
                 <!-- by jurusan -->
                 <tr>
                     <td>
-                        <input type="radio" name="type2" id="type1" value="0" checked>
+                        <input type="radio" name="type2" id="type1" value="0" <?= ($jurusan == 0) ? 'checked' : ''; ?>>
                         <label for="type1">
                             All
                         </label>
                     </td>
                     <td>
-                        <input type="radio" name="type2" id="type2" value="1">
+                        <input type="radio" name="type2" id="type2" value="1" <?= ($jurusan == 1) ? 'checked' : ''; ?>>
                         <label for="type2">
                             Sistem Informasi
                         </label>
                     </td>
                     <td>
-                        <input type="radio" name="type2" id="type3" value="2">
+                        <input type="radio" name="type2" id="type3" value="2" <?= ($jurusan == 2) ? 'checked' : ''; ?>>
                         <label for="type3">
                             Teknik Informatika
                         </label>
                     </td>
                     <td>
-                        <input type="radio" name="type2" id="type4" value="3">
+                        <input type="radio" name="type2" id="type4" value="3" <?= ($jurusan == 3) ? 'checked' : ''; ?>>
                         <label class="form-check-label" for="type4">
                             Akuntansi
                         </label>
                     </td>
                     <td>
-                        <input type="radio" name="type2" id="type5" value="4">
+                        <input type="radio" name="type2" id="type5" value="4" <?= ($jurusan == 4) ? 'checked' : ''; ?>>
                         <label class="form-check-label" for="type5">
                             Manajemen
                         </label>
@@ -81,21 +81,27 @@
                 <!-- by Acepted & rejected -->
                 <tr>
                     <td>
-                        <input type="radio" name="type3" id="type-1" value="0" checked>
+                        <input type="radio" name="type3" id="type-1" value="0" <?= ($acepted == 0) ? 'checked' : ''; ?>>
                         <label for="type-1">
                             All
                         </label>
                     </td>
                     <td>
-                        <input type="radio" name="type3" id="type-2" value="1">
+                        <input type="radio" name="type3" id="type-2" value="1" <?= ($acepted == 1) ? 'checked' : ''; ?>>
                         <label for="type-2">
                             Acepted
                         </label>
                     </td>
                     <td>
-                        <input type="radio" name="type3" id="type-3" value="2">
+                        <input type="radio" name="type3" id="type-3" value="3" <?= ($acepted == 3) ? 'checked' : ''; ?>>
                         <label for="type-3">
                             Rejected
+                        </label>
+                    </td>
+                    <td>
+                        <input type="radio" name="type3" id="type-4" value="2" <?= ($acepted == 2) ? 'checked' : ''; ?>>
+                        <label for="type-4">
+                            Requested
                         </label>
                     </td>
                 </tr>
