@@ -100,18 +100,24 @@ class User extends BaseController
             return redirect()->to('/User/edit')->withInput();
         }
         $oldImage = $this->UserModel->find($this->request->getVar('id'));
+
         // get image
         $getImage = $this->request->getFile('image');
-        // cek field image jika kosong
+        // cek field image jika image tidak di upload
         if ($getImage->getError() == 4) {
             $upload = $oldImage['image'];
         } else {
-            // move image
-            $getImage->move('img');
             // get name
             $upload = $getImage->getName();
+
+            // beri penamaan
+            $upload = $oldImage['nim'] . '_' . $upload;
+            // move image
+            $getImage->move('img', $upload);
             // delete old image
-            unlink('img/' . $oldImage['image']);
+            if ($upload != 'default.svg') {
+                unlink('img/' . $oldImage['image']);
+            }
         }
         // simpan ke database
         $this->UserModel->save([

@@ -7,9 +7,9 @@
     <div class="col-md-12 mb-12">
         <div class="nav-tabs-boxed">
             <ul class="nav nav-tabs">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <?php $a = count($requested) ?>
-                    <a class="nav-link" data-toggle="tab" href="#requested" role="tab" aria-controls="Profile"><i class="fas fa-list-ol"> Waiting list <?= $a  ?></i></i></a>
+                    <a class="nav-link active" data-toggle="tab" href="#requested" role="tab" aria-controls="Profile"><i class="fas fa-list-ol"> Waiting list <?= $a  ?></i></i></a>
                 </li>
                 <li class="nav-item">
                     <?php $c = count($rejected) ?>
@@ -42,7 +42,7 @@
                                     </div>
                                 <?php endif; ?>
                                 <table class="table table-hover">
-                                    <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
+                                    <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 1) ? 'blue' : 'red'; ?>, Black); ">
                                         <th class="text-center">NO</th>
                                         <th class="text-center">NIM</th>
                                         <th class="text-center">Nama surat</th>
@@ -101,7 +101,7 @@
                                     </div>
                                 <?php endif; ?>
                                 <table class="table table-hover">
-                                    <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
+                                    <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 1) ? 'blue' : 'red'; ?>, Black); ">
                                         <th class="text-center">NO</th>
                                         <th class="text-center">NIM</th>
                                         <th class="text-center">Nama surat</th>
@@ -164,7 +164,7 @@
                                     </div>
                                 <?php endif; ?>
                                 <table class="table table-hover">
-                                    <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
+                                    <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 1) ? 'blue' : 'red'; ?>, Black); ">
                                         <th class="text-center">NO</th>
                                         <th class="text-center">NIM</th>
                                         <th class="text-center">Nama surat</th>

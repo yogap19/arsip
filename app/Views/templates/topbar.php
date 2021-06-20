@@ -11,7 +11,7 @@
                         <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" action="<?= base_url('SuperAdmin/index'); ?>" method="POST">
                             <?= csrf_field(); ?>
                             <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Cari dengan NIM..." aria-label="Search" aria-describedby="basic-addon2" name="search" id="search">
+                                <input type="text" class="form-control bg-light border-0 small" placeholder="Cari dengan NIM..." aria-label="Search" aria-describedby="basic-addon2" name="search" id="search" onkeypress="return event.charCode >= 48 && event.charCode <=57">
                                 <div class="input-group-append">
                                     <button class="btn text-white" style="background: linear-gradient(blue,black);" type="submit">
                                         <i class="fas fa-search fa-sm"></i>

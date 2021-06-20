@@ -11,7 +11,11 @@
                     <a class="nav-link active" data-toggle="tab" href="#upload" role="tab" aria-controls="Profile"><i class="fas fa-upload"> Upload </i></a>
                 </li>
                 <li class="nav-item">
-                    <?php $a = count($requested) ?>
+                    <?php
+
+                    use Config\Format;
+
+                    $a = count($requested) ?>
                     <?php $b = count($requestedB) ?>
                     <a class="nav-link" data-toggle="tab" href="#waiting" role="tab" aria-controls="Profile"><i class="fas fa-list-ol"> Waiting list <?= $a + $b ?></i></i></a>
                 </li>
@@ -109,8 +113,8 @@
                 <div class="tab-pane" id="waiting" role="tabpanel">
                     <div class="card shadow mb-4">
                         <!-- isi -->
-                        <div class="card">
-                            <div class="table-responsive">
+                        <div class="card m-3">
+                            <div class="table-responsive rounded">
                                 <?php if (session()->getFlashdata('success')) : ?>
                                     <div class="alert alert-success" role="alert">
                                         <?= session()->getFlashdata('success'); ?>
@@ -122,16 +126,16 @@
                                     </div>
                                 <?php endif; ?>
                                 <table class="table table-hover">
-                                    <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
+                                    <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 3) ? 'grey' : 'red'; ?>, Black); ">
                                         <th class="text-center">NO</th>
                                         <th class="text-center">Nama surat</th>
                                         <th class="text-center">Jenis surat</th>
-                                        <th>kemahasiswaan</th>
-                                        <th>Administrator</th>
-                                        <th>Keterangan</th>
-                                        <th>Keterangan kemahasiswaan</th>
-                                        <th>Keterangan Administrator</th>
-                                        <th>Action</th>
+                                        <th class="text-center">kemahasiswaan</th>
+                                        <th class="text-center">Administrator</th>
+                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Keterangan kemahasiswaan</th>
+                                        <th class="text-center">Keterangan Administrator</th>
+                                        <th class="text-center">Action</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($requested as $key => $u) : ?>
@@ -227,8 +231,8 @@
                 <div class="tab-pane" id="profile" role="tabpanel">
                     <div class="card shadow mb-4">
                         <!-- isi -->
-                        <div class="card">
-                            <div class="table-responsive">
+                        <div class="card m-3">
+                            <div class="table-responsive rounded">
                                 <?php if (session()->getFlashdata('success')) : ?>
                                     <div class="alert alert-success" role="alert">
                                         <?= session()->getFlashdata('success'); ?>
@@ -240,16 +244,19 @@
                                     </div>
                                 <?php endif; ?>
                                 <table class="table table-hover">
-                                    <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
-                                        <th>NO</th>
+                                    <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 3) ? 'grey' : 'red'; ?>, Black); ">
+                                        <th class="text-center">NO</th>
                                         <th class="text-center">Nama surat</th>
                                         <th class="text-center">Jenis surat</th>
-                                        <th>kemahasiswaan</th>
-                                        <th>Administrator</th>
-                                        <th>Keterangan</th>
-                                        <th>Keterangan Administrator</th>
-                                        <th>Keterangan kemahasiswaan</th>
-                                        <th>Action</th>
+                                        <th class="text-center">kemahasiswaan</th>
+                                        <th class="text-center">Administrator</th>
+                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Keterangan Administrator</th>
+                                        <th class="text-center">Keterangan kemahasiswaan</th>
+                                        <th class="text-center">Rejected on</th>
+                                        <th class="text-center">Edit</th>
+                                        <th class="text-center">download</th>
+                                        <th class="text-center">Delete</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($rejectedA as $key => $u) : ?>
@@ -286,11 +293,36 @@
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
                                             <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
                                             <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
-                                            <td>
+                                            <td class="text-center"><?= $u['updated_at']; ?></td>
+                                            <td class="text-center">
                                                 <a href="<?= base_url('User/revisi/') . '/' . $u['id']; ?>" style="background: linear-gradient(green,black);" class="btn-circle">
                                                     <i class="fas fa-fw fa-cog text-white"></i>
                                                 </a>
+                                            </td>
+                                            <td class="text-center"><a href="<?= base_url('User/download/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download text-white"></i></a></td>
+                                            <td class="text-center">
                                                 <a href="#" class="btn-circle" style="background: linear-gradient(red,black);" data-toggle="modal" data-target="#delete"><i class="fas fa-trash" style="color: white;"></i></a>
+                                                <!-- Delete Modal-->
+                                                <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Hapus</h5>
+                                                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                                    <span aria-hidden="true">×</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">Anda yakin ingin menghapus berkas dengan nama <?= $u['title']; ?>.</div>
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                                                <form action="<?= base_url(); ?>/User/delete/<?= $u['id']; ?>" method="post" class="d-inline">
+                                                                    <?= csrf_field(); ?>
+                                                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         <?php $i++ ?>
@@ -329,10 +361,14 @@
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
                                             <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
                                             <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
-                                            <td>
+                                            <td class="text-center"><?= $u['updated_at']; ?></td>
+                                            <td class="text-center">
                                                 <a href="<?= base_url('User/revisi/') . '/' . $u['id']; ?>" style="background: linear-gradient(green,black);" class="btn-circle">
                                                     <i class="fas fa-fw fa-cog text-white"></i>
                                                 </a>
+                                            </td>
+                                            <td class="text-center"><a href="<?= base_url('User/download/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download text-white"></i></a></td>
+                                            <td class="text-center">
                                                 <a href="#" style="background: linear-gradient(red,black);" class="btn-circle" data-toggle="modal" data-target="#delete">
                                                     <i class="fas fa-fw fa-trash text-white"></i>
                                                 </a>
@@ -358,15 +394,12 @@
                                                     </div>
                                                 </div>
                                             </td>
+
                                         </tr>
                                         <?php $i++ ?>
                                     <?php endforeach; ?>
                                 </table>
                             </div>
-                            <!-- session alert -->
-
-                            <!-- <div class="text-center">
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -374,8 +407,8 @@
                 <div class="tab-pane" id="confirmed" role="tabpanel">
                     <div class="card shadow mb-4">
                         <!-- isi -->
-                        <div class="card">
-                            <div class="table-responsive">
+                        <div class="card m-3">
+                            <div class="table-responsive rounded">
                                 <?php if (session()->getFlashdata('success')) : ?>
                                     <div class="alert alert-success" role="alert">
                                         <?= session()->getFlashdata('success'); ?>
@@ -387,16 +420,17 @@
                                     </div>
                                 <?php endif; ?>
                                 <table class="table table-hover">
-                                    <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
-                                        <th>NO</th>
+                                    <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 3) ? 'grey' : 'red'; ?>, Black); ">
+                                        <th class="text-center">NO</th>
                                         <th class="text-center">Nama surat</th>
                                         <th class="text-center">Jenis surat</th>
-                                        <th>kemahasiswaan</th>
-                                        <th>Administrator</th>
-                                        <th>Keterangan</th>
-                                        <th>Keterangan Administrator</th>
-                                        <th>Keterangan kemahasiswaan</th>
-                                        <th>download</th>
+                                        <th class="text-center">kemahasiswaan</th>
+                                        <th class="text-center">Administrator</th>
+                                        <th class="text-center">Keterangan</th>
+                                        <th class="text-center">Keterangan Administrator</th>
+                                        <th class="text-center">Keterangan kemahasiswaan</th>
+                                        <th class="text-center">Confirmed on</th>
+                                        <th class="text-center">Download</th>
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($confirmed as $key => $u) : ?>
@@ -433,6 +467,7 @@
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
                                             <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
                                             <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
+                                            <td class="text-center"><?= $u['updated_at']; ?></td>
                                             <td class="text-center"><a href="<?= base_url('User/download/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download text-white"></i></a></td>
                                         </tr>
                                         <?php $i++ ?>

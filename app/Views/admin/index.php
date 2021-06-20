@@ -41,8 +41,13 @@
                                         <?= session()->getFlashdata('pesan'); ?>
                                     </div>
                                 <?php endif; ?>
+                                <?php if (session()->getFlashdata('danger')) : ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?= session()->getFlashdata('danger'); ?>
+                                    </div>
+                                <?php endif; ?>
                                 <table class="table table-hover">
-                                    <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
+                                    <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 1) ? 'blue' : 'red'; ?>, Black); ">
                                         <th>NO</th>
                                         <th>NIM</th>
                                         <th>Nama</th>
@@ -93,8 +98,13 @@
                                         <?= session()->getFlashdata('pesan'); ?>
                                     </div>
                                 <?php endif; ?>
+                                <?php if (session()->getFlashdata('danger')) : ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?= session()->getFlashdata('danger'); ?>
+                                    </div>
+                                <?php endif; ?>
                                 <table class="table table-hover">
-                                    <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
+                                    <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 1) ? 'blue' : 'red'; ?>, Black); ">
                                         <th>NO</th>
                                         <th>NIM</th>
                                         <th>Nama</th>
@@ -144,8 +154,13 @@
                                         <?= session()->getFlashdata('pesan'); ?>
                                     </div>
                                 <?php endif; ?>
+                                <?php if (session()->getFlashdata('danger')) : ?>
+                                    <div class="alert alert-danger" role="alert">
+                                        <?= session()->getFlashdata('danger'); ?>
+                                    </div>
+                                <?php endif; ?>
                                 <table class="table table-hover">
-                                    <tr class="text-white" style="background: linear-gradient(Blue, Black); ">
+                                    <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 1) ? 'blue' : 'red'; ?>, Black); ">
                                         <th>NO</th>
                                         <th>NIM</th>
                                         <th>Nama</th>

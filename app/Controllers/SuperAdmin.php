@@ -59,6 +59,7 @@ class SuperAdmin extends BaseController
         $data = [
             'title' => 'Dashboard',
             'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'users' => $this->UserModel->findAll(),
             'berkas' => $this->BerkasModel->findAll(),
             'berkasHasil' => $hasil,
             'berkasNim' => $this->BerkasModel->where(['nim' => $search])->find(),
