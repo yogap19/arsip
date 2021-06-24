@@ -14,39 +14,43 @@
                         <!-- isi -->
                         <div class="card">
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col">
                                     <form action="<?= base_url('SuperAdmin/approve/' . $berkas['id']); ?>" method="post" class="m-5" enctype="multipart/form-data">
                                         <?= csrf_field(); ?>
                                         <div class="mb-3 row">
-                                            <table class="table col-6">
-                                                <tr>
-                                                    <td> <label for="keterangan" class="custom-control">Pengirim</label> </td>
+                                            <table class="table table-borderless">
+                                                <tr class="row">
+                                                    <td class="text-right col-12">
+                                                        <a href="<?= base_url('SuperAdmin/arsip'); ?>" class="btn-circle mx-2" style="background: linear-gradient(grey,black);"><i class="fas fa-times" style="color: white;"></i></a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="row">
+                                                    <td class="col-2"> <label for="keterangan" class="custom-control">Pengirim</label> </td>
                                                     <!-- <td> <label for="keterangan" class="custom-control">:</label> </td> -->
-                                                    <td> <label for="keterangan" class="custom-control"><?= $berkas['nim']; ?></label> </td>
+                                                    <td class="col-10"> <label for="keterangan" class="custom-control"><?= $berkas['nim']; ?></label> </td>
                                                 </tr>
-                                                <tr>
-                                                    <td> <label for="keterangan" class="custom-control">Judul surat</label> </td>
-                                                    <td> <label for="keterangan" class="custom-control"><?= $berkas['title']; ?></label> </td>
+                                                <tr class="row">
+                                                    <td class="col-2"> <label for="keterangan" class="custom-control">Judul surat</label> </td>
+                                                    <td class="col-10"> <label for="keterangan" class="custom-control"><?= $berkas['title']; ?></label> </td>
                                                 </tr>
-                                                <tr>
-                                                    <td> <label for="keterangan" class="custom-control">Status</label> </td>
-                                                    <td>
+                                                <tr class="row">
+                                                    <td class="col-2"> <label for="keterangan" class="custom-control">Status</label> </td>
+                                                    <td class="col-10">
                                                         <div class="custom-control custom-switch ml-4">
                                                             <input type="checkbox" class="custom-control-input" id="approved_Sadmin" <?= ($berkas['approved_Sadmin'] == '1') ? 'checked' : ''; ?> name="approved_Sadmin" value="1">
                                                             <label class="custom-control-label" for="approved_Sadmin"><?= ($berkas['approved_Sadmin'] == 1) ? 'Enable' : 'Disable' ?></label>
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <tr>
+                                                <!-- <tr class="row">
                                                     <td></td>
                                                     <td class="text-right"></td>
-                                                </tr>
-                                                <tr>
-                                                    <td></td>
-                                                    <td class="text-center">
-                                                        <a href="<?= base_url('SuperAdmin/arsip'); ?>" class="btn-circle" style="background: linear-gradient(grey,black);"><i class="fas fa-reply" style="color: white;"></i></a>
-                                                        <a href="<?= base_url('Admin/download/' . $berkas['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download" style="color: white;"></i></a>
-                                                        <a href="#" class="btn-circle" style="background: linear-gradient(red,black);" data-toggle="modal" data-target="#delete"><i class="fas fa-trash" style="color: white;"></i></a>
+                                                </tr> -->
+                                                <tr class="row">
+                                                    <td class="col-2"></td>
+                                                    <td class="text-right col-10">
+                                                        <a href="<?= base_url('Admin/download/' . $berkas['id']); ?>" class="btn-circle mx-2" style="background: linear-gradient(blue,black);"><i class="fas fa-download" style="color: white;"></i></a>
+                                                        <a href="#" class="btn-circle mx-2" style="background: linear-gradient(red,black);" data-toggle="modal" data-target="#delete"><i class="fas fa-trash" style="color: white;"></i></a>
                                                     </td>
                                                 </tr>
                                             </table>

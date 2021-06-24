@@ -44,6 +44,14 @@
                                     <?= 'Akuntansi'; ?>
                                 <?php elseif ($jurusan == '36') : ?>
                                     <?= 'Manajemen'; ?>
+                                <?php elseif ($jurusan == '25') : ?>
+                                    <?= 'Manajemen Informasi'; ?>
+                                <?php elseif ($jurusan == '26') : ?>
+                                    <?= 'Teknik Informatika D-3'; ?>
+                                <?php elseif ($jurusan == '27') : ?>
+                                    <?= 'Akuntansi D-3'; ?>
+                                <?php elseif ($jurusan == '28') : ?>
+                                    <?= 'Manajemen D-3'; ?>
                                 <?php else : ?>
                                     <?= 'Jurusan belum terdaftar'; ?>
                                 <?php endif; ?>

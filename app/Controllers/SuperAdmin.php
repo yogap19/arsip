@@ -2,18 +2,28 @@
 
 namespace App\Controllers;
 
+
 use \App\Models\UserModel;
 use \App\Models\MenuModel;
 use \App\Models\BerkasModel;
+use CodeIgniter\HTTP\Request;
 use PhpParser\Node\Stmt\Echo_;
+
+use \PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+// require 'vendor/autoload.php';
+
 
 class SuperAdmin extends BaseController
 {
     protected $UserModel;
     protected $MenuModel;
     protected $BerkasModel;
+    protected $spreadsheet;
     public function __construct()
     {
+        $this->spreadsheet = new Spreadsheet();
+        // $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
         $this->UserModel = new UserModel();
         $this->MenuModel = new MenuModel();
         $this->BerkasModel = new BerkasModel();
@@ -30,16 +40,15 @@ class SuperAdmin extends BaseController
         $jurusan = $this->request->getVar('type2');
         $acepted = $this->request->getVar('type3');
 
-        if ($type == 0) {
-            $type = '0';
-        } elseif ($jurusan == 0) {
-            $jurusan = '0';
-        } elseif ($acepted == 0) {
-            $acepted = '0';
+        if ($search) {
+            $berkas = $this->BerkasModel->berkas($search);
+        } else {
+            $berkas = $this->BerkasModel;
+            # code...
         }
-        // brute force itu tidak indah
+        //  Filter By
         if ($type == 0 && $jurusan == 0 && $acepted == 0) {
-            $hasil = $this->BerkasModel->findAll();
+            $hasil = $this->BerkasModel->orderBy('updated_at', 'DESC')->paginate(5, 'berkas');
         } elseif ($type == 0 && $jurusan == 0) {
             $hasil = $this->BerkasModel->where(['approved_Sadmin' => $acepted])->find();
         } elseif ($type == 0 && $acepted == 0) {
@@ -55,17 +64,31 @@ class SuperAdmin extends BaseController
         } else {
             $hasil = $this->BerkasModel->where(['type' => $type])->where(['jurusan' => $jurusan])->where(['approved_Sadmin' => $acepted])->find();
         }
-        //  end brute force
+
+        $pages = $this->request->getVar('page_berkas') ? $this->request->getVar('page_berkas') : 1;
+
         $data = [
-            'title' => 'Dashboard',
-            'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
-            'users' => $this->UserModel->findAll(),
-            'berkas' => $this->BerkasModel->findAll(),
-            'berkasHasil' => $hasil,
-            'berkasNim' => $this->BerkasModel->where(['nim' => $search])->find(),
-            'type' => $type,
-            'jurusan' => $jurusan,
-            'acepted' => $acepted,
+            // page required
+            'title'         => 'Dashboard',
+            'user'          => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+
+            // data required
+            'users'         => $this->UserModel->findAll(),
+            'allBerkas'     => $this->BerkasModel->findAll(),
+
+            // style data 
+            'berkas'        => $berkas->paginate(5, 'berkas'),
+            'pager'         => $this->BerkasModel->pager,
+            'berkasHasil'   => $hasil,
+
+            // required modal
+            'berkasNim'     => $this->BerkasModel->where(['nim' => $search])->find(),
+
+            // Filter required
+            'type'          => $type,
+            'jurusan'       => $jurusan,
+            'acepted'       => $acepted,
+            'page'          => $pages
         ];
         // dd($data);
         return view('sadmin/index', $data);
@@ -266,5 +289,31 @@ class SuperAdmin extends BaseController
         unlink('doc/' . $data['title']);
         session()->setFlashdata('danger', 'Berkas dengan nama ' . $data['title'] . ' berhasil dihapus');
         return redirect()->to(base_url('SuperAdmin/arsip'));
+    }
+
+    public function excel()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Nama');
+
+        $bekas = $this->BerkasModel->findAll();
+        $no = 1;
+        $x = 2;
+        foreach ($bekas as $row) {
+            $sheet->setCellValue('A' . $x, $no++);
+            $sheet->setCellValue('B' . $x, $row['nim']);
+            $x++;
+        }
+        $writer = new Xlsx($spreadsheet);
+        $filename = 'laporan-siswa';
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        $writer->save('php://output');
+        // return redirect()->to(base_url('SuperAdmin'));
     }
 }

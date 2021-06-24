@@ -13,7 +13,7 @@
                     <div class="card shadow mb-4">
                         <!-- isi -->
                         <div class="card">
-                            <div class="col-lg-6"></div>
+                            <div class="col"></div>
                             <form action="<?= base_url('Admin/approve/' . $berkas['id']); ?>" method="post" class="m-5" enctype="multipart/form-data">
                                 <?= csrf_field(); ?>
                                 <div class="mb-3 row">

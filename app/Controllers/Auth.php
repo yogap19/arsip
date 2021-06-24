@@ -28,7 +28,6 @@ class Auth extends BaseController
 	public function login()
 	{
 
-		$validation = \Config\Services::validation();
 		// validasi input
 		if ($this->validate([
 			'nim' 	=> [
@@ -106,16 +105,71 @@ class Auth extends BaseController
 	{
 		// Validasi Input
 		if (!$this->validate([
-			'nim' 		=> 'required|is_unique[user.nim]',
-			'nama' 		=> 'required',
-			'telepon' 	=> 'required',
-			'tmptLahir' => 'required',
-			'tglLahir' 	=> 'required',
-			'rtrw'	 	=> 'required',
-			'desa'	 	=> 'required',
-			'kecamatan'	=> 'required',
-			'kota'	 	=> 'required',
-			'email'	 	=> 'required|valid_email',
+			'nim' 	=> [
+				'rules'		=> 'required|is_unique[user.nim]|min_length[8]',
+				'errors'	=> [
+					'required' 	 	=> 'NIM harus di isi!',
+					'is_unique'  	=> 'NIM sudah terdaftar',
+					'min_length' 	=> 'NIM minimal 8 karakter'
+				]
+			],
+			'nama' 	=> [
+				'rules'		=> 'required',
+				'errors'	=> [
+					'required' 	 	=> 'NIM harus di isi!',
+				]
+			],
+			'telepon' 	=> [
+				'rules'		=> 'required|min_length[8]',
+				'errors'	=> [
+					'required' 	 	=> 'NIM harus di isi!',
+					'min_length' 	=> 'Mohon masukan no telepon yang sesuai!'
+				]
+			],
+			'tmptLahir' 	=> [
+				'rules'		=> 'required',
+				'errors'	=> [
+					'required' 	 	=> 'Tempat lahir harus di isi!',
+				]
+			],
+			'tglLahir' 	=> [
+				'rules'		=> 'required',
+				'errors'	=> [
+					'required' 	 	=> 'Tanggal Lahir harus di isi!',
+				]
+			],
+			'rtrw' 	=> [
+				'rules'		=> 'required|max_length[4]',
+				'errors'	=> [
+					'required' 	 	=> 'Rt / Rw harus di isi!',
+					'max_length' 	=> 'Format Rt / Rw tidak sesuai!'
+				]
+			],
+			'desa' 	=> [
+				'rules'		=> 'required',
+				'errors'	=> [
+					'required' 	 	=> 'Desa harus di isi!',
+				]
+			],
+			'kecamatan' 	=> [
+				'rules'		=> 'required',
+				'errors'	=> [
+					'required' 	 	=> 'Kecamatan harus di isi!',
+				]
+			],
+			'kota' 	=> [
+				'rules'		=> 'required',
+				'errors'	=> [
+					'required' 	 	=> 'Kota harus di isi!',
+				]
+			],
+			'email' 	=> [
+				'rules'		=> 'required|valid_email',
+				'errors'	=> [
+					'required' 	 	=> 'Kota harus di isi!',
+					'valid_email' 	=> 'Format E-mail tidak sesuai!'
+				]
+			],
 			'password' 	=> [
 				'rules'		=> 'required|matches[password2]|min_length[6]',
 				'errors'	=> [

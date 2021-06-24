@@ -272,6 +272,13 @@ class User extends BaseController
         // get name
         $name = $getFile->getName();
 
+        // cek role_id
+        if ($data['role_id'] == 2) {
+            $accAdmin = 1;
+        } else {
+            $accAdmin = 2;
+        }
+
         // beri nama type
         if ($type == '1') {
             $upload = $data['nim'] . '_PRP_' . $name;
@@ -279,15 +286,9 @@ class User extends BaseController
             $upload = $data['nim'] . '_LPR_' . $name;
         } elseif ($type == '3') {
             $upload = $data['nim'] . '_BWK_' . $name;
+            $accAdmin = 1;
         } elseif ($type == '4') {
             $upload = $data['nim'] . '_ALL_' . $name;
-        }
-
-        // cek role_id
-        if ($data['role_id'] == 2) {
-            $accAdmin = 1;
-        } else {
-            $accAdmin = 2;
         }
 
         // keterangan
@@ -308,6 +309,14 @@ class User extends BaseController
             $jurusan = 3;
         } elseif (substr($data['nim'], 0, 2) == '38') {
             $jurusan = 4;
+        } elseif (substr($data['nim'], 0, 2) == '25') {
+            $jurusan = 5;
+        } elseif (substr($data['nim'], 0, 2) == '26') {
+            $jurusan = 6;
+        } elseif (substr($data['nim'], 0, 2) == '27') {
+            $jurusan = 7;
+        } elseif (substr($data['nim'], 0, 2) == '28') {
+            $jurusan = 8;
         }
 
         // cek isi berkas

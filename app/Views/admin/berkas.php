@@ -53,36 +53,38 @@
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($requested as $key => $u) : ?>
-                                        <tr>
-                                            <td class="text-center"><?= $i; ?></td>
-                                            <td><?= $u['nim']; ?></td>
-                                            <td><?= $u['title']; ?></td>
-                                            <!-- cek type surat -->
-                                            <?php if ($u['type'] == '1') {
-                                                $type = 'Proposal kegiatan';
-                                            } elseif ($u['type'] == '2') {
-                                                $type = 'Laporan kegiatan';
-                                            } elseif ($u['type'] == '3') {
-                                                $type = 'Surat Beasiswa';
-                                            } elseif ($u['type'] == '4') {
-                                                $type = 'Document lain';
-                                            } ?>
-                                            <td><?= $type; ?></td>
-                                            <!-- cek status approved Administrator -->
-                                            <?php if ($u['approved_admin'] == '1') : ?>
-                                                <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
-                                            <?php elseif ($u['approved_admin'] == '2') : ?>
-                                                <td class="text-center"><i class="fas fa-minus-circle" style="color: grey;"></i></td>
-                                            <?php elseif ($u['approved_admin'] == '3') : ?>
-                                                <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
-                                            <?php endif; ?>
-                                            <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
-                                            <td>
-                                                <a href="<?= base_url('Admin/approved/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(green,black);"><i class="fas fa-cog" style="color: white;"></i></a>
-                                                <a href="<?= base_url('Admin/download/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download" style="color: white;"></i></a>
-                                            </td>
-                                        </tr>
-                                        <?php $i++ ?>
+                                        <?php if ($u['type'] != 3) : ?>
+                                            <tr>
+                                                <td class="text-center"><?= $i; ?></td>
+                                                <td><?= $u['nim']; ?></td>
+                                                <td><?= $u['title']; ?></td>
+                                                <!-- cek type surat -->
+                                                <?php if ($u['type'] == '1') {
+                                                    $type = 'Proposal kegiatan';
+                                                } elseif ($u['type'] == '2') {
+                                                    $type = 'Laporan kegiatan';
+                                                } elseif ($u['type'] == '3') {
+                                                    $type = 'Surat Beasiswa';
+                                                } elseif ($u['type'] == '4') {
+                                                    $type = 'Document lain';
+                                                } ?>
+                                                <td><?= $type; ?></td>
+                                                <!-- cek status approved Administrator -->
+                                                <?php if ($u['approved_admin'] == '1') : ?>
+                                                    <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
+                                                <?php elseif ($u['approved_admin'] == '2') : ?>
+                                                    <td class="text-center"><i class="fas fa-minus-circle" style="color: grey;"></i></td>
+                                                <?php elseif ($u['approved_admin'] == '3') : ?>
+                                                    <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
+                                                <?php endif; ?>
+                                                <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
+                                                <td>
+                                                    <a href="<?= base_url('Admin/approved/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(green,black);"><i class="fas fa-cog" style="color: white;"></i></a>
+                                                    <a href="<?= base_url('Admin/download/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download" style="color: white;"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php $i++ ?>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 </table>
                             </div>
@@ -112,36 +114,38 @@
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($rejected as $key => $u) : ?>
-                                        <tr>
-                                            <td class="text-center"><?= $i; ?></td>
-                                            <td><?= $u['nim']; ?></td>
-                                            <td><?= $u['title']; ?></td>
-                                            <!-- cek type surat -->
-                                            <?php if ($u['type'] == '1') {
-                                                $type = 'Proposal kegiatan';
-                                            } elseif ($u['type'] == '2') {
-                                                $type = 'Laporan kegiatan';
-                                            } elseif ($u['type'] == '3') {
-                                                $type = 'Surat Beasiswa';
-                                            } elseif ($u['type'] == '4') {
-                                                $type = 'Document lain';
-                                            } ?>
-                                            <td><?= $type; ?></td>
-                                            <!-- cek status approved Administrator -->
-                                            <?php if ($u['approved_admin'] == '1') : ?>
-                                                <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
-                                            <?php elseif ($u['approved_admin'] == '2') : ?>
-                                                <td class="text-center"><i class="fas fa-minus-circle" style="color: grey;"></i></td>
-                                            <?php elseif ($u['approved_admin'] == '3') : ?>
-                                                <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
-                                            <?php endif; ?>
-                                            <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
-                                            <td>
-                                                <a href="<?= base_url('Admin/approved/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(green,black);"><i class="fas fa-cog" style="color: white;"></i></a>
-                                                <a href="<?= base_url('Admin/download/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download" style="color: white;"></i></a>
-                                            </td>
-                                        </tr>
-                                        <?php $i++ ?>
+                                        <?php if ($u['type'] != 3) : ?>
+                                            <tr>
+                                                <td class="text-center"><?= $i; ?></td>
+                                                <td><?= $u['nim']; ?></td>
+                                                <td><?= $u['title']; ?></td>
+                                                <!-- cek type surat -->
+                                                <?php if ($u['type'] == '1') {
+                                                    $type = 'Proposal kegiatan';
+                                                } elseif ($u['type'] == '2') {
+                                                    $type = 'Laporan kegiatan';
+                                                } elseif ($u['type'] == '3') {
+                                                    $type = 'Surat Beasiswa';
+                                                } elseif ($u['type'] == '4') {
+                                                    $type = 'Document lain';
+                                                } ?>
+                                                <td><?= $type; ?></td>
+                                                <!-- cek status approved Administrator -->
+                                                <?php if ($u['approved_admin'] == '1') : ?>
+                                                    <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
+                                                <?php elseif ($u['approved_admin'] == '2') : ?>
+                                                    <td class="text-center"><i class="fas fa-minus-circle" style="color: grey;"></i></td>
+                                                <?php elseif ($u['approved_admin'] == '3') : ?>
+                                                    <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
+                                                <?php endif; ?>
+                                                <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
+                                                <td>
+                                                    <a href="<?= base_url('Admin/approved/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(green,black);"><i class="fas fa-cog" style="color: white;"></i></a>
+                                                    <a href="<?= base_url('Admin/download/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download" style="color: white;"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php $i++ ?>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 </table>
                             </div>
@@ -177,49 +181,51 @@
                                     </tr>
                                     <?php $i = 1; ?>
                                     <?php foreach ($confirmed as $key => $u) : ?>
-                                        <tr>
-                                            <td class="text-center"><?= $i; ?></td>
-                                            <td><?= $u['nim']; ?></td>
-                                            <td><?= $u['title']; ?></td>
-                                            <!-- cek type surat -->
-                                            <?php if ($u['type'] == '1') {
-                                                $type = 'Proposal kegiatan';
-                                            } elseif ($u['type'] == '2') {
-                                                $type = 'Laporan kegiatan';
-                                            } elseif ($u['type'] == '3') {
-                                                $type = 'Surat Beasiswa';
-                                            } elseif ($u['type'] == '4') {
-                                                $type = 'Document lain';
-                                            } ?>
-                                            <td style="width: 100px;"><?= $type; ?></td>
-                                            <!-- cek status approved super Administrator -->
-                                            <?php if ($u['approved_Sadmin'] == '1') : ?>
-                                                <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
-                                            <?php elseif ($u['approved_Sadmin'] == '2') : ?>
-                                                <td class="text-center"><i class="fas fa-minus-circle" style="color: grey;"></i></td>
-                                            <?php elseif ($u['approved_Sadmin'] == '3') : ?>
-                                                <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
-                                            <?php endif; ?>
-                                            <!-- cek status approved Administrator -->
-                                            <?php if ($u['approved_admin'] == '1') : ?>
-                                                <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
-                                            <?php elseif ($u['approved_admin'] == '2') : ?>
-                                                <td class="text-center"><i class="fas fa-minus-circle" style="color: grey;"></i></td>
-                                            <?php elseif ($u['approved_admin'] == '3') : ?>
-                                                <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
-                                            <?php endif; ?>
-                                            <td>
-                                                <textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea>
-                                            </td>
-                                            <td>
-                                                <textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea>
-                                            </td>
-                                            <td>
-                                                <!-- <a href="<?= base_url('Admin/approved/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(green,black);"><i class="fas fa-cog" style="color: white;"></i></a> -->
-                                                <a href="<?= base_url('Admin/download/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download" style="color: white;"></i></a>
-                                            </td>
-                                        </tr>
-                                        <?php $i++ ?>
+                                        <?php if ($u['type'] != 3) : ?>
+                                            <tr>
+                                                <td class="text-center"><?= $i; ?></td>
+                                                <td><?= $u['nim']; ?></td>
+                                                <td><?= $u['title']; ?></td>
+                                                <!-- cek type surat -->
+                                                <?php if ($u['type'] == '1') {
+                                                    $type = 'Proposal kegiatan';
+                                                } elseif ($u['type'] == '2') {
+                                                    $type = 'Laporan kegiatan';
+                                                } elseif ($u['type'] == '3') {
+                                                    $type = 'Surat Beasiswa';
+                                                } elseif ($u['type'] == '4') {
+                                                    $type = 'Document lain';
+                                                } ?>
+                                                <td style="width: 100px;"><?= $type; ?></td>
+                                                <!-- cek status approved super Administrator -->
+                                                <?php if ($u['approved_Sadmin'] == '1') : ?>
+                                                    <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
+                                                <?php elseif ($u['approved_Sadmin'] == '2') : ?>
+                                                    <td class="text-center"><i class="fas fa-minus-circle" style="color: grey;"></i></td>
+                                                <?php elseif ($u['approved_Sadmin'] == '3') : ?>
+                                                    <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
+                                                <?php endif; ?>
+                                                <!-- cek status approved Administrator -->
+                                                <?php if ($u['approved_admin'] == '1') : ?>
+                                                    <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
+                                                <?php elseif ($u['approved_admin'] == '2') : ?>
+                                                    <td class="text-center"><i class="fas fa-minus-circle" style="color: grey;"></i></td>
+                                                <?php elseif ($u['approved_admin'] == '3') : ?>
+                                                    <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
+                                                <?php endif; ?>
+                                                <td>
+                                                    <textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea>
+                                                </td>
+                                                <td>
+                                                    <textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea>
+                                                </td>
+                                                <td>
+                                                    <!-- <a href="<?= base_url('Admin/approved/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(green,black);"><i class="fas fa-cog" style="color: white;"></i></a> -->
+                                                    <a href="<?= base_url('Admin/download/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download" style="color: white;"></i></a>
+                                                </td>
+                                            </tr>
+                                            <?php $i++ ?>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 </table>
                             </div>
