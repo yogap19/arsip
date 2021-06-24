@@ -316,4 +316,11 @@ class SuperAdmin extends BaseController
         $writer->save('php://output');
         // return redirect()->to(base_url('SuperAdmin'));
     }
+    public function download($id)
+    {
+        $berkas = $this->BerkasModel->find($id);
+        $data = 'Here is some text!';
+        return $this->response->download($berkas['title'], $data);
+        return redirect()->to('/SuperAdmin')->withInput();
+    }
 }

@@ -4,7 +4,7 @@
 <div class="container-fluid">
 
 
-    <div class="card text-center">
+    <div class="card">
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
@@ -325,7 +325,7 @@
                                                 <tr>
                                                     <td class="text-center"><?= $i; ?></td>
                                                     <td><a href="#" data-toggle="modal" data-target="#data<?= $u['nim']; ?>"><?= $u['nim']; ?></a></td>
-                                                    <td style="max-width: 150px;"><?= substr($u['title'], 14, 20); ?></td>
+                                                    <td style="max-width: 150px;"><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 14, 20); ?></a></td>
                                                     <!-- cek type surat -->
                                                     <?php if ($u['type'] == '1') {
                                                         $type = 'Proposal kegiatan';
@@ -377,25 +377,105 @@
                     </div>
                 </div>
                 <!-- Page 2 -->
-                <div class="tab-pane" id="berkasLama" role="tabpanel">
+                <div class="tab-pane" id="berkasLama" role="tabpane2">
                     <!-- isi -->
-                    <?php for ($years = 2020; $years <= date('Y'); $years++) : ?>
-                        <div class="card-header" id="headingOne" style="background: linear-gradient(blue,black);">
-                            <div class="accordion text-center text-white" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" id="accordionExample">
-                                Data Tahun <?= $years; ?>
+                    <div class="accordion" id="accordionExample">
+                        <?php for ($years = 2020; $years <= date('Y'); $years++) : ?>
+                            <!-- accordion 1 -->
+                            <div class="card">
+                                <div class="card-header" id="headingOne" style="background: linear-gradient(blue,black);">
+                                    <div class="btn btn-link text-white btn-block text-center" type="button" data-toggle="collapse" data-target="#collapseOne<?= $years; ?>" aria-expanded="true" aria-controls="collapseOne<?= $years; ?>">
+                                        Berkas Tahun <?= $years; ?>
+                                    </div>
+                                </div>
+
+                                <div id="collapseOne<?= $years; ?>" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                                    <div class="card-body">
+                                        <!-- isi -->
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="card">
+                                                    <div class="rounded m-1">
+                                                        <div class="table-responsive rounded">
+                                                            <table class="table-hover table">
+                                                                <tr class="text-white" style="background: linear-gradient(Blue, Black); max-height: 40px;">
+                                                                    <th class="text-center">NO</th>
+                                                                    <th class="text-center">Pengirim</th>
+                                                                    <th class="text-center">Nama surat</th>
+                                                                    <th class="text-center" style="min-width: 200px;">Jenis surat</th>
+                                                                    <th class="text-center">kemahasiswaan</th>
+                                                                    <th class="text-center">Administrator</th>
+                                                                    <th class="text-center" style="min-width: 200px;">User</th>
+                                                                    <th class="text-center" style="min-width: 200px;">BEM</th>
+                                                                    <th class="text-center" style="min-width: 200px;">kemahasiswaan</th>
+                                                                    <th class="text-center" style="min-width: 150px;">Updated At</th>
+                                                                </tr>
+                                                                <?php $i = 1; ?>
+                                                                <?php foreach ($allBerkas as $key => $u) : ?>
+                                                                    <?php if (substr($u['updated_at'], 0, 4) == $years) : ?>
+                                                                        <tr>
+                                                                            <td class="text-center"><?= $i; ?></td>
+                                                                            <td><a href="#" data-toggle="modal" data-target="#data<?= $u['nim']; ?>"><?= $u['nim']; ?></a></td>
+                                                                            <td style="max-width: 150px;"><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 14, 20); ?></a></td>
+                                                                            <!-- cek type surat -->
+                                                                            <?php if ($u['type'] == '1') {
+                                                                                $type = 'Proposal kegiatan';
+                                                                            } elseif ($u['type'] == '2') {
+                                                                                $type = 'Laporan kegiatan';
+                                                                            } elseif ($u['type'] == '3') {
+                                                                                $type = 'Surat Beasiswa';
+                                                                            } elseif ($u['type'] == '4') {
+                                                                                $type = 'Document lain';
+                                                                            } ?>
+                                                                            <td class="text-center" style="width: 100px;"><?= $type; ?></td>
+                                                                            <!-- cek status approved super kemahasiswaan -->
+                                                                            <?php if ($u['approved_Sadmin'] == '1') : ?>
+                                                                                <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
+                                                                            <?php elseif ($u['approved_Sadmin'] == '2') : ?>
+                                                                                <td class="text-center"><i class="fas fa-minus-circle" style="color: grey;"></i></td>
+                                                                            <?php elseif ($u['approved_Sadmin'] == '3') : ?>
+                                                                                <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
+                                                                            <?php endif; ?>
+                                                                            <!-- cek status approved administrator -->
+                                                                            <?php if ($u['approved_admin'] == '1') : ?>
+                                                                                <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
+                                                                            <?php elseif ($u['approved_admin'] == '2') : ?>
+                                                                                <td class="text-center"><i class="fas fa-minus-circle" style="color: grey;"></i></td>
+                                                                            <?php elseif ($u['approved_admin'] == '3') : ?>
+                                                                                <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
+                                                                            <?php endif; ?>
+                                                                            <td>
+                                                                                <textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea>
+                                                                            </td>
+                                                                            <td>
+                                                                                <textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea>
+                                                                            </td>
+                                                                            <td>
+                                                                                <textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea>
+                                                                            </td>
+                                                                            <td class="text-center"><?= $u['updated_at']; ?></td>
+                                                                        </tr>
+                                                                        <?php $i++; ?>
+                                                                    <?php else : ?>
+                                                                    <?php endif; ?>
+
+                                                                <?php endforeach; ?>
+                                                            </table>
+                                                            <div class="row ml-3">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                            <div class="card-body">
-                                <?php foreach ($berkas as $key => $b) : ?>
-                                    Some placeholder content for the first accordion panel. This panel is shown by default, thanks to the <code>.show</code> class.
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                    <?php endfor; ?>
+                        <?php endfor; ?>
+                    </div>
                 </div>
                 <!-- Page 3 -->
-                <div class="tab-pane" id="beasiswa" role="tabpanel">
+                <div class="tab-pane" id="beasiswa" role="tabpane3">
                     <div class="row">page 3</div>
                     <div class="card">
 
@@ -404,8 +484,6 @@
             </div>
         </div>
     </div>
-
-
 
 </div>
 
