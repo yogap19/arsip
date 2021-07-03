@@ -60,7 +60,7 @@
                             <div class="row mx-3 mb-3">
                                 <div class=" col-3">
                                     <label for="rtrw" class="form-label">Rt/Rw</label>
-                                    <input type="text" class="form-control <?= ($validation->hasError('rtrw')) ? 'is-invalid' : ''; ?>" id="rtrw" name="rtrw" placeholder="rt/rw" value="<?= $user['rtrw']; ?>">
+                                    <input type="text" class="form-control <?= ($validation->hasError('rtrw')) ? 'is-invalid' : ''; ?>" id="rtrw" name="rtrw" placeholder="rt/rw" value="<?= $user['rtrw']; ?>" maxlength="4" onkeypress="return event.charCode >= 48 && event.charCode <=57">
                                     <div id="validationServer03Feedback" class="invalid-feedback mx-3">
                                         <?= $validation->getError('rtrw'); ?>
                                     </div>

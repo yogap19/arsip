@@ -19,14 +19,24 @@ class Admin extends BaseController
         $this->BerkasModel = new BerkasModel();
         $this->cekSession();
     }
-    public function index()
+    public function index($search = null)
     {
+        // if ($search) {
+        //     $berkas = $this->BerkasModel->berkas($search);
+        // } else {
+        //     $berkas = $this->BerkasModel;
+        //     # code...
+        // }
+        $users = $this->UserModel;
+        $pages = $this->request->getVar('page_berkas') ? $this->request->getVar('page_berkas') : 1;
         $data = [
-            'title' => 'Management Account',
-            'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'title'     => 'Management Account',
+            'users'     => $users->paginate(5, 'users'),
+            'pager'     => $this->UserModel->pager,
+            'user'      => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
             'confirmed' => $this->UserModel->where(['is_active' => '1'])->find(),
             'requested' => $this->UserModel->where(['is_active' => '0'])->find(),
-            'users' => $this->UserModel->findAll(),
+            'page'      => $pages
         ];
         // dd($data);
         return view('admin/index', $data);

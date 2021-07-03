@@ -76,7 +76,8 @@
                                         <?php $i++ ?>
                                     <?php endforeach; ?>
                                 </table>
-                                <div class="text-center">
+                                <div class="row ml-3">
+                                    <?= $pager->links('users', 'berkas_pager'); ?>
                                 </div>
                             </div>
                         </div>

@@ -68,7 +68,7 @@
                                         <p class="fs-6">Alamat</p>
                                         <div class="form-group row">
                                             <div class="col-sm-6 my-1  mb-sm-0">
-                                                <input type="text" class="form-control form-control-user <?= ($validation->hasError('rtrw')) ? 'is-invalid' : ''; ?>" id="rtrw" placeholder="Rt/Rw (Contoh : 0109)" name="rtrw" value="<?= old('rtrw'); ?>">
+                                                <input type="text" class="form-control form-control-user <?= ($validation->hasError('rtrw')) ? 'is-invalid' : ''; ?>" id="rtrw" placeholder="Rt/Rw (Contoh : 0109)" name="rtrw" value="<?= old('rtrw'); ?>" maxlength="4">
                                                 <div id="validationServer03Feedback" class="invalid-feedback mx-3">
                                                     <?= $validation->getError('rtrw'); ?>
                                                 </div>

@@ -23,7 +23,6 @@ class SuperAdmin extends BaseController
     public function __construct()
     {
         $this->spreadsheet = new Spreadsheet();
-        // $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($inputFileName);
         $this->UserModel = new UserModel();
         $this->MenuModel = new MenuModel();
         $this->BerkasModel = new BerkasModel();
@@ -35,10 +34,10 @@ class SuperAdmin extends BaseController
     }
     public function index()
     {
-        $search = $this->request->getVar('search');
-        $type = $this->request->getVar('type1');
-        $jurusan = $this->request->getVar('type2');
-        $acepted = $this->request->getVar('type3');
+        $search     = $this->request->getVar('search');
+        $type       = $this->request->getVar('type1');
+        $jurusan    = $this->request->getVar('type2');
+        $acepted    = $this->request->getVar('type3');
 
         if ($search) {
             $berkas = $this->BerkasModel->berkas($search);
@@ -46,9 +45,11 @@ class SuperAdmin extends BaseController
             $berkas = $this->BerkasModel;
             # code...
         }
+
         //  Filter By
         if ($type == 0 && $jurusan == 0 && $acepted == 0) {
             $hasil = $this->BerkasModel->orderBy('updated_at', 'DESC')->paginate(5, 'berkas');
+            unset($_SESSION['pesan']);
         } elseif ($type == 0 && $jurusan == 0) {
             $hasil = $this->BerkasModel->where(['approved_Sadmin' => $acepted])->find();
         } elseif ($type == 0 && $acepted == 0) {
@@ -64,9 +65,16 @@ class SuperAdmin extends BaseController
         } else {
             $hasil = $this->BerkasModel->where(['type' => $type])->where(['jurusan' => $jurusan])->where(['approved_Sadmin' => $acepted])->find();
         }
-
+        if ($type == 0 && $jurusan == 0 && $acepted == 0) {
+        } else {
+            if ($hasil == null) {
+                session()->setFlashdata('pesan', 'Pencarian tidak ditemukan');
+            } elseif ($hasil) {
+                # code...
+                session()->setFlashdata('pesan', 'Hasil filter~ ' . count($hasil));
+            }
+        }
         $pages = $this->request->getVar('page_berkas') ? $this->request->getVar('page_berkas') : 1;
-
         $data = [
             // page required
             'title'         => 'Dashboard',
@@ -82,7 +90,7 @@ class SuperAdmin extends BaseController
             'berkasHasil'   => $hasil,
 
             // required modal
-            'berkasNim'     => $this->BerkasModel->where(['nim' => $search])->find(),
+            // 'berkasNim'     => $this->BerkasModel->where(['nim' => $search])->find(),
 
             // Filter required
             'type'          => $type,
@@ -90,7 +98,7 @@ class SuperAdmin extends BaseController
             'acepted'       => $acepted,
             'page'          => $pages
         ];
-        // dd($data);
+        // d($data);
         return view('sadmin/index', $data);
     }
     public function search()
@@ -149,12 +157,24 @@ class SuperAdmin extends BaseController
     }
     public function roleAkun()
     {
+        $pages = $this->request->getVar('page_akun') ? $this->request->getVar('page_akun') : 1;
+        $akun = $this->UserModel;
+        $hasil = null;
+        $search = $this->request->getVar('search');
+        if ($search) {
+            $hasil = $akun->like('nim', $search)->orLike('nama', $search)->get()->getResultArray();
+        } else {
+            $akun = $this->UserModel;
+        }
         $data = [
-            'title' => 'Role Account',
-            'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
-            'users' => $this->UserModel->findAll(),
+            'title'     => 'Role Account',
+            'user'      => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'akun'      => $akun->paginate(5, 'akun'),
+            'search'    => $hasil,
+            'pager'     => $this->UserModel->pager,
+            'page'      => $pages
         ];
-        // dd($data);
+        // d($data);
         return view('sadmin/roleAkun', $data);
     }
     public function activation($id)
@@ -216,15 +236,29 @@ class SuperAdmin extends BaseController
     }
     public function arsip()
     {
+        $search = $this->request->getVar('search');
+        if ($search) {
+            $berkas = $this->BerkasModel->berkas($search);
+        } else {
+            $berkas = $this->BerkasModel;
+            # code...
+        }
+        $pages = $this->request->getVar('page_arsip') ? $this->request->getVar('page_arsip') : 1;
+        $show = 1;
         $data = [
-            'title' => 'Arsip',
-            'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
-            'requested' => $this->BerkasModel->where(['approved_Sadmin' => 2])->where(['approved_admin' => 1])->find(),
-            'confirmed' => $this->BerkasModel->where(['approved_Sadmin' => 1])->find(),
-            'rejected' => $this->BerkasModel->where(['approved_Sadmin' => 3])->find(),
-            'validation' => \Config\Services::validation()
+            'title'         => 'Arsip',
+            'user'          => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'users'         => $this->UserModel->findAll(),
+            'allBerkas'     => $this->BerkasModel->like('updated_at', date('Y'))->find(),
+            'requested'     => $berkas->where(['approved_sadmin' => 2])->like('updated_at', date('Y'))->orderBy('updated_at', 'DESC')->paginate(5, 'arsip'),
+            'pagers1'       => $this->BerkasModel->pager,
+            'rejected'      => $this->BerkasModel->where(['approved_Sadmin' => 3])->like('updated_at', date('Y'))->find(),
+            'confirmed'     => $this->BerkasModel->where(['approved_Sadmin' => 1])->like('updated_at', date('Y'))->find(),
+            'validation'    => \Config\Services::validation(),
+            'page'          => $pages,
+            'show'          => $show,
         ];
-        // dd($data);
+        // d($data);
         return view('sadmin/arsip', $data);
     }
     public function approved($id)
@@ -291,23 +325,63 @@ class SuperAdmin extends BaseController
         return redirect()->to(base_url('SuperAdmin/arsip'));
     }
 
-    public function excel()
+    public function excel($years)
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $sheet->setCellValue('A1', 'No');
-        $sheet->setCellValue('B1', 'Nama');
+        $sheet->setCellValue('B1', 'NIM');
+        $sheet->setCellValue('C1', 'Nama');
+        $sheet->setCellValue('D1', 'Jurusan');
+        $sheet->setCellValue('E1', 'Gender');
+        $sheet->setCellValue('F1', 'Nama Surat');
+        $sheet->setCellValue('G1', 'NIK');
+        $sheet->setCellValue('H1', 'Alamat');
+        $sheet->setCellValue('I1', 'Tanggal kirim');
 
-        $bekas = $this->BerkasModel->findAll();
+        $berkas = $this->BerkasModel->beasiswa($years);
         $no = 1;
         $x = 2;
-        foreach ($bekas as $row) {
+        foreach ($berkas as $row) {
+            if ($row['gender'] == 1) {
+                $gender = 'Laki-laki';
+            } else {
+                $gender = 'Perempuan';
+            }
+
+            if (substr($row['nim'], 0, 2) == 35) {
+                $jurusan = 'Sistem Informasi S-1';
+            } elseif (substr($row['nim'], 0, 2) == 36) {
+                $jurusan = 'Teknik Informatika S-1';
+            } elseif (substr($row['nim'], 0, 2) == 36) {
+                $jurusan = 'Teknik Informatika S-1';
+            } elseif (substr($row['nim'], 0, 2) == 37) {
+                $jurusan = 'Akuntansi S-1';
+            } elseif (substr($row['nim'], 0, 2) == 38) {
+                $jurusan = 'Manajemen S-1';
+            } elseif (substr($row['nim'], 0, 2) == 25) {
+                $jurusan = 'Manajemen Informasi D-3';
+            } elseif (substr($row['nim'], 0, 2) == 26) {
+                $jurusan = 'Teknik Informatika D-3';
+            } elseif (substr($row['nim'], 0, 2) == 27) {
+                $jurusan = 'Akuntansi D-3';
+            } elseif (substr($row['nim'], 0, 2) == 28) {
+                $jurusan = 'Manajemen D-3';
+            }
+            $alamat = $row['rtrw'] . ' ' . $row['desa'] . ' ' . $row['kecamatan'] . ' ' . $row['kota'];
             $sheet->setCellValue('A' . $x, $no++);
             $sheet->setCellValue('B' . $x, $row['nim']);
+            $sheet->setCellValue('C' . $x, $row['nama']);
+            $sheet->setCellValue('D' . $x, $jurusan);
+            $sheet->setCellValue('E' . $x, $gender);
+            $sheet->setCellValue('F' . $x, $row['title']);
+            $sheet->setCellValue('G' . $x, $row['nik']);
+            $sheet->setCellValue('H' . $x, $alamat);
+            $sheet->setCellValue('I' . $x, $row['updated_at']);
             $x++;
         }
         $writer = new Xlsx($spreadsheet);
-        $filename = 'laporan-siswa';
+        $filename = 'Data Beasiswa Tahun ' . $years;
 
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
@@ -321,6 +395,6 @@ class SuperAdmin extends BaseController
         $berkas = $this->BerkasModel->find($id);
         $data = 'Here is some text!';
         return $this->response->download($berkas['title'], $data);
-        return redirect()->to('/SuperAdmin')->withInput();
+        return redirect()->to('SuperAdmin')->withInput();
     }
 }

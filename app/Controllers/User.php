@@ -125,7 +125,7 @@ class User extends BaseController
             'nama' => $this->request->getVar('nama'),
             'telepon' => $this->request->getVar('telepon'),
             'email' => $this->request->getVar('email'),
-            'rtrw' => $this->request->getVar('rtrw'),
+            'rtrw' => substr($this->request->getVar('rtrw'), 0, 2) . '/' . substr($this->request->getVar('rtrw'), 2, 2),
             'desa' => $this->request->getVar('desa'),
             'kecamatan' => $this->request->getVar('kecamatan'),
             'kota' => $this->request->getVar('kota'),
@@ -288,6 +288,9 @@ class User extends BaseController
             $upload = $data['nim'] . '_BWK_' . $name;
             $accAdmin = 1;
         } elseif ($type == '4') {
+            $upload = $data['nim'] . '_BSW_' . $name;
+            $accAdmin = 1;
+        } elseif ($type == '5') {
             $upload = $data['nim'] . '_ALL_' . $name;
         }
 
