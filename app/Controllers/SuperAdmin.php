@@ -65,14 +65,33 @@ class SuperAdmin extends BaseController
         } else {
             $hasil = $this->BerkasModel->where(['type' => $type])->where(['jurusan' => $jurusan])->where(['approved_Sadmin' => $acepted])->find();
         }
+
         if ($type == 0 && $jurusan == 0 && $acepted == 0) {
         } else {
             if ($hasil == null) {
-                session()->setFlashdata('pesan', 'Pencarian tidak ditemukan');
+                session()->setFlashdata('pesan', 'Hasil tidak ditemukan');
             } elseif ($hasil) {
                 # code...
-                session()->setFlashdata('pesan', 'Hasil filter~ ' . count($hasil));
+                session()->setFlashdata('pesan', 'Hasil filter ' . count($hasil));
             }
+        }
+        $prpTahunan = [];
+        $lprTahunan = [];
+        $bwkTahunan = [];
+        $bswTahunan = [];
+        for ($tahun = 2020; $tahun <= date('Y'); $tahun++) {
+            # code...
+            $proposal = count($this->BerkasModel->proposal($tahun)->find());
+            array_push($prpTahunan, $proposal);
+
+            $laporan = count($this->BerkasModel->laporan($tahun)->find());
+            array_push($lprTahunan, $laporan);
+
+            $bawaku = count($this->BerkasModel->bawaku($tahun)->find());
+            array_push($bwkTahunan, $bawaku);
+
+            $lain = count($this->BerkasModel->lain($tahun)->find());
+            array_push($bswTahunan, $lain);
         }
         $pages = $this->request->getVar('page_berkas') ? $this->request->getVar('page_berkas') : 1;
         $data = [
@@ -89,8 +108,11 @@ class SuperAdmin extends BaseController
             'pager'         => $this->BerkasModel->pager,
             'berkasHasil'   => $hasil,
 
-            // required modal
-            // 'berkasNim'     => $this->BerkasModel->where(['nim' => $search])->find(),
+            // required chart tahunan
+            'prpTahunan'    => $prpTahunan,
+            'lprTahunan'    => $lprTahunan,
+            'bwkTahunan'    => $bwkTahunan,
+            'bswTahunan'    => $bswTahunan,
 
             // Filter required
             'type'          => $type,

@@ -118,9 +118,9 @@
                                     </button>
                                 </form>
                                 <hr>
-                                <div class="text-center">
+                                <!-- <div class="text-center">
                                     <a class="small" href="forgot-password.html">Forgot Password?</a>
-                                </div>
+                                </div> -->
                                 <div class="text-center">
                                     <a class="small" href="<?= base_url(); ?>/Auth">Already have an account? Login!</a>
                                 </div>

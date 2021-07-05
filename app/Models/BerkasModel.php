@@ -25,4 +25,23 @@ class BerkasModel extends Model
             ->select('user.gender')->select('user.rtrw')->select('user.desa')->select('user.kecamatan')->select('user.kota')
             ->where('berkas.type = 3')->like('berkas.updated_at', $years)->get()->getResultArray();
     }
+    public function proposal($tahun)
+    {
+        return $this->table('berkas')->like('updated_at', $tahun)->where(['type' => 1]);
+    }
+
+    public function laporan($tahun)
+    {
+        return $this->table('berkas')->like('updated_at', $tahun)->where(['type' => 2]);
+    }
+
+    public function bawaku($tahun)
+    {
+        return $this->table('berkas')->like('updated_at', $tahun)->where(['type' => 3]);
+    }
+
+    public function lain($tahun)
+    {
+        return $this->table('berkas')->like('updated_at', $tahun)->where(['type' => 4]);
+    }
 }

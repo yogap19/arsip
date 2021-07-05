@@ -53,6 +53,15 @@
                             </tr>
                         <?php endif; ?>
                     </table>
+                    <?php if ($berkas['type'] == 4 || $berkas['type'] == 3) : ?>
+                        <div class="mb-3">
+                            <label for="nik" class="form-label">NIK</label>
+                            <input type="text" class="form-control <?= ($validation->hasError('nik')) ? 'is-invalid' : ''; ?>" id="nik" name="nik" value="<?= (old('nik') == null) ? $berkas['nik'] : old('nik'); ?>" onkeypress="return event.charCode >= 48 && event.charCode <=57">
+                            <div id="validationServer03Feedback" class="invalid-feedback mx-3">
+                                <?= $validation->getError('nik'); ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                     <div class="mb-3">
                         <label for="keterangan" class="form-label">Keterangan</label>
                         <input type="text" class="form-control <?= ($validation->hasError('keterangan')) ? 'is-invalid' : ''; ?>" id="keterangan" name="keterangan" value="<?= old('keterangan'); ?>">

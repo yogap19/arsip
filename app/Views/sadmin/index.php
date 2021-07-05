@@ -29,25 +29,32 @@
                     $dll = [];
                     foreach ($allBerkas as $key => $value) {
                         # code...
-                        if ($value['type'] == 1) {
+                        if ($value['type'] == 1 && substr($value['updated_at'], 0, 4) == date('Y')) {
                             array_push($proposal, $value);
                         }
-                        if ($value['type'] == 2) {
+                        if ($value['type'] == 2 && substr($value['updated_at'], 0, 4) == date('Y')) {
                             array_push($laporan, $value);
                         }
-                        if ($value['type'] == 3) {
+                        if ($value['type'] == 3 && substr($value['updated_at'], 0, 4) == date('Y')) {
                             array_push($beasiswa, $value);
                         }
-                        if ($value['type'] == 4) {
+                        if ($value['type'] == 4 && substr($value['updated_at'], 0, 4) == date('Y')) {
                             array_push($dll, $value);
                         }
                     }
+                    $p_proposal = 0;
+                    $p_laporan = 0;
+                    $p_beasiswa = 0;
+                    $p_dll = 0;
                     $jumlah = count($proposal) + count($beasiswa) + count($laporan) + count($dll);
-
-                    $p_proposal = count($proposal) * 100 / $jumlah;
-                    $p_laporan = count($laporan) * 100 / $jumlah;
-                    $p_beasiswa = count($beasiswa) * 100 / $jumlah;
-                    $p_dll = count($dll) * 100 / $jumlah;
+                    if ($jumlah != null) {
+                        json_encode($p_proposal = count($proposal) * 100 / $jumlah);
+                        json_encode($p_laporan = count($laporan) * 100 / $jumlah);
+                        json_encode($p_beasiswa = count($beasiswa) * 100 / $jumlah);
+                        json_encode($p_dll = count($dll) * 100 / $jumlah);
+                    } else {
+                        $jumlah = 0;
+                    }
                     ?>
                     <!-- Card Information -->
                     <div class="row">
@@ -57,7 +64,7 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Beasiswa
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Proposal
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
@@ -160,176 +167,178 @@
                     <br>
                     <!-- isi -->
                     <div class="row">
-                        <!-- left -->
+                        <!-- table -->
                         <div class="col-7">
+                            <!-- Collapsable Card Example -->
+                            <div class="card shadow mb-2">
+                                <!-- Card Header - Accordion -->
+                                <a href="#collapseCardExample" style="background: linear-gradient(blue,black);" class="d-block card-header" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                    <h6 class="font-weight-bold text-white text-center">Filter by</h6>
+                                </a>
+                                <!-- Card Content - Collapse -->
+                                <div class="collapse" id="collapseCardExample">
+                                    <div class="card-body">
+                                        <form action="<?= base_url('SuperAdmin/index'); ?>" method="post">
+                                            <?= csrf_field(); ?>
+                                            <!-- type     -->
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <input type="radio" name="type1" id="type_1" value="0" <?= ($type == 0) ? 'checked' : ''; ?>>
+                                                    <label for="type_1">
+                                                        All
+                                                    </label>
+                                                </div>
+                                                <div class="col-10">
+                                                    <!-- type -->
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type1" id="type_2" value="1" <?= ($type == 1) ? 'checked' : ''; ?>>
+                                                            <label for="type_2">
+                                                                Proposal
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type1" id="type_3" value="2" <?= ($type == 2) ? 'checked' : ''; ?>>
+                                                            <label for="type_3">
+                                                                Laporan
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type1" id="type_4" value="3" <?= ($type == 3) ? 'checked' : ''; ?>>
+                                                            <label for="type_4">
+                                                                Beasiswa
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type1" id="type_5" value="4" <?= ($type == 4) ? 'checked' : ''; ?>>
+                                                            <label for="type_5">
+                                                                Doc
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Jurusan S1 -->
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <input type="radio" name="type2" id="type1" value="0" <?= ($jurusan == 0) ? 'checked' : ''; ?>>
+                                                    <label for="type1">
+                                                        All
+                                                    </label>
+                                                </div>
+                                                <div class="col-10">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type2" id="type2" value="1" <?= ($jurusan == 1) ? 'checked' : ''; ?>>
+                                                            <label for="type2">
+                                                                SI (S-1)
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type2" id="type3" value="2" <?= ($jurusan == 2) ? 'checked' : ''; ?>>
+                                                            <label for="type3">
+                                                                TI (S-1)
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type2" id="type4" value="3" <?= ($jurusan == 3) ? 'checked' : ''; ?>>
+                                                            <label class="form-check-label" for="type4">
+                                                                AK (S-1)
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type2" id="type5" value="4" <?= ($jurusan == 4) ? 'checked' : ''; ?>>
+                                                            <label class="form-check-label" for="type5">
+                                                                MN (S-1)
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Jurusan D3 -->
+                                            <div class="row">
+                                                <div class="col-2">
+                                                </div>
+                                                <div class="col-10">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type2" id="type6" value="5" <?= ($jurusan == 5) ? 'checked' : ''; ?>>
+                                                            <label for="type6">
+                                                                MI (D-3)
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type2" id="type7" value="6" <?= ($jurusan == 6) ? 'checked' : ''; ?>>
+                                                            <label for="type7">
+                                                                TI (D-3)
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type2" id="type8" value="7" <?= ($jurusan == 7) ? 'checked' : ''; ?>>
+                                                            <label class="form-check-label" for="type8">
+                                                                AK (D-3)
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type2" id="type9" value="8" <?= ($jurusan == 8) ? 'checked' : ''; ?>>
+                                                            <label class="form-check-label" for="type9">
+                                                                MN (D-3)
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Status approved -->
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <input type="radio" name="type3" id="type-1" value="0" <?= ($acepted == 0) ? 'checked' : ''; ?>>
+                                                    <label for="type-1">
+                                                        All
+                                                    </label>
+                                                </div>
+                                                <div class="col-10">
+                                                    <div class="row">
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type3" id="type-2" value="1" <?= ($acepted == 1) ? 'checked' : ''; ?>>
+                                                            <label for="type-2">
+                                                                Acepted
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-3">
+                                                            <input type="radio" name="type3" id="type-3" value="3" <?= ($acepted == 3) ? 'checked' : ''; ?>>
+                                                            <label for="type-3">
+                                                                Rejected
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <input type="radio" name="type3" id="type-4" value="2" <?= ($acepted == 2) ? 'checked' : ''; ?>>
+                                                            <label for="type-4">
+                                                                Requested
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col text-center">
+                                                    <button type="submit" class="btn text-white " style="background: linear-gradient(blue,black);">Filter</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="card">
                                 <?php if (session()->getFlashdata('pesan')) : ?>
-                                    <div class="alert alert-<?= (session()->getFlashdata('pesan') == 'Pencarian tidak ditemukan') ? 'danger' : 'success'; ?> mx-1 my-0 mt-1" role="alert">
+                                    <div class="alert alert-<?= (session()->getFlashdata('pesan') == 'Hasil tidak ditemukan') ? 'danger' : 'success'; ?> mx-1 my-0 mt-1" role="alert">
                                         <?= session()->getFlashdata('pesan'); ?>
                                     </div>
                                 <?php endif; ?>
-                                <!-- Collapsable Card Example -->
-                                <div class="card shadow mx-1 mt-1">
-                                    <!-- Card Header - Accordion -->
-                                    <a href="#collapseCardExample" style="background: linear-gradient(blue,black);" class="d-block card-header" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                                        <h6 class="font-weight-bold text-white text-center">Filter by</h6>
-                                    </a>
-                                    <!-- Card Content - Collapse -->
-                                    <div class="collapse" id="collapseCardExample">
-                                        <div class="card-body bg-primary text-white">
-                                            <form action="<?= base_url('SuperAdmin/index'); ?>" method="post">
-                                                <?= csrf_field(); ?>
-                                                <!-- type     -->
-                                                <div class="row">
-                                                    <div class="col-2">
-                                                        <input type="radio" name="type1" id="type_1" value="0" <?= ($type == 0) ? 'checked' : ''; ?>>
-                                                        <label for="type_1">
-                                                            All
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-10">
-                                                        <!-- type -->
-                                                        <div class="row">
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type1" id="type_2" value="1" <?= ($type == 1) ? 'checked' : ''; ?>>
-                                                                <label for="type_2">
-                                                                    Proposal
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type1" id="type_3" value="2" <?= ($type == 2) ? 'checked' : ''; ?>>
-                                                                <label for="type_3">
-                                                                    Laporan
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type1" id="type_4" value="3" <?= ($type == 3) ? 'checked' : ''; ?>>
-                                                                <label for="type_4">
-                                                                    Beasiswa
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type1" id="type_5" value="4" <?= ($type == 4) ? 'checked' : ''; ?>>
-                                                                <label for="type_5">
-                                                                    Doc
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Jurusan S1 -->
-                                                <div class="row">
-                                                    <div class="col-2">
-                                                        <input type="radio" name="type2" id="type1" value="0" <?= ($jurusan == 0) ? 'checked' : ''; ?>>
-                                                        <label for="type1">
-                                                            All
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-10">
-                                                        <div class="row">
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type2" id="type2" value="1" <?= ($jurusan == 1) ? 'checked' : ''; ?>>
-                                                                <label for="type2">
-                                                                    SI (S-1)
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type2" id="type3" value="2" <?= ($jurusan == 2) ? 'checked' : ''; ?>>
-                                                                <label for="type3">
-                                                                    TI (S-1)
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type2" id="type4" value="3" <?= ($jurusan == 3) ? 'checked' : ''; ?>>
-                                                                <label class="form-check-label" for="type4">
-                                                                    AK (S-1)
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type2" id="type5" value="4" <?= ($jurusan == 4) ? 'checked' : ''; ?>>
-                                                                <label class="form-check-label" for="type5">
-                                                                    MN (S-1)
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
-                                                <!-- Jurusan D3 -->
-                                                <div class="row">
-                                                    <div class="col-2">
-                                                    </div>
-                                                    <div class="col-10">
-                                                        <div class="row">
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type2" id="type6" value="5" <?= ($jurusan == 5) ? 'checked' : ''; ?>>
-                                                                <label for="type6">
-                                                                    MI (D-3)
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type2" id="type7" value="6" <?= ($jurusan == 6) ? 'checked' : ''; ?>>
-                                                                <label for="type7">
-                                                                    TI (D-3)
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type2" id="type8" value="7" <?= ($jurusan == 7) ? 'checked' : ''; ?>>
-                                                                <label class="form-check-label" for="type8">
-                                                                    AK (D-3)
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type2" id="type9" value="8" <?= ($jurusan == 8) ? 'checked' : ''; ?>>
-                                                                <label class="form-check-label" for="type9">
-                                                                    MN (D-3)
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <!-- Status approved -->
-                                                <div class="row">
-                                                    <div class="col-1">
-                                                        <input type="radio" name="type3" id="type-1" value="0" <?= ($acepted == 0) ? 'checked' : ''; ?>>
-                                                        <label for="type-1">
-                                                            All
-                                                        </label>
-                                                    </div>
-                                                    <div class="col-11">
-                                                        <div class="row">
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type3" id="type-2" value="1" <?= ($acepted == 1) ? 'checked' : ''; ?>>
-                                                                <label for="type-2">
-                                                                    Acepted
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type3" id="type-3" value="3" <?= ($acepted == 3) ? 'checked' : ''; ?>>
-                                                                <label for="type-3">
-                                                                    Rejected
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <input type="radio" name="type3" id="type-4" value="2" <?= ($acepted == 2) ? 'checked' : ''; ?>>
-                                                                <label for="type-4">
-                                                                    Requested
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col text-center">
-                                                        <button type="submit" class="btn text-white my-2" style="background: linear-gradient(blue,black);">Filter</button>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <!-- search -->
                                 <div class="row m-1">
@@ -357,8 +366,8 @@
                                                 <th class="text-center" style="min-width: 150px;">Pengirim</th>
                                                 <th class="text-center">Nama surat</th>
                                                 <th class="text-center" style="min-width: 200px;">Jenis surat</th>
-                                                <th class="text-center">kemahasiswaan</th>
-                                                <th class="text-center">Administrator</th>
+                                                <th class="text-center" style="min-width: 200px;">kemahasiswaan</th>
+                                                <th class="text-center" style="min-width: 200px;">Administrator</th>
                                                 <th class="text-center" style="min-width: 200px;">User</th>
                                                 <th class="text-center" style="min-width: 200px;">BEM</th>
                                                 <th class="text-center" style="min-width: 200px;">kemahasiswaan</th>
@@ -417,16 +426,34 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- chart -->
                         <div class="col-5">
-                            <!-- chart -->
                             <div class="card">
                                 <div class="row">
                                     <div class="col">
                                         <script src="https://code.highcharts.com/highcharts.js"></script>
                                         <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                                        <div id="container" style="min-width: 310px; height: 537px; max-width:100%; margin: 0 auto"></div>
+                                        <div id="bulanan" style="min-width: 310px; height: 270px; max-width:100%; margin: 0 auto"></div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="card mt-3">
+                                <div class="row">
+                                    <div class="col">
+                                        <script src="https://code.highcharts.com/highcharts.js"></script>
+                                        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                                        <div id="type" style="min-width: 310px; height: 250px; max-width:100%; margin: 0 auto"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card my-3">
+                        <div class="row">
+                            <div class="col">
+                                <script src="https://code.highcharts.com/highcharts.js"></script>
+                                <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                                <div id="tahunan" style="min-width: 310px; height: 300px; max-width:100%; margin: 0 auto"></div>
                             </div>
                         </div>
                     </div>
@@ -629,39 +656,82 @@
     </div>
 
 </div>
+<?php
+$bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+$a = json_encode($bulan);
+$data = [];
+$januari = [];
+$februari = [];
+$maret = [];
+$april = [];
+$mei = [];
+$juni = [];
+$juli = [];
+$agustus = [];
+$september = [];
+$oktober = [];
+$november = [];
+$desember = [];
 
-<script>
-    let a;
-    Highcharts.chart('container', {
+foreach ($allBerkas as $key => $value) {
+    if (substr($value['updated_at'], 5, 2) == '01' && substr($value['updated_at'], 0, 4) == date('Y')) {
+        array_push($januari, $value);
+    } elseif (substr($value['updated_at'], 5, 2) == '02' && substr($value['updated_at'], 0, 4) == date('Y')) {
+        array_push($februari, $value);
+    } elseif (substr($value['updated_at'], 5, 2) == '03' && substr($value['updated_at'], 0, 4) == date('Y')) {
+        array_push($maret, $value);
+    } elseif (substr($value['updated_at'], 5, 2) == '04' && substr($value['updated_at'], 0, 4) == date('Y')) {
+        array_push($april, $value);
+    } elseif (substr($value['updated_at'], 5, 2) == '05' && substr($value['updated_at'], 0, 4) == date('Y')) {
+        array_push($mei, $value);
+    } elseif (substr($value['updated_at'], 5, 2) == '06' && substr($value['updated_at'], 0, 4) == date('Y')) {
+        array_push($juni, $value);
+    } elseif (substr($value['updated_at'], 5, 2) == '07' && substr($value['updated_at'], 0, 4) == date('Y')) {
+        array_push($juli, $value);
+    } elseif (substr($value['updated_at'], 5, 2) == '08' && substr($value['updated_at'], 0, 4) == date('Y')) {
+        array_push($agustus, $value);
+    } elseif (substr($value['updated_at'], 5, 2) == '09' && substr($value['updated_at'], 0, 4) == date('Y')) {
+        array_push($september, $value);
+    } elseif (substr($value['updated_at'], 5, 2) == '10' && substr($value['updated_at'], 0, 4) == date('Y')) {
+        array_push($oktober, $value);
+    } elseif (substr($value['updated_at'], 5, 2) == '11' && substr($value['updated_at'], 0, 4) == date('Y')) {
+        array_push($november, $value);
+    } elseif (substr($value['updated_at'], 5, 2) == '12' && substr($value['updated_at'], 0, 4) == date('Y')) {
+        array_push($desember, $value);
+    }
+}
+array_push($data, count($januari), count($februari), count($maret), count($april), count($mei), count($juni), count($juli), count($agustus), count($september), count($oktober), count($november), count($desember));
+$data = json_encode($data);
+
+$tahun = [];
+for ($i = 2020; $i <= date('Y'); $i++) {
+    # code...
+    array_push($tahun, $i);
+}
+$tahun = json_encode($tahun);
+$prp   = json_encode(count($proposal));
+$prpTahunan = json_encode($prpTahunan);
+$lprTahunan = json_encode($lprTahunan);
+$bwkTahunan = json_encode($bwkTahunan);
+$bswTahunan = json_encode($bswTahunan);
+?>
+<script type='text/javascript'>
+    Highcharts.chart('bulanan', {
         chart: {
             type: 'column'
         },
         title: {
-            text: 'Statistik pertahun'
+            text: 'Statistik Perbulan Tahun <?= date('Y'); ?>'
         },
         subtitle: {
-            text: 'Sumber : Arsip Online'
+            text: 'Sumber : Data Kemahasiswaan'
         },
         xAxis: {
             //INI ADALAH UNTUK KOLOM KETERANGAN
 
-            categories: [
-                'Januari',
-                'Februari',
-                'Maret',
-                'April',
-                'Mei',
-                'Juni',
-                'Juli',
-                'Agustus',
-                'September',
-                'Oktober',
-                'November',
-                'Desember'
-
-            ],
+            categories: <?= $a; ?>,
             title: {
-                text: 'Golongan'
+                text: 'Bulan'
             },
             crosshair: true
         },
@@ -690,9 +760,312 @@
             colorByPoint: true,
             showInLegend: false,
 
-            data: [12, 18, 87, 55, 44, 40, 36, 33, 52, 65, 45, 57] //INI ADALAH UNTUK JUMLAH
+            data: <?= $data; ?> //INI ADALAH UNTUK JUMLAH
 
         }, ]
+    });
+
+    let type = ['Proposal', 'Laporan', 'Beasiswa Bawaku', 'Beasiswa lain']
+    Highcharts.setOptions({
+        colors: ['#4E73DF', '#1CC88A', '#E85547', '#36B9CC']
+    });
+
+    Highcharts.chart('type', {
+        chart: {
+            type: 'pie'
+        },
+        title: {
+            text: 'Persentase Jenis Arsip Tahun <?= date('Y'); ?>'
+        },
+        subtitle: {
+            text: 'Sumber : Data Kemahasiswaan'
+        },
+        accessibility: {
+            announceNewData: {
+                enabled: true
+            },
+            point: {
+                valueSuffix: '%'
+            }
+        },
+
+        plotOptions: {
+            pie: {
+                shadow: false,
+                center: ['50%', '50%']
+            },
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}: {point.y:.1f}%'
+                }
+            },
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total <?= $jumlah; ?> <br/>'
+        },
+
+        series: [{
+            name: "Arsip",
+            colorByPoint: true,
+            size: '80%',
+            innerSize: '60%',
+            data: [{
+                    name: "Proposal",
+                    y: <?= $p_proposal; ?>,
+                    drilldown: "Proposal"
+                },
+                {
+                    name: "Laporan",
+                    y: <?= $p_laporan; ?>,
+                    drilldown: "Laporan"
+                },
+                {
+                    name: "Beasiswa Bawaku",
+                    y: <?= $p_beasiswa; ?>,
+                    drilldown: "Beasiswa Bawaku"
+                },
+                {
+                    name: "Beasiswa Lain",
+                    y: <?= $p_dll; ?>,
+                    drilldown: "Beasiswa Lain"
+                },
+            ]
+        }],
+        drilldown: {
+            series: [{
+                    name: "Proposal",
+                    id: "Proposal",
+                    data: [
+                        [
+                            "v65.0",
+                            0.1
+                        ],
+                        [
+                            "v64.0",
+                            1.3
+                        ],
+                        [
+                            "v63.0",
+                            53.02
+                        ],
+                        [
+                            "v62.0",
+                            1.4
+                        ],
+                        [
+                            "v61.0",
+                            0.88
+                        ],
+                        [
+                            "v60.0",
+                            0.56
+                        ],
+                        [
+                            "v59.0",
+                            0.45
+                        ],
+                        [
+                            "v58.0",
+                            0.49
+                        ],
+                        [
+                            "v57.0",
+                            0.32
+                        ],
+                        [
+                            "v56.0",
+                            0.29
+                        ],
+                        [
+                            "v55.0",
+                            0.79
+                        ],
+                        [
+                            "v54.0",
+                            0.18
+                        ],
+                        [
+                            "v51.0",
+                            0.13
+                        ],
+                        [
+                            "v49.0",
+                            2.16
+                        ],
+                        [
+                            "v48.0",
+                            0.13
+                        ],
+                        [
+                            "v47.0",
+                            0.11
+                        ],
+                        [
+                            "v43.0",
+                            0.17
+                        ],
+                        [
+                            "v29.0",
+                            0.26
+                        ]
+                    ]
+                },
+                {
+                    name: "Laporan",
+                    id: "Laporan",
+                    data: [
+                        [
+                            "v58.0",
+                            1.02
+                        ],
+                        [
+                            "v57.0",
+                            7.36
+                        ],
+                        [
+                            "v56.0",
+                            0.35
+                        ],
+                        [
+                            "v55.0",
+                            0.11
+                        ],
+                        [
+                            "v54.0",
+                            0.1
+                        ],
+                        [
+                            "v52.0",
+                            0.95
+                        ],
+                        [
+                            "v51.0",
+                            0.15
+                        ],
+                        [
+                            "v50.0",
+                            0.1
+                        ],
+                        [
+                            "v48.0",
+                            0.31
+                        ],
+                        [
+                            "v47.0",
+                            0.12
+                        ]
+                    ]
+                },
+                {
+                    name: "Beasiswa Bawaku",
+                    id: "Beasiswa Bawaku",
+                    data: [
+                        [
+                            "v11.0",
+                            6.2
+                        ],
+                        [
+                            "v10.0",
+                            0.29
+                        ],
+                        [
+                            "v9.0",
+                            0.27
+                        ],
+                        [
+                            "v8.0",
+                            0.47
+                        ]
+                    ]
+                },
+                {
+                    name: "Beasiswa Lain",
+                    id: "Beasiswa Lain",
+                    data: [
+                        [
+                            "v11.0",
+                            3.39
+                        ],
+                        [
+                            "v10.1",
+                            0.96
+                        ],
+                        [
+                            "v10.0",
+                            0.36
+                        ],
+                        [
+                            "v9.1",
+                            0.54
+                        ],
+                        [
+                            "v9.0",
+                            0.13
+                        ],
+                        [
+                            "v5.1",
+                            0.2
+                        ]
+                    ]
+                }
+            ]
+        }
+    });
+
+    Highcharts.chart('tahunan', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Statistik Tahunan'
+        },
+        subtitle: {
+            text: 'Sumber : Data Kemahasiswaan'
+        },
+        xAxis: {
+            categories: <?= $tahun; ?>,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Jumlah Pengiriman'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y} Document</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Proposal',
+            data: <?= $prpTahunan; ?>
+
+        }, {
+            name: 'Laporan',
+            data: <?= $lprTahunan; ?>
+
+        }, {
+            name: 'Beasiswa Bawaku',
+            data: <?= $bwkTahunan; ?>
+
+        }, {
+            name: 'Beasiswa lain',
+            data: <?= $bswTahunan; ?>
+
+        }]
     });
 </script>
 

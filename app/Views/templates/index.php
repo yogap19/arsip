@@ -112,7 +112,13 @@
             const berkasLabel = document.querySelector('.custom-file-label');
 
             berkasLabel.textContent = label.files[0].name;
+        }
 
+        function label3() {
+            const label = document.querySelector('#title3');
+            const berkasLabel = document.querySelector('#title4');
+
+            berkasLabel.textContent = label.files[0].name;
         }
 
         function label2() {

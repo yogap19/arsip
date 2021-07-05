@@ -1,9 +1,9 @@
         <!-- Sidebar -->
         <?php $role_id = session()->get('role_id'); ?>
         <?php if ($role_id == 1) : ?>
-            <ul class="navbar-nav sidebar sidebar-dark accordion" style="background: linear-gradient(Blue, Black);" id="accordionSidebar">
+            <ul class="navbar-nav sidebar sidebar-dark accordion" style="background: linear-gradient(blue,black, Black);" id="accordionSidebar">
             <?php elseif ($role_id == 2) : ?>
-                <ul class="navbar-nav sidebar sidebar-dark accordion" style="background: linear-gradient(red, Black);" id="accordionSidebar">
+                <ul class="navbar-nav sidebar sidebar-dark accordion" style="background: linear-gradient(red, Black, Black);" id="accordionSidebar">
                 <?php elseif ($role_id == 3) : ?>
                     <ul class="navbar-nav sidebar sidebar-dark accordion" style="background: linear-gradient(black, Black);" id="accordionSidebar">
                     <?php endif; ?>

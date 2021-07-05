@@ -253,18 +253,51 @@ class User extends BaseController
     {
         $data = $this->UserModel->where(['nim' => session()->get('nim')])->first();
         $berkas = $this->BerkasModel->where(['nim' => session()->get('nim')])->find();
-        if (!$this->validate([
-            'title'         => [
-                'rules'     => 'uploaded[title]|max_size[title,30720]|ext_in[title,doc,docx,pdf]',
-                'errors'    => [
-                    'uploaded'      => 'File belum di pilih!',
-                    'max_size'      => 'Ukuran file terlalu besar!',
-                    'ext_in'        => 'Type file tidak dizinkan!'
-                ]
-            ],
-        ])) {
-            return redirect()->to('/User/upload')->withInput();
+        $cekType = $this->request->getVar('type');
+        if ($cekType == 1 || $cekType == 2) {
+            if (!$this->validate([
+                'title'         => [
+                    'rules'     => 'uploaded[title]|max_size[title,30720]|ext_in[title,doc,docx,pdf]',
+                    'errors'    => [
+                        'uploaded'      => 'File belum di pilih!',
+                        'max_size'      => 'Ukuran file terlalu besar!',
+                        'ext_in'        => 'Type file tidak dizinkan!'
+                    ]
+                ],
+                'organisasi'         => [
+                    'rules'     => 'required',
+                    'errors'    => [
+                        'required'      => 'Pilih organisasi telebih dahulu!',
+                    ]
+                ],
+            ])) {
+                $show = ['show' => 1];
+                session()->set($show);
+                return redirect()->to('/User/upload')->withInput();
+            }
+        } elseif ($cekType == 3 || $cekType == 4) {
+            if (!$this->validate([
+                'title'         => [
+                    'rules'     => 'uploaded[title]|max_size[title,30720]|ext_in[title,doc,docx,pdf]',
+                    'errors'    => [
+                        'uploaded'      => 'File belum di pilih!',
+                        'max_size'      => 'Ukuran file terlalu besar!',
+                        'ext_in'        => 'Type file tidak dizinkan!'
+                    ]
+                ],
+                'nik'           => [
+                    'rules'     => 'required',
+                    'errors'    => [
+                        'required'      => 'NIK belum diisi!',
+                    ]
+                ],
+            ])) {
+                $show = ['show' => 2];
+                session()->set($show);
+                return redirect()->to('/User/upload')->withInput();
+            }
         }
+
         // get type
         $type = $this->request->getVar('type');
         // get file
@@ -281,17 +314,17 @@ class User extends BaseController
 
         // beri nama type
         if ($type == '1') {
-            $upload = $data['nim'] . '_PRP_' . $name;
+            $upload = $data['nim'] . '_PRP_' . date('Y') . '_' . $name;
         } elseif ($type == '2') {
-            $upload = $data['nim'] . '_LPR_' . $name;
+            $upload = $data['nim'] . '_LPR_' . date('Y') . '_' . $name;
         } elseif ($type == '3') {
-            $upload = $data['nim'] . '_BWK_' . $name;
+            $upload = $data['nim'] . '_BWK_' . date('Y') . '_' . $name;
             $accAdmin = 1;
         } elseif ($type == '4') {
-            $upload = $data['nim'] . '_BSW_' . $name;
+            $upload = $data['nim'] . '_BSW_' . date('Y') . '_' . $name;
             $accAdmin = 1;
         } elseif ($type == '5') {
-            $upload = $data['nim'] . '_ALL_' . $name;
+            $upload = $data['nim'] . '_ALL_' . date('Y') . '_' . $name;
         }
 
         // keterangan
@@ -322,20 +355,30 @@ class User extends BaseController
             $jurusan = 8;
         }
 
+        if ($type == 1 || $type == 2) {
+            # code...
+            $organisasi = $this->request->getVar('organisasi');
+        } elseif ($type == 3 || $type == 4) {
+            # code...
+            $nik = $this->request->getVar('nik');
+        }
+
         // cek isi berkas
         if ($berkas == null) {
             // simpad file
             $getFile->move('doc', $upload);
             // save ke database
             $this->BerkasModel->save([
-                'nim' => $data['nim'],
-                'title' => $upload,
-                'type' => $this->request->getVar('type'),
-                'jurusan' => $jurusan,
-                'keteranganA' => $keteranganA,
-                'keterangan' => $keterangan,
-                'approved_Sadmin' => 2,
-                'approved_admin' => $accAdmin,
+                'nim'               => $data['nim'],
+                'title'             => $upload,
+                'type'              => $this->request->getVar('type'),
+                'jurusan'           => $jurusan,
+                'keteranganA'       => $keteranganA,
+                'keterangan'        => $keterangan,
+                'approved_Sadmin'   => 2,
+                'approved_admin'    => $accAdmin,
+                'organisasi'        => $organisasi,
+                'nik'               => $nik,
             ]);
             session()->setFlashdata('success', 'File dengan nama ' . $upload . ' Berhasil dikirim, harap menunggu konfirmasi Kemahasiswaan dan Administrator');
             return redirect()->to('/User/upload')->withInput();
@@ -397,6 +440,12 @@ class User extends BaseController
                     'ext_in'        => 'Type file tidak dizinkan!'
                 ]
             ],
+            'nik'         => [
+                'rules'     => 'required',
+                'errors'    => [
+                    'required'      => 'NIK belum di isi!',
+                ]
+            ],
             'keterangan'         => [
                 'rules'     => 'required',
                 'errors'    => [
@@ -414,13 +463,13 @@ class User extends BaseController
         $name = $getFile->getName();
         // beri nama type
         if ($berkas['type'] == '1') {
-            $upload = $berkas['nim'] . '_PRP_' . $name;
+            $upload = $berkas['nim'] . '_PRP_' . date('Y') . '_' . $name;
         } elseif ($berkas['type'] == '2') {
-            $upload = $berkas['nim'] . '_LPR_' . $name;
+            $upload = $berkas['nim'] . '_LPR_' . date('Y') . '_' . $name;
         } elseif ($berkas['type'] == '3') {
-            $upload = $berkas['nim'] . '_BWK_' . $name;
+            $upload = $berkas['nim'] . '_BWK_' . date('Y') . '_' . $name;
         } elseif ($berkas['type'] == '4') {
-            $upload = $berkas['nim'] . '_ALL_' . $name;
+            $upload = $berkas['nim'] . '_ALL_' . date('Y') . '_' . $name;
         }
         // hapus file lama
         unlink('doc/' . $berkas['title']);
@@ -443,12 +492,13 @@ class User extends BaseController
 
         // update database
         $this->BerkasModel->save([
-            'id' => $id,
-            'title' => $upload,
-            'approved_Sadmin' => 2,
-            'approved_admin' => $approvedA,
-            'keteranganA' => $keterangan,
-            'keterangan' => $this->request->getVar('keterangan'),
+            'id'                => $id,
+            'title'             => $upload,
+            'nik'               => $this->request->getVar('nik'),
+            'approved_Sadmin'   => 2,
+            'approved_admin'    => $approvedA,
+            'keteranganA'       => $keterangan,
+            'keterangan'        => $this->request->getVar('keterangan'),
         ]);
         session()->setFlashdata('success', 'File dengan nama ' . $upload . ' Berhasil direvisi, harap menunggu konfirmasi ulang');
         return redirect()->to('/User/upload')->withInput();
