@@ -25,6 +25,14 @@ class BerkasModel extends Model
             ->select('user.gender')->select('user.rtrw')->select('user.desa')->select('user.kecamatan')->select('user.kota')
             ->where('berkas.type = 3')->like('berkas.updated_at', $years)->get()->getResultArray();
     }
+
+    public function beasiswaLain($years)
+    {
+        return $this->table('berkas')->join('user', 'user.nim = berkas.nim')
+            ->select('berkas.nim')->select('berkas.updated_at')->select('berkas.id')->select('berkas.title')->select('user.nama')->select('berkas.nik')
+            ->select('user.gender')->select('user.rtrw')->select('user.desa')->select('user.kecamatan')->select('user.kota')
+            ->where('berkas.type = 4')->like('berkas.updated_at', $years)->get()->getResultArray();
+    }
     public function proposal($tahun)
     {
         return $this->table('berkas')->like('updated_at', $tahun)->where(['type' => 1]);

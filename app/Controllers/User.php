@@ -358,11 +358,12 @@ class User extends BaseController
         if ($type == 1 || $type == 2) {
             # code...
             $organisasi = $this->request->getVar('organisasi');
+            $nik = '-';
         } elseif ($type == 3 || $type == 4) {
             # code...
+            $organisasi = '-';
             $nik = $this->request->getVar('nik');
         }
-
         // cek isi berkas
         if ($berkas == null) {
             // simpad file
@@ -412,6 +413,8 @@ class User extends BaseController
                     'keterangan' => $keterangan,
                     'approved_Sadmin' => 2,
                     'approved_admin' => $accAdmin,
+                    'organisasi'        => $organisasi,
+                    'nik'               => $nik,
                 ]);
                 session()->setFlashdata('success', 'File dengan nama ' . $upload . ' Berhasil dikirim, harap menunggu konfirmasi Kemahasiswaan dan Administrator');
                 return redirect()->to('/User/upload')->withInput();
@@ -431,30 +434,53 @@ class User extends BaseController
     }
     public function revisiUpload($id)
     {
-        if (!$this->validate([
-            'title'         => [
-                'rules'     => 'uploaded[title]|max_size[title,30720]|ext_in[title,doc,docx,pdf]',
-                'errors'    => [
-                    'uploaded'      => 'File belum di pilih!',
-                    'max_size'      => 'Ukuran file terlalu besar!',
-                    'ext_in'        => 'Type file tidak dizinkan!'
-                ]
-            ],
-            'nik'         => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required'      => 'NIK belum di isi!',
-                ]
-            ],
-            'keterangan'         => [
-                'rules'     => 'required',
-                'errors'    => [
-                    'required'      => 'Keterangan pembaruan belum di isi!',
-                ]
-            ],
-        ])) {
-            return redirect()->to('/User/revisi/' . $id)->withInput();
+        $berkas = $this->BerkasModel->find($id);
+        if ($berkas['type'] == 3 || $berkas['type'] == 4) {
+            if (!$this->validate([
+                'title'         => [
+                    'rules'     => 'uploaded[title]|max_size[title,30720]|ext_in[title,doc,docx,pdf]',
+                    'errors'    => [
+                        'uploaded'      => 'File belum di pilih!',
+                        'max_size'      => 'Ukuran file terlalu besar!',
+                        'ext_in'        => 'Type file tidak dizinkan!'
+                    ]
+                ],
+                'nik'         => [
+                    'rules'     => 'required',
+                    'errors'    => [
+                        'required'      => 'NIK belum di isi!',
+                    ]
+                ],
+                'keterangan'         => [
+                    'rules'     => 'required',
+                    'errors'    => [
+                        'required'      => 'Keterangan pembaruan belum di isi!',
+                    ]
+                ],
+            ])) {
+                return redirect()->to('/User/revisi/' . $id)->withInput();
+            }
+        } else {
+            if (!$this->validate([
+                'title'         => [
+                    'rules'     => 'uploaded[title]|max_size[title,30720]|ext_in[title,doc,docx,pdf]',
+                    'errors'    => [
+                        'uploaded'      => 'File belum di pilih!',
+                        'max_size'      => 'Ukuran file terlalu besar!',
+                        'ext_in'        => 'Type file tidak dizinkan!'
+                    ]
+                ],
+                'keterangan'         => [
+                    'rules'     => 'required',
+                    'errors'    => [
+                        'required'      => 'Keterangan pembaruan belum di isi!',
+                    ]
+                ],
+            ])) {
+                return redirect()->to('/User/revisi/' . $id)->withInput();
+            }
         }
+
         $berkas = $this->BerkasModel->find($id);
         $user = $this->UserModel->where(['nim' => session()->get('nim')])->first();
         // // get file

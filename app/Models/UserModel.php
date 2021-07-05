@@ -18,7 +18,7 @@ class UserModel extends Model
     }
     public function akun($search)
     {
-        return $this->table('user')->where(['nim' => $search])
-            ->where('nama', $search);
+        return $this->table('user')->like('nim', $search)
+            ->orLike('nama', $search)->orLike('telepon', $search)->orLike('email', $search);
     }
 }

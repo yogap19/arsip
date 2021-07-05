@@ -72,7 +72,7 @@
                                     <form action="<?= base_url(); ?>/SuperAdmin/updateRole/<?= $menu['id']; ?>" method="post" class="d-inline">
                                         <?= csrf_field(); ?>
                                         <select class="form-select" aria-label="Default select example" name="role_id">
-                                            <!-- <option value="1" <?= ($menu['role_id'] == 1) ? 'selected' : ''; ?> disabled>Super Administrator</option> -->
+                                            <option value="1" <?= ($menu['role_id'] == 1) ? 'selected' : ''; ?>>Super Administrator</option>
                                             <option value="2" <?= ($menu['role_id'] == 2) ? 'selected' : ''; ?>>Administrator</option>
                                             <option value="3" <?= ($menu['role_id'] == 3) ? 'selected' : ''; ?>>User</option>
                                         </select>

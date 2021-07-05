@@ -6,12 +6,25 @@
 
 
 </div>
-<?php $allUser = count($users); ?>
+<?php $allUser = count($allUsers); ?>
 <?php $confirm = count($confirmed); ?>
 <?php $request = count($requested); ?>
 
 <!-- table navigasi -->
 <div class="col-md-12 mb-12">
+    <!-- chart -->
+    <div class="card mb-3">
+        <div class="row">
+            <div class="col-12">
+                <div class="col">
+                    <script src="https://code.highcharts.com/highcharts.js"></script>
+                    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+                    <div id="user" style="min-width: 310px; height: 270px; max-width:100%; margin: 0 auto"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="nav-tabs-boxed">
         <ul class="nav nav-tabs">
             <li class="nav-item">
@@ -46,6 +59,25 @@
                                         <?= session()->getFlashdata('danger'); ?>
                                     </div>
                                 <?php endif; ?>
+
+                                <!-- search -->
+                                <div class="row mb-1">
+                                    <div class="col-6"></div>
+                                    <div class="col-6">
+                                        <form class="mr-auto ml-md- my-md-0 mw-100 navbar-search" action="<?= base_url('Admin/index'); ?>" method="POST">
+                                            <?= csrf_field(); ?>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control bg-light " placeholder="Cari dengan kata kunci..." aria-label="Search" autofocus aria-describedby="basic-addon2" name="search" id="search">
+                                                <div class="input-group-append">
+                                                    <button class="btn text-white" style="background: linear-gradient(blue,black);" type="submit" name="submit">
+                                                        <i class="fas fa-search fa-sm"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 1) ? 'blue' : 'red'; ?>, Black); ">
                                         <th>NO</th>
@@ -57,7 +89,7 @@
                                         <th>Status</th>
                                         <th class="text-center">Action</th>
                                     </tr>
-                                    <?php $i = 1; ?>
+                                    <?php $i = 1 + (5 * ($page - 1)); ?>
                                     <?php foreach ($users as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
@@ -202,4 +234,158 @@
     <!-- end table navigasi -->
 </div>
 
+<?php
+$db = \Config\Database::connect();
+$tahun = [];
+for ($i = intval(date('Y')) - 4; $i <= date('Y'); $i++) {
+    # code...
+    array_push($tahun, $i);
+}
+$tahun = json_encode($tahun);
+
+// Jumlah Akun SI S-1
+$Si = [];
+for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+    # code...
+    $SiUser = $db->table('user')->like('nim', '35' . $thn)->get()->getResultArray();
+    array_push($Si, count($SiUser));
+}
+$Si = json_encode($Si);
+
+// Jumlah Akun TI S-1
+$Ti = [];
+for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+    # code...
+    $SiUser = $db->table('user')->like('nim', '36' . $thn)->get()->getResultArray();
+    array_push($Ti, count($SiUser));
+}
+$Ti = json_encode($Ti);
+
+// Jumlah Akun Ak S-1
+$Ak = [];
+for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+    # code...
+    $SiUser = $db->table('user')->like('nim', '37' . $thn)->get()->getResultArray();
+    array_push($Ak, count($SiUser));
+}
+$Ak = json_encode($Ak);
+
+// Jumlah Akun TI S-1
+$Mn = [];
+for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+    # code...
+    $SiUser = $db->table('user')->like('nim', '38' . $thn)->get()->getResultArray();
+    array_push($Mn, count($SiUser));
+}
+$Mn = json_encode($Mn);
+
+// Jumlah Akun TI S-1
+$mi = [];
+for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+    # code...
+    $SiUser = $db->table('user')->like('nim', '25' . $thn)->get()->getResultArray();
+    array_push($mi, count($SiUser));
+}
+$mi = json_encode($mi);
+
+// Jumlah Akun TI S-1
+$ti = [];
+for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+    # code...
+    $SiUser = $db->table('user')->like('nim', '26' . $thn)->get()->getResultArray();
+    array_push($ti, count($SiUser));
+}
+$ti = json_encode($ti);
+
+// Jumlah Akun TI S-1
+$ak = [];
+for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+    # code...
+    $SiUser = $db->table('user')->like('nim', '27' . $thn)->get()->getResultArray();
+    array_push($ak, count($SiUser));
+}
+$ak = json_encode($ak);
+
+// Jumlah Akun TI S-1
+$mp = [];
+for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+    # code...
+    $SiUser = $db->table('user')->like('nim', '28' . $thn)->get()->getResultArray();
+    array_push($mp, count($SiUser));
+}
+$mp = json_encode($mp);
+
+?>
+
+<script type='text/javascript'>
+    Highcharts.chart('user', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Data User 5 Tahun Terakhir'
+        },
+        subtitle: {
+            text: 'Sumber : Data Kemahasiswaan'
+        },
+        xAxis: {
+            categories: <?= $tahun; ?>,
+            crosshair: true
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Jumlah User'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y} Document</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: 'Sistem Informasi (S-1)',
+            data: <?= $Si; ?>
+
+        }, {
+            name: 'Teknik Informatika (S-1)',
+            data: <?= $Ti; ?>
+
+
+        }, {
+            name: 'Akuntansi (S-1)',
+            data: <?= $Ak; ?>
+
+
+        }, {
+            name: 'Manajemen (S-1)',
+            data: <?= $Mn; ?>
+        }, {
+            name: 'Manajemen Informasi (D-3)',
+            data: <?= $mi; ?>
+
+
+        }, {
+            name: 'Teknik Informatika (D-3)',
+            data: <?= $ti; ?>
+
+
+        }, {
+            name: 'Akuntansi (D-3)',
+            data: <?= $ak; ?>
+        }, {
+            name: 'Manajemen (D-3)',
+            data: <?= $mp; ?>
+        }]
+    });
+</script>
 <?= $this->endSection(); ?>

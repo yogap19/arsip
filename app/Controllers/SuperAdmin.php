@@ -191,7 +191,7 @@ class SuperAdmin extends BaseController
         $data = [
             'title'     => 'Role Account',
             'user'      => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
-            'akun'      => $akun->paginate(5, 'akun'),
+            'akun'      => $akun->orderBy('role_id', 'ASC')->paginate(5, 'akun'),
             'search'    => $hasil,
             'pager'     => $this->UserModel->pager,
             'page'      => $pages

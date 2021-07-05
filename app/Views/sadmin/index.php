@@ -339,7 +339,6 @@
                                     </div>
                                 <?php endif; ?>
 
-
                                 <!-- search -->
                                 <div class="row m-1">
                                     <div class="col-6"></div>
@@ -564,7 +563,7 @@
                             $beasiswa = $db->table('berkas')->join('user', 'user.nim = berkas.nim')
                                 ->select('berkas.nim')->select('berkas.updated_at')->select('berkas.id')->select('berkas.title')->select('user.nama')->select('berkas.nik')
                                 ->select('user.gender')->select('user.rtrw')->select('user.desa')->select('user.kecamatan')->select('user.kota')
-                                ->where('berkas.type = 3')->get()->getResultArray();
+                                ->like('berkas.type', 3)->orLike('berkas.type', 4)->get()->getResultArray();
                             ?>
                             <?php for ($years = date('Y'); $years >= 2020; $years--) : ?>
                                 <!-- accordion 1 -->

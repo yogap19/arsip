@@ -6,6 +6,7 @@
     $show = 1;
     ($show == null) ? $show = 1 : $show = session()->get('show');;
     ?>
+    <?php ($show == null) ? $show = 1 : '' ?>
     <!-- Page Heading -->
     <div class="col-md-12 mb-12">
         <div class="nav-tabs-boxed">

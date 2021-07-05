@@ -27,6 +27,7 @@
                             <td><label for="nama" class="form-label">Nama file</label></td>
                             <td><a href="<?= base_url('User/download/' . $berkas['id']); ?>" target="_blank" rel="noopener noreferrer"><?= $berkas['title']; ?></a></td>
                         </tr>
+
                         <tr>
                             <?php if ($berkas['type'] == 1) {
                                 $type = 'Proposal kegiatan';
@@ -35,11 +36,17 @@
                             } elseif ($berkas['type'] == 3) {
                                 $type = 'Beasiswa bawaku';
                             } elseif ($berkas['type'] == 4) {
-                                $type = 'Document lain';
+                                $type = 'Beasiswa lain';
                             } ?>
                             <td><label for="type" class="form-label">Type file</label></td>
                             <td><label for="type" class="form-label"><?= $type; ?></label></td>
                         </tr>
+                        <?php if ($berkas['type'] == 1 || $berkas['type'] == 2) : ?>
+                            <tr>
+                                <td><label for="nama" class="form-label">Organisasi</label></td>
+                                <td><?= $berkas['organisasi']; ?></td>
+                            </tr>
+                        <?php endif; ?>
                         <?php if ($berkas['approved_Sadmin'] == 1 || $berkas['approved_Sadmin'] == 3) : ?>
                             <tr class="<?= ($berkas['approved_Sadmin'] == 1) ? 'bg-success text-white' : 'bg-danger text-white'; ?>">
                                 <td><label for="type" class="form-label">Keterangan Kemahasiswaan</label></td>
