@@ -10,18 +10,32 @@
 <?php $confirm = count($confirmed); ?>
 <?php $request = count($requested); ?>
 
+<?php ($tahun == 0) ? $tahun = 1 : $tahun = $tahun + 1; ?>
+
 <!-- table navigasi -->
 <div class="col-md-12 mb-12">
     <!-- chart -->
     <div class="card mb-3">
-        <div class="row">
-            <div class="col-12">
+        <div class="row align-items-center justify-content-center">
+            <form action="<?= base_url('admin/index/' . $tahun); ?>" method="POST">
+                <button type="submit" style="background: white; border: 0;">
+                    <div class="col-1">
+                        <i class="fas fa-step-backward" style="color: blue;"></i>
+                    </div>
+                </button>
+            </form>
+            <div class="col-10">
                 <div class="col">
-                    <script src="https://code.highcharts.com/highcharts.js"></script>
-                    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                    <div id="user" style="min-width: 310px; height: 270px; max-width:100%; margin: 0 auto"></div>
+                    <canvas id="userLast" height="70px"></canvas>
                 </div>
             </div>
+            <form action="<?= base_url('admin/index/' . ($tahun - 2)); ?>" method="POST">
+                <button type="submit" style="background: white; border: 0;">
+                    <div class="col-1">
+                        <i class="fas fa-step-forward" style="color: blue;"></i>
+                    </div>
+                </button>
+            </form>
         </div>
     </div>
 
@@ -236,16 +250,16 @@
 
 <?php
 $db = \Config\Database::connect();
-$tahun = [];
-for ($i = intval(date('Y')) - 4; $i <= date('Y'); $i++) {
+$usrThn = [];
+for ($i = (intval(date('Y')) - (4 * $tahun)); $i <= (intval(date('Y')) - (4 * ($tahun - 1))); $i++) {
     # code...
-    array_push($tahun, $i);
+    array_push($usrThn, $i);
 }
-$tahun = json_encode($tahun);
+$usrThn = json_encode($usrThn);
 
 // Jumlah Akun SI S-1
 $Si = [];
-for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
     $SiUser = $db->table('user')->like('nim', '35' . $thn)->get()->getResultArray();
     array_push($Si, count($SiUser));
@@ -254,7 +268,7 @@ $Si = json_encode($Si);
 
 // Jumlah Akun TI S-1
 $Ti = [];
-for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
     $SiUser = $db->table('user')->like('nim', '36' . $thn)->get()->getResultArray();
     array_push($Ti, count($SiUser));
@@ -263,7 +277,7 @@ $Ti = json_encode($Ti);
 
 // Jumlah Akun Ak S-1
 $Ak = [];
-for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
     $SiUser = $db->table('user')->like('nim', '37' . $thn)->get()->getResultArray();
     array_push($Ak, count($SiUser));
@@ -272,7 +286,7 @@ $Ak = json_encode($Ak);
 
 // Jumlah Akun TI S-1
 $Mn = [];
-for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
     $SiUser = $db->table('user')->like('nim', '38' . $thn)->get()->getResultArray();
     array_push($Mn, count($SiUser));
@@ -281,7 +295,7 @@ $Mn = json_encode($Mn);
 
 // Jumlah Akun TI S-1
 $mi = [];
-for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
     $SiUser = $db->table('user')->like('nim', '25' . $thn)->get()->getResultArray();
     array_push($mi, count($SiUser));
@@ -290,7 +304,7 @@ $mi = json_encode($mi);
 
 // Jumlah Akun TI S-1
 $ti = [];
-for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
     $SiUser = $db->table('user')->like('nim', '26' . $thn)->get()->getResultArray();
     array_push($ti, count($SiUser));
@@ -299,7 +313,7 @@ $ti = json_encode($ti);
 
 // Jumlah Akun TI S-1
 $ak = [];
-for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
     $SiUser = $db->table('user')->like('nim', '27' . $thn)->get()->getResultArray();
     array_push($ak, count($SiUser));
@@ -308,7 +322,7 @@ $ak = json_encode($ak);
 
 // Jumlah Akun TI S-1
 $mp = [];
-for ($thn = intval(substr(date('Y'), 2, 2)) - 4; $thn <= substr(date('Y'), 2, 2); $thn++) {
+for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
     $SiUser = $db->table('user')->like('nim', '28' . $thn)->get()->getResultArray();
     array_push($mp, count($SiUser));
@@ -318,74 +332,127 @@ $mp = json_encode($mp);
 ?>
 
 <script type='text/javascript'>
-    Highcharts.chart('user', {
-        chart: {
-            type: 'column'
+    // User Lima Tahun terakhir
+    var lastOptions = {
+        responsive: true,
+        legend: {
+            position: "bottom",
+            labels: {
+                usePointStyle: true,
+                boxWidth: 6
+            }
         },
         title: {
-            text: 'Data User 5 Tahun Terakhir'
+            display: true,
+            text: "Statistik User 5 Tahun Terakhir"
         },
-        subtitle: {
-            text: 'Sumber : Data Kemahasiswaan'
+        scales: {
+            yAxes: [{
+                // display: false,
+                ticks: {
+                    callback: function(label, index, labels) {
+                        for (let d = 0.5; d < 1000; d++) {
+                            if (label == d) {
+                                label = '';
+                            }
+                        }
+                        return label;
+                    }
+                },
+                gridLines: {
+                    drawBorder: false,
+                },
+            }],
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                },
+            }],
         },
-        xAxis: {
-            categories: <?= $tahun; ?>,
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Jumlah User'
+    }
+    var barLast = {
+        labels: <?= $usrThn ?>,
+
+        datasets: [{
+                label: "Sistem Informasi S1",
+                backgroundColor: "#4E73DF",
+                borderColor: "#4E73DF",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $Si; ?>
+            },
+            {
+                label: "Teknik Informatika S1",
+                backgroundColor: "#1CC88A",
+                borderColor: "#1CC88A",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $Ti; ?>
+            },
+            {
+                label: "Akuntansi S1",
+                backgroundColor: "#E74A3B",
+                borderColor: "#E74A3B",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $Ak; ?>
+            },
+            {
+                label: "Manajemen S1",
+                backgroundColor: "#5A5C69",
+                borderColor: "#5A5C69",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $Mn; ?>
+            },
+            {
+                label: "Manajemen Informasi D3",
+                backgroundColor: "#36B9CC",
+                borderColor: "#36B9CC",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $mi; ?>
+            },
+            {
+                label: "Teknik Informatika D3",
+                backgroundColor: "#8C8E9C",
+                borderColor: "#8C8E9C",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $ti; ?>
+            },
+            {
+                label: "Akuntansi D3",
+                backgroundColor: "#F6C23E",
+                borderColor: "#F6C23E",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $ak; ?>
+            },
+            {
+                label: "Manajemen D3",
+                backgroundColor: "#0000F6",
+                borderColor: "#0000F6",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $mp; ?>
             }
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y} Document</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: 'Sistem Informasi (S-1)',
-            data: <?= $Si; ?>
+        ]
 
-        }, {
-            name: 'Teknik Informatika (S-1)',
-            data: <?= $Ti; ?>
-
-
-        }, {
-            name: 'Akuntansi (S-1)',
-            data: <?= $Ak; ?>
-
-
-        }, {
-            name: 'Manajemen (S-1)',
-            data: <?= $Mn; ?>
-        }, {
-            name: 'Manajemen Informasi (D-3)',
-            data: <?= $mi; ?>
-
-
-        }, {
-            name: 'Teknik Informatika (D-3)',
-            data: <?= $ti; ?>
-
-
-        }, {
-            name: 'Akuntansi (D-3)',
-            data: <?= $ak; ?>
-        }, {
-            name: 'Manajemen (D-3)',
-            data: <?= $mp; ?>
-        }]
+    };
+    var ctx = document.getElementById("userLast").getContext("2d");
+    window.myBar = new Chart(ctx, {
+        type: "bar",
+        data: barLast,
+        options: lastOptions
     });
 </script>
 <?= $this->endSection(); ?>

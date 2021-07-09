@@ -18,6 +18,9 @@
     <!-- Custom styles for this template-->
     <link href="<?= base_url(); ?>/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <!-- chart.js -->
+    <link rel="stylesheet" type="text/css" href="<?= base_url(); ?>/vendor/Chart.js/Chart.min.js">
+    <script type="text/javascript" src="<?= base_url(); ?>/vendor/Chart.js/Chart.min.js"> </script>
 </head>
 
 <body id="page-top">

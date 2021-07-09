@@ -19,8 +19,9 @@ class Admin extends BaseController
         $this->BerkasModel = new BerkasModel();
         $this->cekSession();
     }
-    public function index()
+    public function index($id = '')
     {
+        $id =  intval($id);
         $search = $this->request->getVar('search');
         if ($search) {
             $users = $this->UserModel->akun($search);
@@ -34,11 +35,12 @@ class Admin extends BaseController
             'title'     => 'Management Account',
             'users'     => $users->orderBy('created_at', 'ASC')->paginate(5, 'users'),
             'pager'     => $this->UserModel->pager,
-            'allUsers'   => $this->UserModel->findAll(),
+            'allUsers'  => $this->UserModel->findAll(),
             'user'      => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
             'confirmed' => $this->UserModel->where(['is_active' => '1'])->find(),
             'requested' => $this->UserModel->where(['is_active' => '0'])->find(),
-            'page'      => $pages
+            'page'      => $pages,
+            'tahun'     => $id
         ];
         // dd($data);
         return view('admin/index', $data);
@@ -89,6 +91,8 @@ class Admin extends BaseController
                 $menu = "Administrator Menu";
             } elseif ($menu == 'User') {
                 $menu = "Users";
+            } else {
+                $menu = "Administrator Menu";
             }
             $query = $db->table('user_menu')->getWhere(['menu' => $menu])
                 ->getResultArray();
@@ -225,4 +229,19 @@ class Admin extends BaseController
         session()->setFlashdata('danger', 'Berkas dengan nama ' . $data['title'] . ' berhasil dihapus');
         return redirect()->to(base_url('Admin/berkas'));
     }
+    // public function back($id)
+    // {
+    //     $id = $id;
+    //     $data = [
+    //         'title'     => 'Management Account',
+    //         'user'      => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+    //         'back'      => $id,
+    //         'pager'     => $this->UserModel->pager,
+    //         'allUsers'   => $this->UserModel->findAll(),
+    //         'user'      => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+    //         'confirmed' => $this->UserModel->where(['is_active' => '1'])->find(),
+    //         'requested' => $this->UserModel->where(['is_active' => '0'])->find(),
+    //     ];
+    //     return view('admin/index', $data);
+    // }
 }

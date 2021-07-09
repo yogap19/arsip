@@ -39,33 +39,34 @@ class SuperAdmin extends BaseController
         $jurusan    = $this->request->getVar('type2');
         $acepted    = $this->request->getVar('type3');
 
-        if ($search) {
-            $berkas = $this->BerkasModel->berkas($search);
-        } else {
-            $berkas = $this->BerkasModel;
-            # code...
-        }
-
         //  Filter By
         if ($type == 0 && $jurusan == 0 && $acepted == 0) {
-            $hasil = $this->BerkasModel->orderBy('updated_at', 'DESC')->paginate(5, 'berkas');
+            $hasil = null;
             unset($_SESSION['pesan']);
         } elseif ($type == 0 && $jurusan == 0) {
             $hasil = $this->BerkasModel->where(['approved_Sadmin' => $acepted])->find();
+            $show = 2;
         } elseif ($type == 0 && $acepted == 0) {
             $hasil = $this->BerkasModel->where(['jurusan' => $jurusan])->find();
+            $show = 2;
         } elseif ($jurusan == 0 && $acepted == 0) {
             $hasil = $this->BerkasModel->where(['type' => $type])->find();
+            $show = 2;
         } elseif ($jurusan == 0) {
             $hasil = $this->BerkasModel->where(['type' => $type])->where(['approved_Sadmin' => $acepted])->find();
+            $show = 2;
         } elseif ($acepted == 0) {
             $hasil = $this->BerkasModel->where(['jurusan' => $jurusan])->where(['type' => $type])->find();
+            $show = 2;
         } elseif ($type == 0) {
             $hasil = $this->BerkasModel->where(['jurusan' => $jurusan])->where(['approved_Sadmin' => $acepted])->find();
+            $show = 2;
         } else {
             $hasil = $this->BerkasModel->where(['type' => $type])->where(['jurusan' => $jurusan])->where(['approved_Sadmin' => $acepted])->find();
+            $show = 2;
         }
 
+        // cek pesan
         if ($type == 0 && $jurusan == 0 && $acepted == 0) {
         } else {
             if ($hasil == null) {
@@ -75,11 +76,13 @@ class SuperAdmin extends BaseController
                 session()->setFlashdata('pesan', 'Hasil filter ' . count($hasil));
             }
         }
+
+        // chart Arsip Tahunan
         $prpTahunan = [];
         $lprTahunan = [];
         $bwkTahunan = [];
         $bswTahunan = [];
-        for ($tahun = 2020; $tahun <= date('Y'); $tahun++) {
+        for ($tahun = intval(date('Y')) - 4; $tahun <= date('Y'); $tahun++) {
             # code...
             $proposal = count($this->BerkasModel->proposal($tahun)->find());
             array_push($prpTahunan, $proposal);
@@ -93,7 +96,52 @@ class SuperAdmin extends BaseController
             $lain = count($this->BerkasModel->lain($tahun)->find());
             array_push($bswTahunan, $lain);
         }
-        $pages = $this->request->getVar('page_berkas') ? $this->request->getVar('page_berkas') : 1;
+
+        // Chart User Tahunan
+        $siTahunan = [];
+        $tiTahunan = [];
+        $akTahunan = [];
+        $mnTahunan = [];
+        $mi3Tahunan = [];
+        $ti3Tahunan = [];
+        $ak3Tahunan = [];
+        $mn3Tahunan = [];
+        for ($tahun = substr(intval(date('Y')), 2, 2) - 4; $tahun <= substr(date('Y'), 2, 2); $tahun++) {
+            $Si = count($this->UserModel->Si($tahun)->find());
+            array_push($siTahunan, $Si);
+            $Ti = count($this->UserModel->Ti($tahun)->find());
+            array_push($tiTahunan, $Ti);
+            $Ak = count($this->UserModel->Ak($tahun)->find());
+            array_push($akTahunan, $Ak);
+            $Mn = count($this->UserModel->Mn($tahun)->find());
+            array_push($mnTahunan, $Mn);
+            $mi3 = count($this->UserModel->mi3($tahun)->find());
+            array_push($mi3Tahunan, $mi3);
+            $ti3 = count($this->UserModel->ti3($tahun)->find());
+            array_push($ti3Tahunan, $ti3);
+            $ak3 = count($this->UserModel->ak3($tahun)->find());
+            array_push($ak3Tahunan, $ak3);
+            $mn3 = count($this->UserModel->mn3($tahun)->find());
+            array_push($mn3Tahunan, $mn3);
+        }
+
+        // pencarian berkas
+        if ($search != null) {
+            $hasil = $this->BerkasModel->berkas($search)->get()->getResultArray();
+            $show = 2;
+            $berkas = $this->BerkasModel;
+            session()->set($show);
+        } else {
+            $berkas = $this->BerkasModel;
+            $show = 1;
+            session()->set($show);
+        }
+        $pages = $this->request->getVar('page_berkas');
+        if ($pages == null && $search == null && $hasil == null) {
+            $show = 1;
+        } else {
+            $show = 2;
+        }
         $data = [
             // page required
             'title'         => 'Dashboard',
@@ -102,25 +150,37 @@ class SuperAdmin extends BaseController
             // data required
             'users'         => $this->UserModel->findAll(),
             'allBerkas'     => $this->BerkasModel->findAll(),
+            'allUser'       => $this->UserModel->findAll(),
 
             // style data 
             'berkas'        => $berkas->paginate(5, 'berkas'),
             'pager'         => $this->BerkasModel->pager,
             'berkasHasil'   => $hasil,
 
-            // required chart tahunan
+            // required chart arsip tahunan
             'prpTahunan'    => $prpTahunan,
             'lprTahunan'    => $lprTahunan,
             'bwkTahunan'    => $bwkTahunan,
             'bswTahunan'    => $bswTahunan,
 
+            // required chart user tahunan
+            'siTahunan'     => $siTahunan,
+            'tiTahunan'     => $tiTahunan,
+            'akTahunan'     => $akTahunan,
+            'mnTahunan'     => $mnTahunan,
+            'mi3Tahunan'    => $mi3Tahunan,
+            'ti3Tahunan'    => $ti3Tahunan,
+            'ak3Tahunan'    => $ak3Tahunan,
+            'mn3Tahunan'    => $mn3Tahunan,
+
             // Filter required
             'type'          => $type,
             'jurusan'       => $jurusan,
             'acepted'       => $acepted,
-            'page'          => $pages
+            'page'          => $pages,
+
+            'show'          => $show
         ];
-        // d($data);
         return view('sadmin/index', $data);
     }
     public function search()
@@ -306,7 +366,7 @@ class SuperAdmin extends BaseController
         }
         // // type
         if ($data['type'] == 1) {
-            $type = 'Proposal';
+            $type = 'S$Si';
         } elseif ($data['type'] == 2) {
             $type = 'Laporan';
         } elseif ($data['type'] == 3) {
@@ -349,21 +409,50 @@ class SuperAdmin extends BaseController
 
     public function excel($years)
     {
+
         $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'No');
-        $sheet->setCellValue('B1', 'NIM');
-        $sheet->setCellValue('C1', 'Nama');
-        $sheet->setCellValue('D1', 'Jurusan');
-        $sheet->setCellValue('E1', 'Gender');
-        $sheet->setCellValue('F1', 'Nama Surat');
-        $sheet->setCellValue('G1', 'NIK');
-        $sheet->setCellValue('H1', 'Alamat');
-        $sheet->setCellValue('I1', 'Tanggal kirim');
+        // bawaku
+        $spreadsheet->getActiveSheet()->getStyle('A1:S2')
+            ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $spreadsheet->getActiveSheet()->getStyle('A1')
+            ->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+        $spreadsheet->getActiveSheet()->getStyle('A1')
+            ->getFill()->getStartColor()->setARGB('FFFF0000');
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('A1:I1');
+        $sheet->setCellValue('A1', 'Beasiswa Bawaku');
+        $sheet->setCellValue('A2', 'No');
+        $sheet->setCellValue('B2', 'NIM');
+        $sheet->setCellValue('C2', 'NAMA');
+        $sheet->setCellValue('D2', 'JURUSAN');
+        $sheet->setCellValue('E2', 'Gender');
+        $sheet->setCellValue('F2', 'Surat');
+        $sheet->setCellValue('G2', 'NIK');
+        $sheet->setCellValue('H2', 'Alamat');
+        $sheet->setCellValue('I2', 'Tanggal Terima');
+
+        // beasiswa lain
+        // $spreadsheet->getActiveSheet()->getStyle('K1')
+        //     ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        $spreadsheet->getActiveSheet()->getStyle('K1')
+            ->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
+        $spreadsheet->getActiveSheet()->getStyle('K1')
+            ->getFill()->getStartColor()->setARGB('FFFF0000');
+        $sheet = $spreadsheet->getActiveSheet()->mergeCells('K1:S1');
+        $sheet->setCellValue('K1', 'Beasiswa Lain');
+        $sheet->setCellValue('K2', 'No');
+        $sheet->setCellValue('L2', 'NIM');
+        $sheet->setCellValue('M2', 'NAMA');
+        $sheet->setCellValue('N2', 'JURUSAN');
+        $sheet->setCellValue('O2', 'Gender');
+        $sheet->setCellValue('P2', 'Surat');
+        $sheet->setCellValue('Q2', 'NIK');
+        $sheet->setCellValue('R2', 'Alamat');
+        $sheet->setCellValue('S2', 'Tanggal Terima');
 
         $berkas = $this->BerkasModel->beasiswa($years);
+        $beasiswaLain = $this->BerkasModel->beasiswaLain($years);
         $no = 1;
-        $x = 2;
+        $x = 3;
         foreach ($berkas as $row) {
             if ($row['gender'] == 1) {
                 $gender = 'Laki-laki';
@@ -390,7 +479,8 @@ class SuperAdmin extends BaseController
             } elseif (substr($row['nim'], 0, 2) == 28) {
                 $jurusan = 'Manajemen D-3';
             }
-            $alamat = $row['rtrw'] . ' ' . $row['desa'] . ' ' . $row['kecamatan'] . ' ' . $row['kota'];
+            // bawaku
+            $alamat = $row['rtrw'] . ', ' . $row['desa'] . ', ' . $row['kecamatan'] . ', ' . $row['kota'];
             $sheet->setCellValue('A' . $x, $no++);
             $sheet->setCellValue('B' . $x, $row['nim']);
             $sheet->setCellValue('C' . $x, $row['nama']);
@@ -402,6 +492,48 @@ class SuperAdmin extends BaseController
             $sheet->setCellValue('I' . $x, $row['updated_at']);
             $x++;
         }
+        $no = 1;
+        $x = 3;
+        foreach ($beasiswaLain as $row) {
+            if ($row['gender'] == 1) {
+                $gender = 'Laki-laki';
+            } else {
+                $gender = 'Perempuan';
+            }
+
+            if (substr($row['nim'], 0, 2) == 35) {
+                $jurusan = 'Sistem Informasi S-1';
+            } elseif (substr($row['nim'], 0, 2) == 36) {
+                $jurusan = 'Teknik Informatika S-1';
+            } elseif (substr($row['nim'], 0, 2) == 36) {
+                $jurusan = 'Teknik Informatika S-1';
+            } elseif (substr($row['nim'], 0, 2) == 37) {
+                $jurusan = 'Akuntansi S-1';
+            } elseif (substr($row['nim'], 0, 2) == 38) {
+                $jurusan = 'Manajemen S-1';
+            } elseif (substr($row['nim'], 0, 2) == 25) {
+                $jurusan = 'Manajemen Informasi D-3';
+            } elseif (substr($row['nim'], 0, 2) == 26) {
+                $jurusan = 'Teknik Informatika D-3';
+            } elseif (substr($row['nim'], 0, 2) == 27) {
+                $jurusan = 'Akuntansi D-3';
+            } elseif (substr($row['nim'], 0, 2) == 28) {
+                $jurusan = 'Manajemen D-3';
+            }
+            // lain
+            $alamat = $row['rtrw'] . ', ' . $row['desa'] . ', ' . $row['kecamatan'] . ', ' . $row['kota'];
+            $sheet->setCellValue('K' . $x, $no++);
+            $sheet->setCellValue('L' . $x, $row['nim']);
+            $sheet->setCellValue('M' . $x, $row['nama']);
+            $sheet->setCellValue('N' . $x, $jurusan);
+            $sheet->setCellValue('O' . $x, $gender);
+            $sheet->setCellValue('P' . $x, $row['title']);
+            $sheet->setCellValue('Q' . $x, $row['nik']);
+            $sheet->setCellValue('R' . $x, $alamat);
+            $sheet->setCellValue('S' . $x, $row['updated_at']);
+            $x++;
+        }
+
         $writer = new Xlsx($spreadsheet);
         $filename = 'Data Beasiswa Tahun ' . $years;
 

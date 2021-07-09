@@ -12,10 +12,10 @@ class BerkasModel extends Model
 
     public function berkas($search)
     {
-        return $this->table('berkas')->like('nim', $search)->orLike('updated_at', date('Y'))
+        return $this->table('berkas')->like('nim', $search)
             ->orLike('title', $search)->orLike('updated_at', $search)
             ->orLike('keterangan', $search)->orLike('keteranganA', $search)
-            ->orLike('keteranganS', $search)->orderBy('updated_at', 'DESC');
+            ->orLike('keteranganS', $search)->orLike('organisasi', $search);
     }
 
     public function beasiswa($years)

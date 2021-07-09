@@ -7,7 +7,10 @@
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
                 <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-current="true" href="#">Berkas </a>
+                    <a class="nav-link <?= ($show == 1) ? 'active' : ''; ?>" data-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-current="true" href="#">Dashboard </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= ($show == 2) ? 'active' : ''; ?>" data-toggle="tab" href="#berkas" role="tab" aria-controls="berkas" aria-current="true" href="#">Berkas </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#berkasLama" role="tab" aria-controls="berkasLama">Rekap Tahunan</a>
@@ -20,9 +23,10 @@
         <div class="card-body" style="background: #F2F2F2;">
             <div class="tab-content m-2">
                 <!-- Page 1 -->
-                <div class="tab-pane active" id="dashboard" role="tabpanel">
+                <div class="tab-pane <?= ($show == 1) ? 'active' : ''; ?>" id="dashboard" role="tabpanel">
                     <!-- Isi dari Dashboard -->
                     <?php
+                    // array berkas
                     $proposal = [];
                     $laporan = [];
                     $beasiswa = [];
@@ -30,16 +34,16 @@
                     foreach ($allBerkas as $key => $value) {
                         # code...
                         if ($value['type'] == 1 && substr($value['updated_at'], 0, 4) == date('Y')) {
-                            array_push($proposal, $value);
+                            json_encode(array_push($proposal, $value));
                         }
                         if ($value['type'] == 2 && substr($value['updated_at'], 0, 4) == date('Y')) {
-                            array_push($laporan, $value);
+                            json_encode(array_push($laporan, $value));
                         }
                         if ($value['type'] == 3 && substr($value['updated_at'], 0, 4) == date('Y')) {
-                            array_push($beasiswa, $value);
+                            json_encode(array_push($beasiswa, $value));
                         }
                         if ($value['type'] == 4 && substr($value['updated_at'], 0, 4) == date('Y')) {
-                            array_push($dll, $value);
+                            json_encode(array_push($dll, $value));
                         }
                     }
                     $p_proposal = 0;
@@ -52,6 +56,462 @@
                         json_encode($p_laporan = count($laporan) * 100 / $jumlah);
                         json_encode($p_beasiswa = count($beasiswa) * 100 / $jumlah);
                         json_encode($p_dll = count($dll) * 100 / $jumlah);
+                    } else {
+                        $jumlah = 0;
+                    }
+
+                    // array user
+                    $Si = [];
+                    $Ti = [];
+                    $Ak = [];
+                    $Mn = [];
+                    $mi = [];
+                    $ti = [];
+                    $ak = [];
+                    $mn = [];
+                    foreach ($allUser as $key => $value) {
+                        # code...
+                        if (substr($value['nim'], 0, 2) == 35 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+                            array_push($Si, $value);
+                        }
+                        if (substr($value['nim'], 0, 2) == 36 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+                            array_push($Ti, $value);
+                        }
+                        if (substr($value['nim'], 0, 2) == 37 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+                            array_push($Ak, $value);
+                        }
+                        if (substr($value['nim'], 0, 2) == 38 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+                            array_push($Mn, $value);
+                        }
+                        if (substr($value['nim'], 0, 2) == 25 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+                            array_push($mi, $value);
+                        }
+                        if (substr($value['nim'], 0, 2) == 26 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+                            array_push($ti, $value);
+                        }
+                        if (substr($value['nim'], 0, 2) == 27 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+                            array_push($ak, $value);
+                        }
+                        if (substr($value['nim'], 0, 2) == 28 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+                            array_push($mn, $value);
+                        }
+                    }
+                    $p_Si = 0;
+                    $p_Ti = 0;
+                    $p_Ak = 0;
+                    $p_Mn = 0;
+                    $p_mi = 0;
+                    $p_ti = 0;
+                    $p_ak = 0;
+                    $p_mn = 0;
+                    $total = count($Si) + count($Ti) + count($Ak) + count($Mn) + count($mi) + count($ti) + count($ak) + count($mn);
+
+                    if ($total != null) {
+                        json_encode($p_Si = count($Si) * 100 / $total);
+                        json_encode($p_Ti = count($Ti) * 100 / $total);
+                        json_encode($p_Ak = count($Ak) * 100 / $total);
+                        json_encode($p_Mn = count($Mn) * 100 / $total);
+                        json_encode($p_mi = count($mi) * 100 / $total);
+                        json_encode($p_ti = count($ti) * 100 / $total);
+                        json_encode($p_ak = count($ak) * 100 / $total);
+                        json_encode($p_mn = count($mn) * 100 / $total);
+                    } else {
+                        $total = 0;
+                    }
+                    ?>
+                    <!-- informasi berkas -->
+                    <div>
+                        <!-- Card Information -->
+                        <div>
+                            <div class="text-center mt-3">
+                                <h3>Arsip Tahun <?= date('Y'); ?></h3>
+                            </div>
+                            <div class="row m-2">
+                                <!-- card 1  -->
+                                <div class="col-3">
+                                    <div class="card border-left-primary py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Proposal
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($proposal); ?></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-primary" role="progressbar" style="width: <?= $p_proposal; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="far fa-file-powerpoint fa-2x" style="color: #4E73DF;"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- card 2  -->
+                                <div class="col-3">
+                                    <div class="card border-left-success py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Laporan
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($laporan); ?></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: <?= $p_laporan; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-file-powerpoint fa-2x" style="color: #1CC88A;"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- card 3  -->
+                                <div class="col-3">
+                                    <div class="card border-left-danger py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Beasiswa
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($beasiswa); ?></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $p_beasiswa; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-file-archive fa-2x" style="color: #E85547;"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- card 4  -->
+                                <div class="col-3">
+                                    <div class="card border-left-info py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Document
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($dll); ?></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-info" role="progressbar" style="width: <?= $p_dll; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-file-alt fa-2x" style="color: #36B9CC;"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- isi -->
+                        <div class="row m-1">
+                            <!-- chart -->
+                            <div class="card col-6">
+                                <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Arsip Bulanan Tahun <?= date('Y'); ?></h3>
+                                <canvas class="chartjs-render-monitor" id="arsipBulanan"></canvas>
+                            </div>
+                            <div class="card col-6">
+                                <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Type Arsip Tahun <?= date('Y'); ?></h3>
+                                <canvas id="arsipType"></canvas>
+                            </div>
+                        </div>
+                        <br>
+                        <div class=" card mx-2">
+                            <div class="row">
+                                <div class="col m-5">
+                                    <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Arsip Tahunan Perguruan Tinggi Indonesia Mandiri</h3>
+                                    <canvas id="arsipTahunan"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <!-- informasi User -->
+                    <div>
+                        <!-- Card Information -->
+                        <div>
+                            <div class="text-center mt-3">
+                                <h3>Mahasiswa Tahun <?= date('Y'); ?></h3>
+                            </div>
+                            <div class="row m-2">
+                                <!-- card 1 Si (S-1)  -->
+                                <div class="col-3">
+                                    <div class="card border-left-primary py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Sistem Informasi (S-1)
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($Si); ?></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-primary" role="progressbar" style="width: <?= $p_Si; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- card 2 TI (S-1) -->
+                                <div class="col-3">
+                                    <div class="card border-left-success py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Teknik Informatika (S-1)
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($Ti); ?></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-success" role="progressbar" style="width: <?= $p_Ti; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- card 3 Ak (S-1) -->
+                                <div class="col-3">
+                                    <div class="card border-left-danger py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Akuntansi (S-1)
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($Ak); ?></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $p_beasiswa; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- card 4 Mn (S-1) -->
+                                <div class="col-3">
+                                    <div class="card border-left-dark py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Managemen (S-1)
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($Mn); ?></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-dark" role="progressbar" style="width: <?= $p_Mn; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row m-2">
+                                <!-- card 1 Si (D-3)  -->
+                                <div class="col-3">
+                                    <div class="card border-left-info py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Managemen Informasi (D-3)
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($mi); ?></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-info" role="progressbar" style="width: <?= $p_mi; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- card 2 TI (D-3) -->
+                                <div class="col-3">
+                                    <div class="card border-left-secondary py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Teknik Informatika (D-3)
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($ti); ?></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-secondary" role="progressbar" style="width: <?= $p_ti; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- card 3 Ak (D-3) -->
+                                <div class="col-3">
+                                    <div class="card border-left-warning py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Akuntansi (D-3)
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($ak); ?></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-warning" role="progressbar" style="width: <?= $p_ak; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- card 4 Mn (D-3) -->
+                                <div class="col-3">
+                                    <div class="card border-left-primary py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Managemen (D-3)
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($mn); ?></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-primary" role="progressbar" style="width: <?= $p_mn; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <!-- isi -->
+                        <div class="row m-1">
+                            <!-- chart -->
+                            <div class="card col-6">
+                                <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Data Mahasiswa Tahun <?= date('Y'); ?> </h3>
+                                <canvas id="userType"></canvas>
+                            </div>
+                            <div class="card col-6">
+                                <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Data Mahasiswa Tahun <?= date('Y'); ?> </h3>
+                                <canvas id="userGender"></canvas>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="card">
+                            <div class="row">
+                                <div class="col">
+                                    <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">User 5 Tahun Terakhir </h3>
+                                    <canvas id="userLast"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Page 2 -->
+                <div class="tab-pane <?= ($show == 2) ? 'active' : ''; ?>" id="berkas" role="tabpanel">
+                    <!-- Isi dari Dashboard -->
+                    <?php
+                    $allProposal = [];
+                    $allLaporan = [];
+                    $allBeasiswa = [];
+                    $allDll = [];
+                    foreach ($allBerkas as $key => $value) {
+                        # code...
+                        if ($value['type'] == 1) {
+                            array_push($allProposal, $value);
+                        }
+                        if ($value['type'] == 2) {
+                            array_push($allLaporan, $value);
+                        }
+                        if ($value['type'] == 3) {
+                            array_push($allBeasiswa, $value);
+                        }
+                        if ($value['type'] == 4) {
+                            array_push($allDll, $value);
+                        }
+                    }
+                    $p_proposal = 0;
+                    $p_allLaporan = 0;
+                    $p_allBeasiswa = 0;
+                    $p_dll = 0;
+                    $jumlah = count($allProposal) + count($allBeasiswa) + count($allLaporan) + count($allDll);
+                    if ($jumlah != null) {
+                        json_encode($p_proposal = count($allProposal) * 100 / $jumlah);
+                        json_encode($p_allLaporan = count($allLaporan) * 100 / $jumlah);
+                        json_encode($p_allBeasiswa = count($allBeasiswa) * 100 / $jumlah);
+                        json_encode($p_dll = count($allDll) * 100 / $jumlah);
                     } else {
                         $jumlah = 0;
                     }
@@ -68,7 +528,7 @@
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($proposal); ?></div>
+                                                    <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($allProposal); ?></div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
@@ -94,7 +554,7 @@
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($laporan); ?></div>
+                                                    <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($allLaporan); ?></div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
@@ -120,7 +580,7 @@
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($beasiswa); ?></div>
+                                                    <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($allBeasiswa); ?></div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
@@ -146,7 +606,7 @@
                                             </div>
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($dll); ?></div>
+                                                    <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($allDll); ?></div>
                                                 </div>
                                                 <div class="col">
                                                     <div class="progress progress-sm mr-2">
@@ -168,7 +628,7 @@
                     <!-- isi -->
                     <div class="row">
                         <!-- table -->
-                        <div class="col-7">
+                        <div class="col">
                             <!-- Collapsable Card Example -->
                             <div class="card shadow mb-2">
                                 <!-- Card Header - Accordion -->
@@ -365,13 +825,14 @@
                                                 <th class="text-center" style="min-width: 150px;">Pengirim</th>
                                                 <th class="text-center">Nama surat</th>
                                                 <th class="text-center" style="min-width: 200px;">Jenis surat</th>
-                                                <th class="text-center" style="min-width: 200px;">kemahasiswaan</th>
-                                                <th class="text-center" style="min-width: 200px;">Administrator</th>
+                                                <th class="text-center" style="min-width: 200px;">Status Approved</th>
+                                                <th class="text-center" style="min-width: 200px;">Organisasi</th>
                                                 <th class="text-center" style="min-width: 200px;">User</th>
                                                 <th class="text-center" style="min-width: 200px;">BEM</th>
                                                 <th class="text-center" style="min-width: 200px;">kemahasiswaan</th>
                                                 <th class="text-center" style="min-width: 150px;">Updated At</th>
                                             </tr>
+                                            <?php ($page == null) ? $page = 1 : $page; ?>
                                             <?php $i = 1 + (5 * ($page - 1)); ?>
                                             <?php ($berkasHasil != null) ? $hasil = $berkasHasil : $hasil = $berkas ?>
                                             <?php foreach ($hasil as $key => $u) : ?>
@@ -398,14 +859,7 @@
                                                     <?php elseif ($u['approved_Sadmin'] == '3') : ?>
                                                         <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                                     <?php endif; ?>
-                                                    <!-- cek status approved administrator -->
-                                                    <?php if ($u['approved_admin'] == '1') : ?>
-                                                        <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
-                                                    <?php elseif ($u['approved_admin'] == '2') : ?>
-                                                        <td class="text-center"><i class="fas fa-minus-circle" style="color: grey;"></i></td>
-                                                    <?php elseif ($u['approved_admin'] == '3') : ?>
-                                                        <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
-                                                    <?php endif; ?>
+                                                    <td class="text-center"><?= $u['organisasi']; ?></i></td>
                                                     <td>
                                                         <textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea>
                                                     </td>
@@ -420,44 +874,16 @@
                                                 <?php $i++ ?>
                                             <?php endforeach; ?>
                                         </table>
-                                        <?= $pager->links('berkas', 'berkas_pager'); ?>
+                                        <?php if ($berkasHasil == null) : ?>
+                                            <?= $pager->links('berkas', 'berkas_pager'); ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <!-- chart -->
-                        <div class="col-5">
-                            <div class="card">
-                                <div class="row">
-                                    <div class="col">
-                                        <script src="https://code.highcharts.com/highcharts.js"></script>
-                                        <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                                        <div id="bulanan" style="min-width: 310px; height: 270px; max-width:100%; margin: 0 auto"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card mt-3">
-                                <div class="row">
-                                    <div class="col">
-                                        <script src="https://code.highcharts.com/highcharts.js"></script>
-                                        <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                                        <div id="type" style="min-width: 310px; height: 250px; max-width:100%; margin: 0 auto"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card my-3">
-                        <div class="row">
-                            <div class="col">
-                                <script src="https://code.highcharts.com/highcharts.js"></script>
-                                <script src="https://code.highcharts.com/modules/exporting.js"></script>
-                                <div id="tahunan" style="min-width: 310px; height: 300px; max-width:100%; margin: 0 auto"></div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Page 2 -->
+                <!-- Page 3 -->
                 <div class="tab-pane" id="berkasLama" role="tabpane2">
                     <!-- isi -->
                     <div class="accordion" id="accordionExample">
@@ -553,7 +979,7 @@
                         <?php endfor; ?>
                     </div>
                 </div>
-                <!-- Page 3 -->
+                <!-- Page 4 -->
                 <div class="tab-pane" id="beasiswa" role="tabpane3">
                     <div class="card">
                         <!-- isi -->
@@ -563,11 +989,14 @@
                             $beasiswa = $db->table('berkas')->join('user', 'user.nim = berkas.nim')
                                 ->select('berkas.nim')->select('berkas.updated_at')->select('berkas.id')->select('berkas.title')->select('user.nama')->select('berkas.nik')
                                 ->select('user.gender')->select('user.rtrw')->select('user.desa')->select('user.kecamatan')->select('user.kota')
-                                ->like('berkas.type', 3)->orLike('berkas.type', 4)->get()->getResultArray();
+                                ->like('berkas.type', 3)->get()->getResultArray();
+                            $beasiswaLain = $db->table('berkas')->join('user', 'user.nim = berkas.nim')
+                                ->select('berkas.nim')->select('berkas.updated_at')->select('berkas.id')->select('berkas.title')->select('user.nama')->select('berkas.nik')
+                                ->select('user.gender')->select('user.rtrw')->select('user.desa')->select('user.kecamatan')->select('user.kota')
+                                ->like('berkas.type', 4)->get()->getResultArray();
                             ?>
                             <?php for ($years = date('Y'); $years >= 2020; $years--) : ?>
                                 <!-- accordion 1 -->
-                                <!-- <div class="card"> -->
                                 <div class="card-header" id="headingOne" style="background: linear-gradient(blue,black);">
                                     <div class="btn btn-link text-white btn-block text-center" type="button" data-toggle="collapse" data-target="#collapseOne<?= $years; ?>" aria-expanded="true" aria-controls="collapseOne<?= $years; ?>">
                                         Beasiswa Tahun <?= $years; ?>
@@ -584,14 +1013,20 @@
                                                         <a href="<?= base_url('SuperAdmin/excel/' . $years); ?>" class="btn text-white" style="background: green;"><i class="far fa-file-excel"></i></a>
                                                     </div>
                                                 </div>
+                                                <!-- table beasiswa -->
                                                 <div class="rounded m-1">
                                                     <div class="table-responsive rounded">
-                                                        <table class="table table-striped table-hover">
+                                                        <table class="table-striped table-hover">
+                                                            <tr style="height: 40px;">
+                                                                <th class="text-center text-white" colspan="8" style="background: linear-gradient(yellow,black);">
+                                                                    Beasiswa BAWAKU
+                                                                </th>
+                                                            </tr>
                                                             <tr>
                                                                 <th class="text-center">NO</th>
-                                                                <th class="text-center">NIM</th>
+                                                                <th class="text-center" style="min-width: 200px;">NIM</th>
                                                                 <th class="text-center" style="min-width: 200px;">Nama Pengirim</th>
-                                                                <th class="text-center">Jurusan</th>
+                                                                <th class="text-center" style="min-width: 200px;">Jurusan</th>
                                                                 <th class="text-center" style="min-width: 200px;">Nama surat</th>
                                                                 <th class="text-center" style="min-width: 200px;">NIK</th>
                                                                 <th class="text-center" style="min-width: 300px;">Alamat</th>
@@ -603,12 +1038,75 @@
                                                                 <?php if (substr($u['updated_at'], 0, 4) == $years) : ?>
                                                                     <tr>
                                                                         <td class="text-center"><?= $i; ?></td>
-                                                                        <td><a href="#" data-toggle="modal" data-target="#data<?= $u['nim']; ?>"><?= $u['nim']; ?></a></td>
+                                                                        <td class="text-center"><a href="#" data-toggle="modal" data-target="#data<?= $u['nim']; ?>"><?= $u['nim']; ?></a></td>
                                                                         <td><?= $u['nama']; ?></td>
                                                                         <?php
                                                                         $jurusan = substr($u['nim'], 0, 2);
                                                                         if ($jurusan == 35) {
-                                                                            $j = 'Sistem Informasi';
+                                                                            $j = 'Sistem Informasi S-1';
+                                                                        } elseif ($jurusan == 36) {
+                                                                            $j = 'Teknik Informatika S-1';
+                                                                        } elseif ($jurusan == 37) {
+                                                                            $j = 'Akuntansi S-1';
+                                                                        } elseif ($jurusan == 38) {
+                                                                            $j = 'Manajemen S-1';
+                                                                        } elseif ($jurusan == 25) {
+                                                                            $j = 'Manajemen Informasi D-3';
+                                                                        } elseif ($jurusan == 26) {
+                                                                            $j = 'Teknik Informatika D-3';
+                                                                        } elseif ($jurusan == 27) {
+                                                                            $j = 'Akuntansi D-3';
+                                                                        } elseif ($jurusan == 28) {
+                                                                            $j = 'Manajemen D-3';
+                                                                        }
+                                                                        ?>
+                                                                        <td><?= $j; ?></td>
+                                                                        <td style="max-width: 150px;"><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 14, 20); ?></a></td>
+                                                                        <td><?= $u['nik']; ?></td>
+                                                                        <td><?= $u['rtrw']; ?> <?= $u['desa']; ?> <?= $u['kecamatan']; ?> <?= $u['kota']; ?></td>
+                                                                        <td><?= $u['updated_at']; ?></td>
+                                                                    </tr>
+                                                                    <?php $i++; ?>
+                                                                <?php else : ?>
+                                                                <?php endif; ?>
+
+                                                            <?php endforeach; ?>
+                                                        </table>
+                                                        <div class="row ml-3">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- table beasiswa lain-->
+                                                <div class="rounded m-1">
+                                                    <div class="table-responsive rounded">
+                                                        <table class="table-striped table-hover">
+                                                            <tr style="height: 40px;">
+                                                                <th class="text-center text-white" colspan="8" style="background: linear-gradient(yellow,black);">
+                                                                    Beasiswa Lain
+                                                                </th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th class="text-center">NO</th>
+                                                                <th class="text-center" style="min-width: 200px;">NIM</th>
+                                                                <th class="text-center" style="min-width: 200px;">Nama Pengirim</th>
+                                                                <th class="text-center" style="min-width: 200px;">Jurusan</th>
+                                                                <th class="text-center" style="min-width: 200px;">Nama surat</th>
+                                                                <th class="text-center" style="min-width: 200px;">NIK</th>
+                                                                <th class="text-center" style="min-width: 300px;">Alamat</th>
+                                                                <th class="text-center" style="min-width: 150px;">Dikirim</th>
+                                                            </tr>
+                                                            <?php $i = 1; ?>
+
+                                                            <?php foreach ($beasiswaLain as $key => $u) : ?>
+                                                                <?php if (substr($u['updated_at'], 0, 4) == $years) : ?>
+                                                                    <tr>
+                                                                        <td class="text-center"><?= $i; ?></td>
+                                                                        <td class="text-center"><a href="#" data-toggle="modal" data-target="#data<?= $u['nim']; ?>"><?= $u['nim']; ?></a></td>
+                                                                        <td><?= $u['nama']; ?></td>
+                                                                        <?php
+                                                                        $jurusan = substr($u['nim'], 0, 2);
+                                                                        if ($jurusan == 35) {
+                                                                            $j = 'Sistem Informasi S-1';
                                                                         } elseif ($jurusan == 36) {
                                                                             $j = 'Teknik Informatika S-1';
                                                                         } elseif ($jurusan == 37) {
@@ -645,7 +1143,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- </div> -->
                             <?php endfor; ?>
                         </div>
                     </div>
@@ -703,368 +1200,411 @@ array_push($data, count($januari), count($februari), count($maret), count($april
 $data = json_encode($data);
 
 $tahun = [];
-for ($i = 2020; $i <= date('Y'); $i++) {
-    # code...
-    array_push($tahun, $i);
+for ($i = intval(date('Y')) - 4; $i <= date('Y'); $i++) {
+    array_push($tahun, "Arsip Tahun " . $i);
 }
 $tahun = json_encode($tahun);
-$prp   = json_encode(count($proposal));
+
+$usrThn = [];
+for ($i = intval(date('Y')) - 4; $i <= date('Y'); $i++) {
+    array_push($usrThn, "User Tahun " . $i);
+}
+$usrThn = json_encode($usrThn);
+
+// arsip tahunan
 $prpTahunan = json_encode($prpTahunan);
 $lprTahunan = json_encode($lprTahunan);
 $bwkTahunan = json_encode($bwkTahunan);
 $bswTahunan = json_encode($bswTahunan);
+
+// user tahunan
+$siTahunan = json_encode($siTahunan);
+$tiTahunan = json_encode($tiTahunan);
+$akTahunan = json_encode($akTahunan);
+$mnTahunan = json_encode($mnTahunan);
+$mi3Tahunan = json_encode($mi3Tahunan);
+$ti3Tahunan = json_encode($ti3Tahunan);
+$ak3Tahunan = json_encode($ak3Tahunan);
+$mn3Tahunan = json_encode($mn3Tahunan);
+// chart user gender
+$boy = [];
+$girl = [];
+foreach ($allUser as $key => $value) {
+    if ($value['gender'] == 1 && substr($value['nim'], 2, 2) == substr(date('Y'), 2, 2) && $value['is_active'] == 1) {
+        array_push($boy, $value);
+    } elseif ($value['gender'] == 2 && substr($value['nim'], 2, 2) == substr(date('Y'), 2, 2) && $value['is_active'] == 1) {
+        array_push($girl, $value);
+    }
+}
+
 ?>
 <script type='text/javascript'>
-    Highcharts.chart('bulanan', {
-        chart: {
-            type: 'column'
+    // chart bulanan
+    var arsBln = document.getElementById("arsipBulanan").getContext('2d');
+    var myChart = new Chart(arsBln, {
+        type: 'line',
+        data: {
+            labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+            datasets: [{
+                label: 'Arsip Bulanan',
+                data: <?= $data; ?>,
+                borderColor: 'rgba(0, 99, 132, 1)',
+            }]
         },
-        title: {
-            text: 'Statistik Perbulan Tahun <?= date('Y'); ?>'
-        },
-        subtitle: {
-            text: 'Sumber : Data Kemahasiswaan'
-        },
-        xAxis: {
-            //INI ADALAH UNTUK KOLOM KETERANGAN
-
-            categories: <?= $a; ?>,
+        options: {
+            responsive: true,
+            legend: {
+                display: false
+            },
             title: {
-                text: 'Bulan'
+                display: true,
+                text: "Sumber: Data Kemahasiswaan Tahun <?= date('Y'); ?>"
             },
-            crosshair: true
-        },
-        yAxis: {
-
-            title: {
-                text: 'Jumlah'
-            }
-        },
-
-        tooltip: {
-            headerFormat: '<span style="font-size:8pt">{point.key}</span><table style="font-size:8pt">',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">Jml.: </td>' +
-                '<td style="padding:0"><b>{point.y:.0f}</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            colorByPoint: true,
-            showInLegend: false,
-
-            data: <?= $data; ?> //INI ADALAH UNTUK JUMLAH
-
-        }, ]
-    });
-
-    let type = ['Proposal', 'Laporan', 'Beasiswa Bawaku', 'Beasiswa lain']
-    Highcharts.setOptions({
-        colors: ['#4E73DF', '#1CC88A', '#E85547', '#36B9CC']
-    });
-
-    Highcharts.chart('type', {
-        chart: {
-            type: 'pie'
-        },
-        title: {
-            text: 'Persentase Jenis Arsip Tahun <?= date('Y'); ?>'
-        },
-        subtitle: {
-            text: 'Sumber : Data Kemahasiswaan'
-        },
-        accessibility: {
-            announceNewData: {
-                enabled: true
+            scales: {
+                yAxes: [{
+                    gridLines: {
+                        drawBorder: false,
+                    },
+                }],
+                xAxes: [{
+                    gridLines: {
+                        display: false,
+                    },
+                }],
             },
-            point: {
-                valueSuffix: '%'
-            }
-        },
-
-        plotOptions: {
-            pie: {
-                shadow: false,
-                center: ['50%', '50%']
-            },
-            series: {
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.name}: {point.y:.1f}%'
-                }
-            },
-        },
-
-        tooltip: {
-            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total <?= $jumlah; ?> <br/>'
-        },
-
-        series: [{
-            name: "Arsip",
-            colorByPoint: true,
-            size: '80%',
-            innerSize: '60%',
-            data: [{
-                    name: "Proposal",
-                    y: <?= $p_proposal; ?>,
-                    drilldown: "Proposal"
-                },
-                {
-                    name: "Laporan",
-                    y: <?= $p_laporan; ?>,
-                    drilldown: "Laporan"
-                },
-                {
-                    name: "Beasiswa Bawaku",
-                    y: <?= $p_beasiswa; ?>,
-                    drilldown: "Beasiswa Bawaku"
-                },
-                {
-                    name: "Beasiswa Lain",
-                    y: <?= $p_dll; ?>,
-                    drilldown: "Beasiswa Lain"
-                },
-            ]
-        }],
-        drilldown: {
-            series: [{
-                    name: "Proposal",
-                    id: "Proposal",
-                    data: [
-                        [
-                            "v65.0",
-                            0.1
-                        ],
-                        [
-                            "v64.0",
-                            1.3
-                        ],
-                        [
-                            "v63.0",
-                            53.02
-                        ],
-                        [
-                            "v62.0",
-                            1.4
-                        ],
-                        [
-                            "v61.0",
-                            0.88
-                        ],
-                        [
-                            "v60.0",
-                            0.56
-                        ],
-                        [
-                            "v59.0",
-                            0.45
-                        ],
-                        [
-                            "v58.0",
-                            0.49
-                        ],
-                        [
-                            "v57.0",
-                            0.32
-                        ],
-                        [
-                            "v56.0",
-                            0.29
-                        ],
-                        [
-                            "v55.0",
-                            0.79
-                        ],
-                        [
-                            "v54.0",
-                            0.18
-                        ],
-                        [
-                            "v51.0",
-                            0.13
-                        ],
-                        [
-                            "v49.0",
-                            2.16
-                        ],
-                        [
-                            "v48.0",
-                            0.13
-                        ],
-                        [
-                            "v47.0",
-                            0.11
-                        ],
-                        [
-                            "v43.0",
-                            0.17
-                        ],
-                        [
-                            "v29.0",
-                            0.26
-                        ]
-                    ]
-                },
-                {
-                    name: "Laporan",
-                    id: "Laporan",
-                    data: [
-                        [
-                            "v58.0",
-                            1.02
-                        ],
-                        [
-                            "v57.0",
-                            7.36
-                        ],
-                        [
-                            "v56.0",
-                            0.35
-                        ],
-                        [
-                            "v55.0",
-                            0.11
-                        ],
-                        [
-                            "v54.0",
-                            0.1
-                        ],
-                        [
-                            "v52.0",
-                            0.95
-                        ],
-                        [
-                            "v51.0",
-                            0.15
-                        ],
-                        [
-                            "v50.0",
-                            0.1
-                        ],
-                        [
-                            "v48.0",
-                            0.31
-                        ],
-                        [
-                            "v47.0",
-                            0.12
-                        ]
-                    ]
-                },
-                {
-                    name: "Beasiswa Bawaku",
-                    id: "Beasiswa Bawaku",
-                    data: [
-                        [
-                            "v11.0",
-                            6.2
-                        ],
-                        [
-                            "v10.0",
-                            0.29
-                        ],
-                        [
-                            "v9.0",
-                            0.27
-                        ],
-                        [
-                            "v8.0",
-                            0.47
-                        ]
-                    ]
-                },
-                {
-                    name: "Beasiswa Lain",
-                    id: "Beasiswa Lain",
-                    data: [
-                        [
-                            "v11.0",
-                            3.39
-                        ],
-                        [
-                            "v10.1",
-                            0.96
-                        ],
-                        [
-                            "v10.0",
-                            0.36
-                        ],
-                        [
-                            "v9.1",
-                            0.54
-                        ],
-                        [
-                            "v9.0",
-                            0.13
-                        ],
-                        [
-                            "v5.1",
-                            0.2
-                        ]
-                    ]
-                }
-            ]
         }
     });
 
-    Highcharts.chart('tahunan', {
-        chart: {
-            type: 'column'
+
+    // chart Tahunan
+    var chartOptions = {
+        responsive: true,
+        legend: {
+            position: "bottom",
+            labels: {
+                usePointStyle: true,
+                boxWidth: 6
+            }
         },
         title: {
-            text: 'Statistik Tahunan'
+            display: true,
+            text: "Statistik Arsip Tahunan"
         },
-        subtitle: {
-            text: 'Sumber : Data Kemahasiswaan'
+        scales: {
+            yAxes: [{
+                gridLines: {
+                    drawBorder: false,
+                },
+            }],
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                },
+            }],
         },
-        xAxis: {
-            categories: <?= $tahun; ?>,
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Jumlah Pengiriman'
+    }
+    var barChartData = {
+        labels: <?= $tahun ?>,
+
+        datasets: [{
+                label: "Proposal",
+                backgroundColor: "#4E73DF",
+                borderColor: "#4E73DF",
+                barThickness: 30,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $prpTahunan; ?>
+            },
+            {
+                label: "Laporan",
+                backgroundColor: "#2ACB91",
+                borderColor: "#2ACB91",
+                barThickness: 30,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $lprTahunan; ?>
+            },
+            {
+                label: "Beasiswa Bawaku",
+                backgroundColor: "#E74A3B",
+                borderColor: "#E74A3B",
+                barThickness: 30,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $bwkTahunan; ?>
+            },
+            {
+                label: "Beasiswa Lain",
+                backgroundColor: "#42BDCF",
+                borderColor: "#42BDCF",
+                barThickness: 30,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $bswTahunan; ?>
+            }
+        ]
+    };
+    var ctx = document.getElementById("arsipTahunan").getContext("2d");
+    window.myBar = new Chart(ctx, {
+        type: "bar",
+        data: barChartData,
+        options: chartOptions
+    });
+
+
+    //  chart type
+    var optType = {
+        responsive: true,
+        legend: {
+            position: "bottom",
+            labels: {
+                usePointStyle: true,
+                boxWidth: 6
             }
         },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y} Document</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
+        title: {
+            display: true,
+            text: "Sumber: Data Kemahasiswaan Tahun <?= date('Y'); ?>"
         },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: 'Proposal',
-            data: <?= $prpTahunan; ?>
-
-        }, {
-            name: 'Laporan',
-            data: <?= $lprTahunan; ?>
-
-        }, {
-            name: 'Beasiswa Bawaku',
-            data: <?= $bwkTahunan; ?>
-
-        }, {
-            name: 'Beasiswa lain',
-            data: <?= $bswTahunan; ?>
-
+    }
+    var arsipTypedata = {
+        labels: [
+            'Proposal',
+            'Laporan',
+            'Beasiswa Bawaku',
+            'Beasiswa Lain'
+        ],
+        datasets: [{
+            label: 'My First Dataset',
+            data: [<?= count($proposal); ?>, <?= count($laporan); ?>, <?= count($beasiswa); ?>, <?= count($dll); ?>],
+            backgroundColor: [
+                '#4E73DF',
+                '#1CC88A',
+                '#E85547',
+                '#36B9CC'
+            ],
+            hoverOffset: 1,
+            hoverBorderWidth: 5,
+            hoverBorderColor: '#E5E5E5'
         }]
+    };
+    var arsipType = document.getElementById("arsipType").getContext("2d");
+    window.myBar = new Chart(arsipType, {
+        type: "doughnut",
+        data: arsipTypedata,
+        options: optType
+    });
+
+
+    // user type 
+    var optUsrType = {
+        responsive: true,
+        legend: {
+            position: "bottom",
+            labels: {
+                usePointStyle: true,
+                boxWidth: 6
+            }
+        },
+        title: {
+            display: true,
+            text: "Sumber: Data Kemahasiswaan Tahun <?= date('Y'); ?>"
+        },
+    }
+    var userTypeData = {
+        labels: [
+            'Sistem Informasi S1',
+            'Teknik Informatika S1',
+            'Akuntansi S1',
+            'Manajemen S1',
+            'Manajemen Informasi D3',
+            'Teknik Informatika D3',
+            'Akuntansi D3',
+            'Manajemen D3',
+        ],
+        datasets: [{
+            label: 'My First Dataset',
+            data: [
+                <?= count($Si); ?>,
+                <?= count($Ti); ?>,
+                <?= count($Ak); ?>,
+                <?= count($Mn); ?>,
+                <?= count($mi); ?>,
+                <?= count($ti); ?>,
+                <?= count($ak); ?>,
+                <?= count($mn); ?>
+            ],
+            backgroundColor: [
+                '#4E73DF',
+                '#1CC88A',
+                '#E85547',
+                '#5A5C69',
+                '#36B9CC',
+                '#8C8E9C',
+                '#F6C23E',
+                '#0000F6'
+            ],
+            hoverOffset: 1
+        }]
+    };
+    var userType = document.getElementById("userType").getContext("2d");
+    window.myBar = new Chart(userType, {
+        type: "doughnut",
+        data: userTypeData,
+        options: optUsrType
+    });
+
+
+    // user Gender 
+    var optUsrGender = {
+        responsive: true,
+        legend: {
+            position: "bottom",
+            labels: {
+                usePointStyle: true,
+                boxWidth: 6
+            }
+        },
+        title: {
+            display: true,
+            text: "Sumber: Data Kemahasiswaan Tahun <?= date('Y'); ?>"
+        },
+    }
+    var userGenderData = {
+        labels: [
+            'Laki - laki',
+            'Perempuan',
+        ],
+        datasets: [{
+            label: 'My First Dataset',
+            data: [
+                <?= count($boy); ?>,
+                <?= count($girl); ?>,
+            ],
+            backgroundColor: [
+                '#0000FF',
+                '#FAACCE',
+            ],
+            hoverOffset: 1
+        }]
+    };
+    var userGender = document.getElementById("userGender").getContext("2d");
+    window.myBar = new Chart(userGender, {
+        type: "pie",
+        data: userGenderData,
+        options: optUsrGender
+    });
+
+
+    // User Lima Tahun terakhir
+    var lastOptions = {
+        responsive: true,
+        legend: {
+            position: "bottom",
+            labels: {
+                usePointStyle: true,
+                boxWidth: 6
+            }
+        },
+        title: {
+            display: true,
+            text: "Sumber: Data Kemahasiswaan Tahun <?= date('Y'); ?>"
+        },
+        scales: {
+            yAxes: [{
+                gridLines: {
+                    drawBorder: false,
+                },
+            }],
+            xAxes: [{
+                gridLines: {
+                    display: false,
+                },
+            }],
+        },
+    }
+    var barLast = {
+        labels: <?= $usrThn ?>,
+
+        datasets: [{
+                label: "Sistem Informasi S1",
+                backgroundColor: "#4E73DF",
+                borderColor: "#4E73DF",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $siTahunan; ?>
+            },
+            {
+                label: "Teknik Informatika S1",
+                backgroundColor: "#1CC88A",
+                borderColor: "#1CC88A",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $tiTahunan; ?>
+            },
+            {
+                label: "Akuntansi S1",
+                backgroundColor: "#E74A3B",
+                borderColor: "#E74A3B",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $akTahunan; ?>
+            },
+            {
+                label: "Manajemen S1",
+                backgroundColor: "#5A5C69",
+                borderColor: "#5A5C69",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $mn3Tahunan; ?>
+            },
+            {
+                label: "Manajemen Informasi D3",
+                backgroundColor: "#36B9CC",
+                borderColor: "#36B9CC",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $mi3Tahunan; ?>
+            },
+            {
+                label: "Teknik Informatika D3",
+                backgroundColor: "#8C8E9C",
+                borderColor: "#8C8E9C",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $ti3Tahunan; ?>
+            },
+            {
+                label: "Akuntansi D3",
+                backgroundColor: "#F6C23E",
+                borderColor: "#F6C23E",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $ak3Tahunan; ?>
+            },
+            {
+                label: "Manajemen D3",
+                backgroundColor: "#0000F6",
+                borderColor: "#0000F6",
+                barThickness: 20,
+                maxBarThickness: 50,
+                borderWidth: 1,
+                data: <?= $mn3Tahunan; ?>
+            }
+        ]
+    };
+    var ctx = document.getElementById("userLast").getContext("2d");
+    window.myBar = new Chart(ctx, {
+        type: "bar",
+        data: barLast,
+        options: lastOptions
     });
 </script>
 
@@ -1118,15 +1658,15 @@ $bswTahunan = json_encode($bswTahunan);
                                         <div class="col-8">
                                             <!-- cek jurusan -->
                                             <?php if (substr($u['nim'], 0, 2) == '35') : ?>
-                                                <p>Sistem Informasi</p>
+                                                <p>Sistem Informasi S-1</p>
                                             <?php elseif (substr($u['nim'], 0, 2) == '36') : ?>
-                                                <p>Teknik Informatika</p>
+                                                <p>Teknik Informatika S-1</p>
                                             <?php elseif (substr($u['nim'], 0, 2) == '37') : ?>
-                                                <p>Akuntansi</p>
+                                                <p>Akuntansi S-1</p>
                                             <?php elseif (substr($u['nim'], 0, 2) == '38') : ?>
-                                                <p>Manajemen</p>
+                                                <p>Manajemen S-1</p>
                                             <?php elseif (substr($u['nim'], 0, 2) == '25') : ?>
-                                                <p>Manajemen Informasi</p>
+                                                <p>Manajemen Informasi D-3</p>
                                             <?php elseif (substr($u['nim'], 0, 2) == '26') : ?>
                                                 <p>Teknik Informatika D-3</p>
                                             <?php elseif (substr($u['nim'], 0, 2) == '27') : ?>
