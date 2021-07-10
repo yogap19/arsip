@@ -29,32 +29,33 @@
                     // array berkas
                     $proposal = [];
                     $laporan = [];
-                    $beasiswa = [];
+                    $beasiswa1 = [];
                     $dll = [];
                     foreach ($allBerkas as $key => $value) {
-                        # code...
-                        if ($value['type'] == 1 && substr($value['updated_at'], 0, 4) == date('Y')) {
-                            json_encode(array_push($proposal, $value));
-                        }
-                        if ($value['type'] == 2 && substr($value['updated_at'], 0, 4) == date('Y')) {
-                            json_encode(array_push($laporan, $value));
-                        }
-                        if ($value['type'] == 3 && substr($value['updated_at'], 0, 4) == date('Y')) {
-                            json_encode(array_push($beasiswa, $value));
-                        }
-                        if ($value['type'] == 4 && substr($value['updated_at'], 0, 4) == date('Y')) {
-                            json_encode(array_push($dll, $value));
+                        if ($value['approved_admin'] == 1) {
+                            if ($value['type'] == 1 && substr($value['updated_at'], 0, 4) == date('Y')) {
+                                json_encode(array_push($proposal, $value));
+                            }
+                            if ($value['type'] == 2 && substr($value['updated_at'], 0, 4) == date('Y')) {
+                                json_encode(array_push($laporan, $value));
+                            }
+                            if ($value['type'] == 3 && substr($value['updated_at'], 0, 4) == date('Y')) {
+                                json_encode(array_push($beasiswa1, $value));
+                            }
+                            if ($value['type'] == 4 && substr($value['updated_at'], 0, 4) == date('Y')) {
+                                json_encode(array_push($dll, $value));
+                            }
                         }
                     }
                     $p_proposal = 0;
                     $p_laporan = 0;
                     $p_beasiswa = 0;
                     $p_dll = 0;
-                    $jumlah = count($proposal) + count($beasiswa) + count($laporan) + count($dll);
+                    $jumlah = count($proposal) + count($beasiswa1) + count($laporan) + count($dll);
                     if ($jumlah != null) {
                         json_encode($p_proposal = count($proposal) * 100 / $jumlah);
                         json_encode($p_laporan = count($laporan) * 100 / $jumlah);
-                        json_encode($p_beasiswa = count($beasiswa) * 100 / $jumlah);
+                        json_encode($p_beasiswa = count($beasiswa1) * 100 / $jumlah);
                         json_encode($p_dll = count($dll) * 100 / $jumlah);
                     } else {
                         $jumlah = 0;
@@ -189,7 +190,7 @@
                                                     </div>
                                                     <div class="row no-gutters align-items-center">
                                                         <div class="col-auto">
-                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($beasiswa); ?></div>
+                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($beasiswa1); ?></div>
                                                         </div>
                                                         <div class="col">
                                                             <div class="progress progress-sm mr-2">
@@ -471,7 +472,7 @@
                         <div class="card">
                             <div class="row">
                                 <div class="col">
-                                    <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">User 5 Tahun Terakhir </h3>
+                                    <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Mahasiswa 5 Tahun Terakhir </h3>
                                     <canvas id="userLast"></canvas>
                                 </div>
                             </div>
@@ -488,18 +489,19 @@
                     $allBeasiswa = [];
                     $allDll = [];
                     foreach ($allBerkas as $key => $value) {
-                        # code...
-                        if ($value['type'] == 1) {
-                            array_push($allProposal, $value);
-                        }
-                        if ($value['type'] == 2) {
-                            array_push($allLaporan, $value);
-                        }
-                        if ($value['type'] == 3) {
-                            array_push($allBeasiswa, $value);
-                        }
-                        if ($value['type'] == 4) {
-                            array_push($allDll, $value);
+                        if ($value['approved_admin'] == 1) {
+                            if ($value['type'] == 1) {
+                                array_push($allProposal, $value);
+                            }
+                            if ($value['type'] == 2) {
+                                array_push($allLaporan, $value);
+                            }
+                            if ($value['type'] == 3) {
+                                array_push($allBeasiswa, $value);
+                            }
+                            if ($value['type'] == 4) {
+                                array_push($allDll, $value);
+                            }
                         }
                     }
                     $p_proposal = 0;
@@ -1170,35 +1172,36 @@ $november = [];
 $desember = [];
 
 foreach ($allBerkas as $key => $value) {
-    if (substr($value['updated_at'], 5, 2) == '01' && substr($value['updated_at'], 0, 4) == date('Y')) {
-        array_push($januari, $value);
-    } elseif (substr($value['updated_at'], 5, 2) == '02' && substr($value['updated_at'], 0, 4) == date('Y')) {
-        array_push($februari, $value);
-    } elseif (substr($value['updated_at'], 5, 2) == '03' && substr($value['updated_at'], 0, 4) == date('Y')) {
-        array_push($maret, $value);
-    } elseif (substr($value['updated_at'], 5, 2) == '04' && substr($value['updated_at'], 0, 4) == date('Y')) {
-        array_push($april, $value);
-    } elseif (substr($value['updated_at'], 5, 2) == '05' && substr($value['updated_at'], 0, 4) == date('Y')) {
-        array_push($mei, $value);
-    } elseif (substr($value['updated_at'], 5, 2) == '06' && substr($value['updated_at'], 0, 4) == date('Y')) {
-        array_push($juni, $value);
-    } elseif (substr($value['updated_at'], 5, 2) == '07' && substr($value['updated_at'], 0, 4) == date('Y')) {
-        array_push($juli, $value);
-    } elseif (substr($value['updated_at'], 5, 2) == '08' && substr($value['updated_at'], 0, 4) == date('Y')) {
-        array_push($agustus, $value);
-    } elseif (substr($value['updated_at'], 5, 2) == '09' && substr($value['updated_at'], 0, 4) == date('Y')) {
-        array_push($september, $value);
-    } elseif (substr($value['updated_at'], 5, 2) == '10' && substr($value['updated_at'], 0, 4) == date('Y')) {
-        array_push($oktober, $value);
-    } elseif (substr($value['updated_at'], 5, 2) == '11' && substr($value['updated_at'], 0, 4) == date('Y')) {
-        array_push($november, $value);
-    } elseif (substr($value['updated_at'], 5, 2) == '12' && substr($value['updated_at'], 0, 4) == date('Y')) {
-        array_push($desember, $value);
+    if (substr($value['updated_at'], 0, 4) == date('Y') && $value['approved_admin'] == 1) {
+        if (substr($value['updated_at'], 5, 2) == '01') {
+            array_push($januari, $value);
+        } elseif (substr($value['updated_at'], 5, 2) == '02') {
+            array_push($februari, $value);
+        } elseif (substr($value['updated_at'], 5, 2) == '03') {
+            array_push($maret, $value);
+        } elseif (substr($value['updated_at'], 5, 2) == '04') {
+            array_push($april, $value);
+        } elseif (substr($value['updated_at'], 5, 2) == '05') {
+            array_push($mei, $value);
+        } elseif (substr($value['updated_at'], 5, 2) == '06') {
+            array_push($juni, $value);
+        } elseif (substr($value['updated_at'], 5, 2) == '07') {
+            array_push($juli, $value);
+        } elseif (substr($value['updated_at'], 5, 2) == '08') {
+            array_push($agustus, $value);
+        } elseif (substr($value['updated_at'], 5, 2) == '09') {
+            array_push($september, $value);
+        } elseif (substr($value['updated_at'], 5, 2) == '10') {
+            array_push($oktober, $value);
+        } elseif (substr($value['updated_at'], 5, 2) == '11') {
+            array_push($november, $value);
+        } elseif (substr($value['updated_at'], 5, 2) == '12') {
+            array_push($desember, $value);
+        }
     }
 }
 array_push($data, count($januari), count($februari), count($maret), count($april), count($mei), count($juni), count($juli), count($agustus), count($september), count($oktober), count($november), count($desember));
 $data = json_encode($data);
-
 $tahun = [];
 for ($i = intval(date('Y')) - 4; $i <= date('Y'); $i++) {
     array_push($tahun, "Arsip Tahun " . $i);
@@ -1262,6 +1265,17 @@ foreach ($allUser as $key => $value) {
             },
             scales: {
                 yAxes: [{
+                    // display: false,
+                    ticks: {
+                        callback: function(label, index, labels) {
+                            for (let d = 0.5; d < 1000; d++) {
+                                if (label == d) {
+                                    label = '';
+                                }
+                            }
+                            return label;
+                        }
+                    },
                     gridLines: {
                         drawBorder: false,
                     },
@@ -1376,7 +1390,7 @@ foreach ($allUser as $key => $value) {
         ],
         datasets: [{
             label: 'My First Dataset',
-            data: [<?= count($proposal); ?>, <?= count($laporan); ?>, <?= count($beasiswa); ?>, <?= count($dll); ?>],
+            data: [<?= count($proposal); ?>, <?= count($laporan); ?>, <?= count($beasiswa1); ?>, <?= count($dll); ?>],
             backgroundColor: [
                 '#4E73DF',
                 '#1CC88A',
@@ -1512,6 +1526,17 @@ foreach ($allUser as $key => $value) {
         },
         scales: {
             yAxes: [{
+                // display: false,
+                ticks: {
+                    callback: function(label, index, labels) {
+                        for (let d = 0.5; d < 1000; d++) {
+                            if (label == d) {
+                                label = '';
+                            }
+                        }
+                        return label;
+                    }
+                },
                 gridLines: {
                     drawBorder: false,
                 },

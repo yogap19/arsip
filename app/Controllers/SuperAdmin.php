@@ -153,7 +153,7 @@ class SuperAdmin extends BaseController
             'allUser'       => $this->UserModel->findAll(),
 
             // style data 
-            'berkas'        => $berkas->paginate(5, 'berkas'),
+            'berkas'        => $berkas->where(['approved_admin' => 1])->orderBy('updated_at', 'DESC')->paginate(5, 'berkas'),
             'pager'         => $this->BerkasModel->pager,
             'berkasHasil'   => $hasil,
 

@@ -261,7 +261,7 @@ $usrThn = json_encode($usrThn);
 $Si = [];
 for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
-    $SiUser = $db->table('user')->like('nim', '35' . $thn)->get()->getResultArray();
+    $SiUser = $db->table('user')->like('nim', '35' . $thn)->where(['is_active' => 1])->get()->getResultArray();
     array_push($Si, count($SiUser));
 }
 $Si = json_encode($Si);
@@ -270,7 +270,7 @@ $Si = json_encode($Si);
 $Ti = [];
 for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
-    $SiUser = $db->table('user')->like('nim', '36' . $thn)->get()->getResultArray();
+    $SiUser = $db->table('user')->like('nim', '36' . $thn)->where(['is_active' => 1])->get()->getResultArray();
     array_push($Ti, count($SiUser));
 }
 $Ti = json_encode($Ti);
@@ -279,7 +279,7 @@ $Ti = json_encode($Ti);
 $Ak = [];
 for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
-    $SiUser = $db->table('user')->like('nim', '37' . $thn)->get()->getResultArray();
+    $SiUser = $db->table('user')->like('nim', '37' . $thn)->where(['is_active' => 1])->get()->getResultArray();
     array_push($Ak, count($SiUser));
 }
 $Ak = json_encode($Ak);
@@ -288,7 +288,7 @@ $Ak = json_encode($Ak);
 $Mn = [];
 for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
-    $SiUser = $db->table('user')->like('nim', '38' . $thn)->get()->getResultArray();
+    $SiUser = $db->table('user')->like('nim', '38' . $thn)->where(['is_active' => 1])->get()->getResultArray();
     array_push($Mn, count($SiUser));
 }
 $Mn = json_encode($Mn);
@@ -297,7 +297,7 @@ $Mn = json_encode($Mn);
 $mi = [];
 for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
-    $SiUser = $db->table('user')->like('nim', '25' . $thn)->get()->getResultArray();
+    $SiUser = $db->table('user')->like('nim', '25' . $thn)->where(['is_active' => 1])->get()->getResultArray();
     array_push($mi, count($SiUser));
 }
 $mi = json_encode($mi);
@@ -306,7 +306,7 @@ $mi = json_encode($mi);
 $ti = [];
 for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
-    $SiUser = $db->table('user')->like('nim', '26' . $thn)->get()->getResultArray();
+    $SiUser = $db->table('user')->like('nim', '26' . $thn)->where(['is_active' => 1])->get()->getResultArray();
     array_push($ti, count($SiUser));
 }
 $ti = json_encode($ti);
@@ -315,7 +315,7 @@ $ti = json_encode($ti);
 $ak = [];
 for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
-    $SiUser = $db->table('user')->like('nim', '27' . $thn)->get()->getResultArray();
+    $SiUser = $db->table('user')->like('nim', '27' . $thn)->where(['is_active' => 1])->get()->getResultArray();
     array_push($ak, count($SiUser));
 }
 $ak = json_encode($ak);
@@ -324,7 +324,7 @@ $ak = json_encode($ak);
 $mp = [];
 for ($thn = intval(substr(date('Y'), 2, 2)) - (4 * $tahun); $thn <= substr(date('Y'), 2, 2) - (4 * ($tahun - 1)); $thn++) {
     # code...
-    $SiUser = $db->table('user')->like('nim', '28' . $thn)->get()->getResultArray();
+    $SiUser = $db->table('user')->like('nim', '28' . $thn)->where(['is_active' => 1])->get()->getResultArray();
     array_push($mp, count($SiUser));
 }
 $mp = json_encode($mp);
