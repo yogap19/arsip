@@ -9,5 +9,5 @@ class BannedModel extends Model
 
     protected $table = 'banned';
     protected $useTimestamps = true;
-    protected $allowedFields = ['nim', 'time'];
+    protected $allowedFields = ['nim', 'time', 'count'];
 }

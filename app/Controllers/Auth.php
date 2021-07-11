@@ -255,26 +255,71 @@ class Auth extends BaseController
 
 	public function forgotPassword()
 	{
-		$data = [
-			'title' => 'Forgot Password',
-			'validation' => \Config\Services::validation(),
-			'count' => 4
-		];
+		unset($_SESSION['logout']);
 		if (session('nim')) {
 			header('Location: ' . base_url('User'));
 			exit();
 		}
-		return view('auth/forgotPassword', $data);
+		$nim = htmlspecialchars($this->request->getVar('nim'));
+		$banned = $this->BannedModel->where(['nim' => $nim])->first();
+
+
+		if ($nim != null) {
+			if ($banned) {
+				unset($_SESSION['pesan']);
+				# nim sudah ada di daftar
+				if (time() - $banned['time'] > (3 * 24)) {
+					// update banned
+					$this->BannedModel->save([
+						'id'      => $banned['id'],
+						'count'   => 3,
+						'time'    => time()
+					]);
+					$data = [
+						'title' 	 => 'Forgot Password',
+						'validation' => \Config\Services::validation(),
+						'nim' 		 => $nim
+					];
+					unset($_SESSION['pesan']);
+					return view('auth/forgotPassword', $data);
+				} else {
+					$data = [
+						'title' => 'Login',
+						'validation' => \Config\Services::validation()
+					];
+					session()->setFlashdata('pesan', 'Account with NIM ' . $nim . ' is BANNED!!!');
+					return view('auth/login', $data);
+				}
+			} else {
+				// daftarkan nim
+				$this->BannedModel->save([
+					'nim' 		 => $nim,
+					'time' 		 => time(),
+					'count' 	 => 3,
+				]);
+				$data = [
+					'title' 	 => 'Forgot Password',
+					'validation' => \Config\Services::validation(),
+					'nim' 		 => $nim
+				];
+
+				return view('auth/forgotPassword', $data);
+			}
+		} else {
+			$data = [
+				'title' => 'Login',
+				'validation' => \Config\Services::validation()
+			];
+
+			session()->setFlashdata('pesan', 'NIM is required');
+			return view('auth/login', $data);
+		}
 	}
 
-	public function forgot($count)
+	public function forgot($nim)
 	{
 		// validasi input
 		if ($this->validate([
-			'nim' 	=> [
-				'rules'		=> 'required',
-				'errors'	=> ['required' 	 => 'NIM is required']
-			],
 			'pin' 	=> [
 				'rules'		=> 'required|min_length[6]',
 				'errors'	=> [
@@ -297,55 +342,76 @@ class Auth extends BaseController
 					'matches'  	 => 'password does not match ',
 				]
 			]
-		])) {
-			$nim = $this->request->getVar('nim');
-			$banned = $this->BannedModel->where(['nim' => $nim])->first();
-			$password = $this->request->getVar('password');
-			$pin = $this->request->getVar('pin');
-			$user = $this->UserModel->where(['nim' => $nim])->where(['pin' => $pin])->first();
-
-			$count = intval($count);
-			// d($banned['time']);
-			// d(time());
-			// d(time() - $banned['time'] > 100);
-			$count = $count - 1;
-			// cek nim yang di ban
-			if ($banned) {
-				# jika akun di ban cek waktu ban
-				if (time() - $banned['time'] > (30 * 24)) {
-					# delete list ban dan jalankan program
-					$this->BannedModel->delete(['id' => $banned['id']]);
-
-
-					return redirect()->to('/Auth');
-				} else {
-					$data = [
-						'title' => 'Forgot Password',
-						'count' => $count,
-						'validation' => \Config\Services::validation()
-					];
-					session()->setFlashdata('pesan', 'Account with NIM ' . $nim . ' is still banned!');
-					return view('auth/forgotPassword', $data);
-				}
-			} else {
-				# code...
-			}
-
-			# jika tidak ada...
-			if ($count == 0) {
-				$this->BannedModel->save([
-					'nim' 		=> htmlspecialchars($this->request->getVar('nim')),
-					'time' 		=> time(),
-				]);
-				session()->setFlashdata('pesan', 'Account with NIM ' . $nim . ' has been banned for 1 day!');
-				return redirect()->to('/Auth')->withInput();
-			}
+		]));
+		else {
 			$data = [
 				'title' => 'Forgot Password',
-				'count' => $count,
-				'validation' => \Config\Services::validation()
+				'validation' => \Config\Services::validation(),
 			];
-			session()->setFlashdata('pesan', 'you have ' . $count . ' more chances !');
+			return view('auth/forgotPassword', $data);
+		}
+
+		// get data input
+		$password = $this->request->getVar('password');
+		$pin      = $this->request->getVar('pin');
+
+		// required data
+		$banned = $this->BannedModel->where(['nim' => $nim])->first();
+		$user   = $this->UserModel->where(['nim' => $nim])->first();
+
+		// cek password lama dan pin
+		$password = password_verify($password, $user['password']);
+		$pin = password_verify($pin, $user['pin']);
+
+		if ($password == false) {
+			if ($pin == true) {
+				$this->BannedModel->delete([
+					'id'		 => $banned['id'],
+				]);
+				$this->UserModel->save([
+					'id'		     => $user['id'],
+					'password' 		 => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
+				]);
+				$data = [
+					'title' => 'Login',
+					'validation' => \Config\Services::validation()
+				];
+
+				session()->setFlashdata('logout', 'Your password has been changed');
+				return view('auth/login', $data);
+			} else {
+				if ($banned['count'] == 0) {
+					$data = [
+						'title' => 'Login',
+						'validation' => \Config\Services::validation()
+					];
+					session()->setFlashdata('pesan', 'Sorry you have 3 mistakes in entering your PIN number and banned for 1 day ');
+					return view('auth/login', $data);
+				} else {
+					$count = $banned['count'] - 1;
+					$this->BannedModel->save([
+						'id'		 => $banned['id'],
+						'nim' 		 => $nim,
+						'time' 		 => time(),
+						'count' 	 => $count,
+					]);
+
+					$data = [
+						'title' 	 => 'Forgot Password',
+						'validation' => \Config\Services::validation(),
+						'nim' 		 => $nim
+					];
+					session()->setFlashdata('pesan', 'Please enter your correct PIN!, you have ' . $banned['count'] . ' chance');
+					return view('auth/forgotPassword', $data);
+				}
+			}
+		} else {
+			$data = [
+				'title' 	 => 'Forgot Password',
+				'validation' => \Config\Services::validation(),
+				'nim' 		 => $nim
+			];
+			session()->setFlashdata('pesan', 'New password cannot be the same as the old password!');
 			return view('auth/forgotPassword', $data);
 		}
 	}

@@ -25,14 +25,8 @@
                                     </div>
                                 <?php endif; ?>
                                 <hr>
-                                <form class="user" action="<?= base_url('Auth/forgot/' . $count); ?>" method="POST">
+                                <form class="user" action="<?= base_url('Auth/forgot/' . $nim); ?>" method="POST">
                                     <?= csrf_field(); ?>
-                                    <div class="form-group">
-                                        <input type="nim" class="form-control form-control-user <?= ($validation->hasError('nim')) ? 'is-invalid' : ''; ?>" id="nim" placeholder="NIM" name="nim" autofocus value="<?= old('nim'); ?>" onkeypress="return event.charCode >= 48 && event.charCode <=57">
-                                        <div id="validationServer03Feedback" class="invalid-feedback mx-3">
-                                            <?= $validation->getError('nim'); ?>
-                                        </div>
-                                    </div>
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
                                             <input type="password" class="form-control form-control-user <?= ($validation->hasError('password')) ? 'is-invalid' : ''; ?>" id="password" placeholder="New Password" name="password">

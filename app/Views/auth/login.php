@@ -54,7 +54,7 @@
                                 </form>
                                 <hr>
                                 <div class="text-center">
-                                    <a class="small" href="<?= base_url('auth/forgotPassword'); ?>">Forgot Password?</a>
+                                    <a class="small" href="#" data-toggle="modal" data-target="#frogotModal">Forgot Password?</a>
                                 </div>
                                 <div class="text-center">
                                     <a class="small" href="<?= base_url(); ?>/auth/register">Create an Account!</a>
@@ -64,10 +64,36 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
     </div>
-
 </div>
+
+<!-- forgot Modal-->
+<div class="modal fade" id="frogotModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-modal="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Insret your NIM!</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="<?= base_url('Auth/forgotPassword'); ?>" method="post">
+                    <div class="form-group">
+                        <input type="nim" class="form-control form-control-user <?= ($validation->hasError('nim')) ? 'is-invalid' : ''; ?>" id="nim" placeholder="NIM" name="nim" autofocus value="<?= old('nim'); ?>" maxlength="10" onkeypress="return event.charCode >= 48 && event.charCode <=57">
+                        <div id="validationServer03Feedback" class="invalid-feedback mx-3">
+                            <?= $validation->getError('nim'); ?>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button class="btn btn-user text-white" style="background: linear-gradient(blue,black);">Next</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <?= $this->endSection(); ?>

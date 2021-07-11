@@ -20,7 +20,7 @@
 
 </head>
 
-<body class="" style="background: linear-gradient(Blue, Black);">
+<body class="modal-open" style="background: linear-gradient(Blue, Black);">
 
     <?= $this->renderSection('content'); ?>
     <!-- Bootstrap core JavaScript-->
