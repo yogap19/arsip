@@ -3,6 +3,222 @@
 <?= $this->section('content'); ?>
 <div class="container-fluid">
 
+    <?php
+    // =========================================================berkas page 2================================================
+    $allProposal = [];
+    $allLaporan = [];
+    $allBeasiswa = [];
+    $allDll = [];
+    foreach ($allBerkas as $key => $value) {
+        if ($value['approved_admin'] == 1) {
+            if ($value['type'] == 1) {
+                array_push($allProposal, $value);
+            }
+            if ($value['type'] == 2) {
+                array_push($allLaporan, $value);
+            }
+            if ($value['type'] == 3) {
+                array_push($allBeasiswa, $value);
+            }
+            if ($value['type'] == 4) {
+                array_push($allDll, $value);
+            }
+        }
+    }
+    $p_proposal = 0;
+    $p_allLaporan = 0;
+    $p_allBeasiswa = 0;
+    $p_dll = 0;
+    $jumlah = count($allProposal) + count($allBeasiswa) + count($allLaporan) + count($allDll);
+    if ($jumlah != null) {
+        json_encode($p_proposal = count($allProposal) * 100 / $jumlah);
+        json_encode($p_allLaporan = count($allLaporan) * 100 / $jumlah);
+        json_encode($p_allBeasiswa = count($allBeasiswa) * 100 / $jumlah);
+        json_encode($p_dll = count($allDll) * 100 / $jumlah);
+    } else {
+        $jumlah = 0;
+    }
+    // ===========================================================Berkas====================================================
+    // array berkas
+    $proposal = [];
+    $laporan = [];
+    $beasiswa1 = [];
+    $dll = [];
+    foreach ($allBerkas as $key => $value) {
+        if ($value['approved_admin'] == 1) {
+            if ($value['type'] == 1 && substr($value['updated_at'], 0, 4) == date('Y')) {
+                json_encode(array_push($proposal, $value));
+            }
+            if ($value['type'] == 2 && substr($value['updated_at'], 0, 4) == date('Y')) {
+                json_encode(array_push($laporan, $value));
+            }
+            if ($value['type'] == 3 && substr($value['updated_at'], 0, 4) == date('Y')) {
+                json_encode(array_push($beasiswa1, $value));
+            }
+            if ($value['type'] == 4 && substr($value['updated_at'], 0, 4) == date('Y')) {
+                json_encode(array_push($dll, $value));
+            }
+        }
+    }
+    $p_proposal = 0;
+    $p_laporan = 0;
+    $p_beasiswa = 0;
+    $p_dll = 0;
+    $jumlah = count($proposal) + count($beasiswa1) + count($laporan) + count($dll);
+    if ($jumlah != null) {
+        json_encode($p_proposal = count($proposal) * 100 / $jumlah);
+        json_encode($p_laporan = count($laporan) * 100 / $jumlah);
+        json_encode($p_beasiswa = count($beasiswa1) * 100 / $jumlah);
+        json_encode($p_dll = count($dll) * 100 / $jumlah);
+    } else {
+        $jumlah = 0;
+    }
+
+    // array user
+    $Si = [];
+    $Ti = [];
+    $Ak = [];
+    $Mn = [];
+    $mi = [];
+    $ti = [];
+    $ak = [];
+    $mn = [];
+    foreach ($allUser as $key => $value) {
+        if (substr($value['nim'], 0, 2) == 35 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+            array_push($Si, $value);
+        }
+        if (substr($value['nim'], 0, 2) == 36 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+            array_push($Ti, $value);
+        }
+        if (substr($value['nim'], 0, 2) == 37 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+            array_push($Ak, $value);
+        }
+        if (substr($value['nim'], 0, 2) == 38 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+            array_push($Mn, $value);
+        }
+        if (substr($value['nim'], 0, 2) == 25 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+            array_push($mi, $value);
+        }
+        if (substr($value['nim'], 0, 2) == 26 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+            array_push($ti, $value);
+        }
+        if (substr($value['nim'], 0, 2) == 27 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+            array_push($ak, $value);
+        }
+        if (substr($value['nim'], 0, 2) == 28 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
+            array_push($mn, $value);
+        }
+    }
+    $p_Si = 0;
+    $p_Ti = 0;
+    $p_Ak = 0;
+    $p_Mn = 0;
+    $p_mi = 0;
+    $p_ti = 0;
+    $p_ak = 0;
+    $p_mn = 0;
+    $total = count($Si) + count($Ti) + count($Ak) + count($Mn) + count($mi) + count($ti) + count($ak) + count($mn);
+
+    if ($total != null) {
+        json_encode($p_Si = count($Si) * 100 / $total);
+        json_encode($p_Ti = count($Ti) * 100 / $total);
+        json_encode($p_Ak = count($Ak) * 100 / $total);
+        json_encode($p_Mn = count($Mn) * 100 / $total);
+        json_encode($p_mi = count($mi) * 100 / $total);
+        json_encode($p_ti = count($ti) * 100 / $total);
+        json_encode($p_ak = count($ak) * 100 / $total);
+        json_encode($p_mn = count($mn) * 100 / $total);
+    } else {
+        $total = 0;
+    }
+
+    // ============================================================Chart====================================================
+    $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    $a = json_encode($bulan);
+    $data = [];
+    $januari = [];
+    $februari = [];
+    $maret = [];
+    $april = [];
+    $mei = [];
+    $juni = [];
+    $juli = [];
+    $agustus = [];
+    $september = [];
+    $oktober = [];
+    $november = [];
+    $desember = [];
+
+    foreach ($allBerkas as $key => $value) {
+        if (substr($value['updated_at'], 0, 4) == date('Y') && $value['approved_admin'] == 1) {
+            if (substr($value['updated_at'], 5, 2) == '01') {
+                array_push($januari, $value);
+            } elseif (substr($value['updated_at'], 5, 2) == '02') {
+                array_push($februari, $value);
+            } elseif (substr($value['updated_at'], 5, 2) == '03') {
+                array_push($maret, $value);
+            } elseif (substr($value['updated_at'], 5, 2) == '04') {
+                array_push($april, $value);
+            } elseif (substr($value['updated_at'], 5, 2) == '05') {
+                array_push($mei, $value);
+            } elseif (substr($value['updated_at'], 5, 2) == '06') {
+                array_push($juni, $value);
+            } elseif (substr($value['updated_at'], 5, 2) == '07') {
+                array_push($juli, $value);
+            } elseif (substr($value['updated_at'], 5, 2) == '08') {
+                array_push($agustus, $value);
+            } elseif (substr($value['updated_at'], 5, 2) == '09') {
+                array_push($september, $value);
+            } elseif (substr($value['updated_at'], 5, 2) == '10') {
+                array_push($oktober, $value);
+            } elseif (substr($value['updated_at'], 5, 2) == '11') {
+                array_push($november, $value);
+            } elseif (substr($value['updated_at'], 5, 2) == '12') {
+                array_push($desember, $value);
+            }
+        }
+    }
+    array_push($data, count($januari), count($februari), count($maret), count($april), count($mei), count($juni), count($juli), count($agustus), count($september), count($oktober), count($november), count($desember));
+    $data = json_encode($data);
+    $tahun = [];
+    for ($i = intval(date('Y')) - 4; $i <= date('Y'); $i++) {
+        array_push($tahun, "Arsip Tahun " . $i);
+    }
+    $tahun = json_encode($tahun);
+
+    $usrThn = [];
+    for ($i = intval(date('Y')) - 4; $i <= date('Y'); $i++) {
+        array_push($usrThn, "User Tahun " . $i);
+    }
+    $usrThn = json_encode($usrThn);
+
+    // arsip tahunan
+    $prpTahunan = json_encode($prpTahunan);
+    $lprTahunan = json_encode($lprTahunan);
+    $bwkTahunan = json_encode($bwkTahunan);
+    $bswTahunan = json_encode($bswTahunan);
+
+    // user tahunan
+    $siTahunan = json_encode($siTahunan);
+    $tiTahunan = json_encode($tiTahunan);
+    $akTahunan = json_encode($akTahunan);
+    $mnTahunan = json_encode($mnTahunan);
+    $mi3Tahunan = json_encode($mi3Tahunan);
+    $ti3Tahunan = json_encode($ti3Tahunan);
+    $ak3Tahunan = json_encode($ak3Tahunan);
+    $mn3Tahunan = json_encode($mn3Tahunan);
+    // chart user gender
+    $boy = [];
+    $girl = [];
+    foreach ($allUser as $key => $value) {
+        if ($value['gender'] == 1 && substr($value['nim'], 2, 2) == substr(date('Y'), 2, 2) && $value['is_active'] == 1) {
+            array_push($boy, $value);
+        } elseif ($value['gender'] == 2 && substr($value['nim'], 2, 2) == substr(date('Y'), 2, 2) && $value['is_active'] == 1) {
+            array_push($girl, $value);
+        }
+    }
+    ?>
+
     <div class="card">
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs">
@@ -25,102 +241,6 @@
                 <!-- Page 1 -->
                 <div class="tab-pane <?= ($show == 1) ? 'active' : ''; ?>" id="dashboard" role="tabpanel">
                     <!-- Isi dari Dashboard -->
-                    <?php
-                    // array berkas
-                    $proposal = [];
-                    $laporan = [];
-                    $beasiswa1 = [];
-                    $dll = [];
-                    foreach ($allBerkas as $key => $value) {
-                        if ($value['approved_admin'] == 1) {
-                            if ($value['type'] == 1 && substr($value['updated_at'], 0, 4) == date('Y')) {
-                                json_encode(array_push($proposal, $value));
-                            }
-                            if ($value['type'] == 2 && substr($value['updated_at'], 0, 4) == date('Y')) {
-                                json_encode(array_push($laporan, $value));
-                            }
-                            if ($value['type'] == 3 && substr($value['updated_at'], 0, 4) == date('Y')) {
-                                json_encode(array_push($beasiswa1, $value));
-                            }
-                            if ($value['type'] == 4 && substr($value['updated_at'], 0, 4) == date('Y')) {
-                                json_encode(array_push($dll, $value));
-                            }
-                        }
-                    }
-                    $p_proposal = 0;
-                    $p_laporan = 0;
-                    $p_beasiswa = 0;
-                    $p_dll = 0;
-                    $jumlah = count($proposal) + count($beasiswa1) + count($laporan) + count($dll);
-                    if ($jumlah != null) {
-                        json_encode($p_proposal = count($proposal) * 100 / $jumlah);
-                        json_encode($p_laporan = count($laporan) * 100 / $jumlah);
-                        json_encode($p_beasiswa = count($beasiswa1) * 100 / $jumlah);
-                        json_encode($p_dll = count($dll) * 100 / $jumlah);
-                    } else {
-                        $jumlah = 0;
-                    }
-
-                    // array user
-                    $Si = [];
-                    $Ti = [];
-                    $Ak = [];
-                    $Mn = [];
-                    $mi = [];
-                    $ti = [];
-                    $ak = [];
-                    $mn = [];
-                    foreach ($allUser as $key => $value) {
-                        # code...
-                        if (substr($value['nim'], 0, 2) == 35 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
-                            array_push($Si, $value);
-                        }
-                        if (substr($value['nim'], 0, 2) == 36 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
-                            array_push($Ti, $value);
-                        }
-                        if (substr($value['nim'], 0, 2) == 37 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
-                            array_push($Ak, $value);
-                        }
-                        if (substr($value['nim'], 0, 2) == 38 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
-                            array_push($Mn, $value);
-                        }
-                        if (substr($value['nim'], 0, 2) == 25 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
-                            array_push($mi, $value);
-                        }
-                        if (substr($value['nim'], 0, 2) == 26 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
-                            array_push($ti, $value);
-                        }
-                        if (substr($value['nim'], 0, 2) == 27 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
-                            array_push($ak, $value);
-                        }
-                        if (substr($value['nim'], 0, 2) == 28 && substr($value['updated_at'], 0, 4) == date('Y') && $value['is_active'] == 1) {
-                            array_push($mn, $value);
-                        }
-                    }
-                    $p_Si = 0;
-                    $p_Ti = 0;
-                    $p_Ak = 0;
-                    $p_Mn = 0;
-                    $p_mi = 0;
-                    $p_ti = 0;
-                    $p_ak = 0;
-                    $p_mn = 0;
-                    $total = count($Si) + count($Ti) + count($Ak) + count($Mn) + count($mi) + count($ti) + count($ak) + count($mn);
-
-                    if ($total != null) {
-                        json_encode($p_Si = count($Si) * 100 / $total);
-                        json_encode($p_Ti = count($Ti) * 100 / $total);
-                        json_encode($p_Ak = count($Ak) * 100 / $total);
-                        json_encode($p_Mn = count($Mn) * 100 / $total);
-                        json_encode($p_mi = count($mi) * 100 / $total);
-                        json_encode($p_ti = count($ti) * 100 / $total);
-                        json_encode($p_ak = count($ak) * 100 / $total);
-                        json_encode($p_mn = count($mn) * 100 / $total);
-                    } else {
-                        $total = 0;
-                    }
-                    ?>
-                    <!-- informasi berkas -->
                     <div>
                         <!-- Card Information -->
                         <div>
@@ -182,11 +302,11 @@
                                 </div>
                                 <!-- card 3  -->
                                 <div class="col-3">
-                                    <div class="card border-left-danger py-2">
+                                    <div class="card border-left-secondary py-2">
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Beasiswa
+                                                    <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Beasiswa Bawaku
                                                     </div>
                                                     <div class="row no-gutters align-items-center">
                                                         <div class="col-auto">
@@ -194,13 +314,13 @@
                                                         </div>
                                                         <div class="col">
                                                             <div class="progress progress-sm mr-2">
-                                                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $p_beasiswa; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                <div class="progress-bar bg-secondary" role="progressbar" style="width: <?= $p_beasiswa; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-auto">
-                                                    <i class="fas fa-file-archive fa-2x" style="color: #E85547;"></i>
+                                                    <i class="fas fa-file-archive fa-2x" style="color: #858796;"></i>
                                                 </div>
                                             </div>
                                         </div>
@@ -212,7 +332,7 @@
                                         <div class="card-body">
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Document
+                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Beasiswa Lain
                                                     </div>
                                                     <div class="row no-gutters align-items-center">
                                                         <div class="col-auto">
@@ -244,15 +364,21 @@
                             </div>
                             <div class="card col-6">
                                 <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Type Arsip Tahun <?= date('Y'); ?></h3>
-                                <canvas id="arsipType"></canvas>
+                                <canvas id="arsipType" class="chartjs-render-monitor"></canvas>
                             </div>
                         </div>
                         <br>
-                        <div class=" card mx-2">
+                        <div class="card">
                             <div class="row">
-                                <div class="col m-5">
+                                <div class="col-1">
+
+                                </div>
+                                <div class="col-10 m-5">
                                     <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Arsip Tahunan Perguruan Tinggi Indonesia Mandiri</h3>
                                     <canvas id="arsipTahunan"></canvas>
+                                </div>
+                                <div class="col-1">
+
                                 </div>
                             </div>
                         </div>
@@ -461,7 +587,7 @@
                             <!-- chart -->
                             <div class="card col-6">
                                 <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Data Mahasiswa Tahun <?= date('Y'); ?> </h3>
-                                <canvas id="userType"></canvas>
+                                <canvas id="userType" height="300px"></canvas>
                             </div>
                             <div class="card col-6">
                                 <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Data Mahasiswa Tahun <?= date('Y'); ?> </h3>
@@ -471,9 +597,15 @@
                         <br>
                         <div class="card">
                             <div class="row">
-                                <div class="col">
-                                    <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Mahasiswa 5 Tahun Terakhir </h3>
+                                <div class="col-1">
+
+                                </div>
+                                <div class="col-10">
+                                    <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Arsip Tahunan Perguruan Tinggi Indonesia Mandiri</h3>
                                     <canvas id="userLast"></canvas>
+                                </div>
+                                <div class="col-1">
+
                                 </div>
                             </div>
                         </div>
@@ -483,41 +615,6 @@
                 <!-- Page 2 -->
                 <div class="tab-pane <?= ($show == 2) ? 'active' : ''; ?>" id="berkas" role="tabpanel">
                     <!-- Isi dari Dashboard -->
-                    <?php
-                    $allProposal = [];
-                    $allLaporan = [];
-                    $allBeasiswa = [];
-                    $allDll = [];
-                    foreach ($allBerkas as $key => $value) {
-                        if ($value['approved_admin'] == 1) {
-                            if ($value['type'] == 1) {
-                                array_push($allProposal, $value);
-                            }
-                            if ($value['type'] == 2) {
-                                array_push($allLaporan, $value);
-                            }
-                            if ($value['type'] == 3) {
-                                array_push($allBeasiswa, $value);
-                            }
-                            if ($value['type'] == 4) {
-                                array_push($allDll, $value);
-                            }
-                        }
-                    }
-                    $p_proposal = 0;
-                    $p_allLaporan = 0;
-                    $p_allBeasiswa = 0;
-                    $p_dll = 0;
-                    $jumlah = count($allProposal) + count($allBeasiswa) + count($allLaporan) + count($allDll);
-                    if ($jumlah != null) {
-                        json_encode($p_proposal = count($allProposal) * 100 / $jumlah);
-                        json_encode($p_allLaporan = count($allLaporan) * 100 / $jumlah);
-                        json_encode($p_allBeasiswa = count($allBeasiswa) * 100 / $jumlah);
-                        json_encode($p_dll = count($allDll) * 100 / $jumlah);
-                    } else {
-                        $jumlah = 0;
-                    }
-                    ?>
                     <!-- Card Information -->
                     <div class="row">
                         <!-- card 1  -->
@@ -821,7 +918,7 @@
                                 <!-- isi table -->
                                 <div class="rounded m-2">
                                     <div class="table-responsive rounded">
-                                        <table class="table-striped table-hover border-dark">
+                                        <table class="table-striped table-hover border-dark" width="100%" cellspacing="0">
                                             <tr>
                                                 <th class="text-center">NO</th>
                                                 <th class="text-center" style="min-width: 150px;">Pengirim</th>
@@ -1008,17 +1105,19 @@
                                 <div id="collapseOne<?= $years; ?>" class="collapse <?= ($years == date('Y')) ? 'show' : ''; ?>" aria-labelledby="headingOne" data-parent="#accordionExample">
                                     <div class="card-body">
                                         <!-- isi -->
-                                        <div class="row">
-                                            <div class="col">
-                                                <div class="row text-right">
-                                                    <div class="col">
-                                                        <a href="<?= base_url('SuperAdmin/excel/' . $years); ?>" class="btn text-white" style="background: green;"><i class="far fa-file-excel"></i></a>
-                                                    </div>
+                                        <a href="<?= base_url('SuperAdmin/excel/' . $years); ?>">
+                                            <div class="row mx-2" style="background: green; border-radius: 5px;">
+                                                <div class="col text-center btn text-white">
+                                                    Convert to Excel <i class="far fa-file-excel"></i>
                                                 </div>
+                                            </div>
+                                        </a>
+                                        <div class="row mt-2">
+                                            <div class="col">
                                                 <!-- table beasiswa -->
                                                 <div class="rounded m-1">
                                                     <div class="table-responsive rounded">
-                                                        <table class="table-striped table-hover">
+                                                        <table class="table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
                                                             <tr style="height: 40px;">
                                                                 <th class="text-center text-white" colspan="8" style="background: linear-gradient(yellow,black);">
                                                                     Beasiswa BAWAKU
@@ -1066,7 +1165,7 @@
                                                                         <td style="max-width: 150px;"><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 14, 20); ?></a></td>
                                                                         <td><?= $u['nik']; ?></td>
                                                                         <td><?= $u['rtrw']; ?> <?= $u['desa']; ?> <?= $u['kecamatan']; ?> <?= $u['kota']; ?></td>
-                                                                        <td><?= $u['updated_at']; ?></td>
+                                                                        <td class="text-center"><?= $u['updated_at']; ?></td>
                                                                     </tr>
                                                                     <?php $i++; ?>
                                                                 <?php else : ?>
@@ -1078,6 +1177,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <hr>
                                                 <!-- table beasiswa lain-->
                                                 <div class="rounded m-1">
                                                     <div class="table-responsive rounded">
@@ -1129,7 +1229,7 @@
                                                                         <td style="max-width: 150px;"><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 14, 20); ?></a></td>
                                                                         <td><?= $u['nik']; ?></td>
                                                                         <td><?= $u['rtrw']; ?> <?= $u['desa']; ?> <?= $u['kecamatan']; ?> <?= $u['kota']; ?></td>
-                                                                        <td><?= $u['updated_at']; ?></td>
+                                                                        <td class="text-center"><?= $u['updated_at']; ?></td>
                                                                     </tr>
                                                                     <?php $i++; ?>
                                                                 <?php else : ?>
@@ -1152,96 +1252,34 @@
             </div>
         </div>
     </div>
-
 </div>
-<?php
-$bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-$a = json_encode($bulan);
-$data = [];
-$januari = [];
-$februari = [];
-$maret = [];
-$april = [];
-$mei = [];
-$juni = [];
-$juli = [];
-$agustus = [];
-$september = [];
-$oktober = [];
-$november = [];
-$desember = [];
 
-foreach ($allBerkas as $key => $value) {
-    if (substr($value['updated_at'], 0, 4) == date('Y') && $value['approved_admin'] == 1) {
-        if (substr($value['updated_at'], 5, 2) == '01') {
-            array_push($januari, $value);
-        } elseif (substr($value['updated_at'], 5, 2) == '02') {
-            array_push($februari, $value);
-        } elseif (substr($value['updated_at'], 5, 2) == '03') {
-            array_push($maret, $value);
-        } elseif (substr($value['updated_at'], 5, 2) == '04') {
-            array_push($april, $value);
-        } elseif (substr($value['updated_at'], 5, 2) == '05') {
-            array_push($mei, $value);
-        } elseif (substr($value['updated_at'], 5, 2) == '06') {
-            array_push($juni, $value);
-        } elseif (substr($value['updated_at'], 5, 2) == '07') {
-            array_push($juli, $value);
-        } elseif (substr($value['updated_at'], 5, 2) == '08') {
-            array_push($agustus, $value);
-        } elseif (substr($value['updated_at'], 5, 2) == '09') {
-            array_push($september, $value);
-        } elseif (substr($value['updated_at'], 5, 2) == '10') {
-            array_push($oktober, $value);
-        } elseif (substr($value['updated_at'], 5, 2) == '11') {
-            array_push($november, $value);
-        } elseif (substr($value['updated_at'], 5, 2) == '12') {
-            array_push($desember, $value);
-        }
-    }
-}
-array_push($data, count($januari), count($februari), count($maret), count($april), count($mei), count($juni), count($juli), count($agustus), count($september), count($oktober), count($november), count($desember));
-$data = json_encode($data);
-$tahun = [];
-for ($i = intval(date('Y')) - 4; $i <= date('Y'); $i++) {
-    array_push($tahun, "Arsip Tahun " . $i);
-}
-$tahun = json_encode($tahun);
-
-$usrThn = [];
-for ($i = intval(date('Y')) - 4; $i <= date('Y'); $i++) {
-    array_push($usrThn, "User Tahun " . $i);
-}
-$usrThn = json_encode($usrThn);
-
-// arsip tahunan
-$prpTahunan = json_encode($prpTahunan);
-$lprTahunan = json_encode($lprTahunan);
-$bwkTahunan = json_encode($bwkTahunan);
-$bswTahunan = json_encode($bswTahunan);
-
-// user tahunan
-$siTahunan = json_encode($siTahunan);
-$tiTahunan = json_encode($tiTahunan);
-$akTahunan = json_encode($akTahunan);
-$mnTahunan = json_encode($mnTahunan);
-$mi3Tahunan = json_encode($mi3Tahunan);
-$ti3Tahunan = json_encode($ti3Tahunan);
-$ak3Tahunan = json_encode($ak3Tahunan);
-$mn3Tahunan = json_encode($mn3Tahunan);
-// chart user gender
-$boy = [];
-$girl = [];
-foreach ($allUser as $key => $value) {
-    if ($value['gender'] == 1 && substr($value['nim'], 2, 2) == substr(date('Y'), 2, 2) && $value['is_active'] == 1) {
-        array_push($boy, $value);
-    } elseif ($value['gender'] == 2 && substr($value['nim'], 2, 2) == substr(date('Y'), 2, 2) && $value['is_active'] == 1) {
-        array_push($girl, $value);
-    }
-}
-
-?>
 <script type='text/javascript'>
+    function number_format(number, decimals, dec_point, thousands_sep) {
+        // *     example: number_format(1234.56, 2, ',', ' ');
+        // *     return: '1 234,56'
+        number = (number + '').replace(',', '').replace(' ', '');
+        var n = !isFinite(+number) ? 0 : +number,
+            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+            s = '',
+            toFixedFix = function(n, prec) {
+                var k = Math.pow(10, prec);
+                return '' + Math.round(n * k) / k;
+            };
+        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+        if (s[0].length > 3) {
+            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+        }
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || '';
+            s[1] += new Array(prec - s[1].length + 1).join('0');
+        }
+        return s.join(dec);
+    }
+
     // chart bulanan
     var arsBln = document.getElementById("arsipBulanan").getContext('2d');
     var myChart = new Chart(arsBln, {
@@ -1251,7 +1289,17 @@ foreach ($allUser as $key => $value) {
             datasets: [{
                 label: 'Arsip Bulanan',
                 data: <?= $data; ?>,
-                borderColor: 'rgba(0, 99, 132, 1)',
+                lineTension: 0.3,
+                backgroundColor: "rgba(78, 115, 223, 0.05)",
+                borderColor: "rgba(78, 115, 223, 1)",
+                pointRadius: 3,
+                pointBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointBorderColor: "rgba(78, 115, 223, 1)",
+                pointHoverRadius: 3,
+                pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+                pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+                pointHitRadius: 10,
+                pointBorderWidth: 2,
             }]
         },
         options: {
@@ -1263,29 +1311,66 @@ foreach ($allUser as $key => $value) {
                 display: true,
                 text: "Sumber: Data Kemahasiswaan Tahun <?= date('Y'); ?>"
             },
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 25,
+                    top: 5,
+                    bottom: 15
+                }
+            },
             scales: {
-                yAxes: [{
-                    // display: false,
+                xAxes: [{
+                    time: {
+                        unit: 'date'
+                    },
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
                     ticks: {
-                        callback: function(label, index, labels) {
-                            for (let d = 0.5; d < 1000; d++) {
-                                if (label == d) {
-                                    label = '';
-                                }
-                            }
-                            return label;
+                        maxTicksLimit: 12
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        maxTicksLimit: 5,
+                        padding: 10,
+                        // Include a dollar sign in the ticks
+                        callback: function(value, index, values) {
+                            return number_format(value) + ' doc ';
                         }
                     },
                     gridLines: {
+                        color: "rgb(234, 236, 244)",
+                        zeroLineColor: "rgb(234, 236, 244)",
                         drawBorder: false,
-                    },
-                }],
-                xAxes: [{
-                    gridLines: {
-                        display: false,
-                    },
+                        borderDash: [2],
+                        zeroLineBorderDash: [2]
+                    }
                 }],
             },
+            tooltips: {
+                backgroundColor: "rgb(255,255,255)",
+                bodyFontColor: "#858796",
+                titleMarginBottom: 10,
+                titleFontColor: '#6e707e',
+                titleFontSize: 14,
+                borderColor: '#dddfeb',
+                borderWidth: 1,
+                xPadding: 15,
+                yPadding: 15,
+                displayColors: false,
+                intersect: false,
+                mode: 'index',
+                caretPadding: 10,
+                callbacks: {
+                    label: function(tooltipItem, chart) {
+                        var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                        return datasetLabel + ': ' + number_format(tooltipItem.yLabel) + ' Document';
+                    }
+                }
+            }
         }
     });
 
@@ -1304,17 +1389,63 @@ foreach ($allUser as $key => $value) {
             display: true,
             text: "Statistik Arsip Tahunan"
         },
+        layout: {
+            padding: {
+                left: 10,
+                right: 25,
+                top: 25,
+                bottom: 0
+            }
+        },
         scales: {
-            yAxes: [{
-                gridLines: {
-                    drawBorder: false,
-                },
-            }],
             xAxes: [{
+                time: {
+                    unit: 'date'
+                },
                 gridLines: {
                     display: false,
+                    drawBorder: false
                 },
+                ticks: {
+                    maxTicksLimit: 12
+                }
             }],
+            yAxes: [{
+                ticks: {
+                    maxTicksLimit: 5,
+                    padding: 10,
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, values) {
+                        return number_format(value) + ' doc ';
+                    }
+                },
+                gridLines: {
+                    color: "rgb(234, 236, 244)",
+                    zeroLineColor: "rgb(234, 236, 244)",
+                    drawBorder: false,
+                    borderDash: [2],
+                    zeroLineBorderDash: [2]
+                }
+            }],
+        },
+        tooltips: {
+            titleMarginBottom: 10,
+            titleFontColor: '#6e707e',
+            titleFontSize: 14,
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+            callbacks: {
+                label: function(tooltipItem, chart) {
+                    var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+                    return datasetLabel + ': ' + number_format(tooltipItem.yLabel) + ' Doc';
+                }
+            }
         },
     }
     var barChartData = {
@@ -1340,8 +1471,8 @@ foreach ($allUser as $key => $value) {
             },
             {
                 label: "Beasiswa Bawaku",
-                backgroundColor: "#E74A3B",
-                borderColor: "#E74A3B",
+                backgroundColor: "#858796",
+                borderColor: "#858796",
                 barThickness: 30,
                 maxBarThickness: 50,
                 borderWidth: 1,
@@ -1380,6 +1511,17 @@ foreach ($allUser as $key => $value) {
             display: true,
             text: "Sumber: Data Kemahasiswaan Tahun <?= date('Y'); ?>"
         },
+        tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+        },
+        cutoutPercentage: 80,
     }
     var arsipTypedata = {
         labels: [
@@ -1394,12 +1536,13 @@ foreach ($allUser as $key => $value) {
             backgroundColor: [
                 '#4E73DF',
                 '#1CC88A',
-                '#E85547',
+                '#858796',
                 '#36B9CC'
             ],
             hoverOffset: 1,
-            hoverBorderWidth: 5,
-            hoverBorderColor: '#E5E5E5'
+            hoverBorderWidth: 3,
+            hoverBackgroundColor: ['#4E73DF', '#1CC88A', '#858796', '#36B9CC'],
+            hoverBorderColor: "rgba(234, 236, 244, 1)",
         }]
     };
     var arsipType = document.getElementById("arsipType").getContext("2d");
@@ -1424,6 +1567,17 @@ foreach ($allUser as $key => $value) {
             display: true,
             text: "Sumber: Data Kemahasiswaan Tahun <?= date('Y'); ?>"
         },
+        tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+        },
+        cutoutPercentage: 80,
     }
     var userTypeData = {
         labels: [
@@ -1496,8 +1650,8 @@ foreach ($allUser as $key => $value) {
                 <?= count($girl); ?>,
             ],
             backgroundColor: [
-                '#0000FF',
-                '#FAACCE',
+                'blue',
+                'pink',
             ],
             hoverOffset: 1
         }]
@@ -1630,6 +1784,11 @@ foreach ($allUser as $key => $value) {
         type: "bar",
         data: barLast,
         options: lastOptions
+    });
+
+    // Call the dataTables jQuery plugin
+    $(document).ready(function() {
+        $('#dataTable').DataTable();
     });
 </script>
 

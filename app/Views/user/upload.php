@@ -215,12 +215,12 @@
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 3) ? 'grey' : 'red'; ?>, Black); ">
                                         <th class="text-center">NO</th>
-                                        <th class="text-center">Nama surat</th>
+                                        <th class="text-center" style="min-width: 200px;">Nama surat</th>
                                         <th class="text-center" style="min-width: 200px;">Jenis surat</th>
-                                        <th class="text-center">kemahasiswaan</th>
+                                        <th class="text-center">Kemahasiswaan</th>
                                         <th class="text-center">BEM</th>
                                         <th class="text-center" style="min-width: 200px;">User</th>
-                                        <th class="text-center" style="min-width: 200px;">kemahasiswaan</th>
+                                        <th class="text-center" style="min-width: 200px;">Kemahasiswaan</th>
                                         <th class="text-center" style="min-width: 200px;">Administrator</th>
                                         <th class="text-center">Action</th>
                                         <th class="text-center">Delete</th>
@@ -229,7 +229,7 @@
                                     <?php foreach ($requested as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
-                                            <td class="text-center" style="width: 150px;"><?= substr($u['title'], 14, 20) ?></td>
+                                            <td class="" style="width: 150px;"><?= substr($u['title'], 14, 20) ?></td>
                                             <!-- cek type surat -->
                                             <?php if ($u['type'] == '1') {
                                                 $type = 'Proposal kegiatan';
@@ -382,13 +382,13 @@
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 3) ? 'grey' : 'red'; ?>, Black); ">
                                         <th class="text-center">NO</th>
-                                        <th class="text-center">Nama surat</th>
+                                        <th class="text-center" style="min-width: 200px;">Nama surat</th>
                                         <th class="text-center" style="min-width: 200px;">Jenis surat</th>
-                                        <th class="text-center">kemahasiswaan</th>
-                                        <th class="text-center">Administrator</th>
+                                        <th class="text-center">Kemahasiswaan</th>
+                                        <th class="text-center">BEM</th>
                                         <th class="text-center" style="min-width: 200px;">User</th>
-                                        <th class="text-center" style="min-width: 200px;">Administrator</th>
-                                        <th class="text-center" style="min-width: 200px;">kemahasiswaan</th>
+                                        <th class="text-center" style="min-width: 200px;">BEM</th>
+                                        <th class="text-center" style="min-width: 200px;">Kemahasiswaan</th>
                                         <th class="text-center" style="min-width: 200px;">Rejected on</th>
                                         <th class="text-center">Edit</th>
                                         <th class="text-center">download</th>
@@ -558,13 +558,13 @@
                                 <table class="table table-hover">
                                     <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 3) ? 'grey' : 'red'; ?>, Black); ">
                                         <th class="text-center">NO</th>
-                                        <th class="text-center">Nama surat</th>
+                                        <th class="text-center" style="min-width: 200px;">Nama surat</th>
                                         <th class="text-center" style="min-width: 200px;">Jenis surat</th>
-                                        <th class="text-center">kemahasiswaan</th>
-                                        <th class="text-center">Administrator</th>
+                                        <th class="text-center">Kemahasiswaan</th>
+                                        <th class="text-center">BEM</th>
                                         <th class="text-center" style="min-width: 200px;">User</th>
-                                        <th class="text-center" style="min-width: 200px;">Administrator</th>
-                                        <th class="text-center" style="min-width: 200px;">kemahasiswaan</th>
+                                        <th class="text-center" style="min-width: 200px;">BEM</th>
+                                        <th class="text-center" style="min-width: 200px;">Kemahasiswaan</th>
                                         <th class="text-center" style="min-width: 150px;">Confirmed on</th>
                                         <th class="text-center">Download</th>
                                     </tr>

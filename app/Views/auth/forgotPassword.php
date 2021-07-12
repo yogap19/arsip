@@ -29,7 +29,7 @@
                                     <?= csrf_field(); ?>
                                     <div class="form-group row">
                                         <div class="col-sm-6 mb-3 mb-sm-0">
-                                            <input type="password" class="form-control form-control-user <?= ($validation->hasError('password')) ? 'is-invalid' : ''; ?>" id="password" placeholder="New Password" name="password">
+                                            <input type="password" class="form-control form-control-user <?= ($validation->hasError('password')) ? 'is-invalid' : ''; ?>" id="password" placeholder="New Password" name="password" autofocus>
                                             <div id="validationServer03Feedback" class="invalid-feedback mx-3">
                                                 <?= $validation->getError('password'); ?>
                                             </div>
@@ -39,7 +39,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control form-control-user <?= ($validation->hasError('pin')) ? 'is-invalid' : ''; ?>" id="pin" placeholder="PIN" name="pin" autofocus value="<?= old('pin'); ?>" onkeypress="return event.charCode >= 48 && event.charCode <=57" maxlength="6">
+                                        <input type="password" class="form-control form-control-user <?= ($validation->hasError('pin')) ? 'is-invalid' : ''; ?>" id="pin" placeholder="PIN" name="pin" value="<?= old('pin'); ?>" onkeypress="return event.charCode >= 48 && event.charCode <=57" maxlength="6">
                                         <div id="validationServer03Feedback" class="invalid-feedback mx-3">
                                             <?= $validation->getError('pin'); ?>
                                         </div>
