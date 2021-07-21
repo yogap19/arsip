@@ -38,7 +38,7 @@
                                                     <td class="col-10">
                                                         <div class="custom-control custom-switch ml-4">
                                                             <input type="checkbox" class="custom-control-input" id="approved_Sadmin" <?= ($berkas['approved_Sadmin'] == '1') ? 'checked' : ''; ?> name="approved_Sadmin" value="1">
-                                                            <label class="custom-control-label" for="approved_Sadmin"><?= ($berkas['approved_Sadmin'] == 1) ? 'Enable' : 'Disable' ?></label>
+                                                            <label class="custom-control-label" for="approved_Sadmin"><?= ($berkas['approved_Sadmin'] == 1) ? 'Accept' : 'Reject' ?></label>
                                                         </div>
                                                     </td>
                                                 </tr>

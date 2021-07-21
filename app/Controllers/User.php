@@ -298,8 +298,9 @@ class User extends BaseController
             }
         }
 
-        // get type
+        // get data
         $type = $this->request->getVar('type');
+        $organisasi = $this->request->getVar('organisasi');
         // get file
         $getFile = $this->request->getFile('title');
         // get name
@@ -312,19 +313,17 @@ class User extends BaseController
             $accAdmin = 2;
         }
 
-        // beri nama type
+        // beri nama file
         if ($type == '1') {
-            $upload = $data['nim'] . '_PRP_' . date('Y') . '_' . $name;
+            $upload = $data['nim'] . '_PRP_' . $organisasi .  '_' . date('m-Y') .  '_' . $name;
         } elseif ($type == '2') {
-            $upload = $data['nim'] . '_LPR_' . date('Y') . '_' . $name;
+            $upload = $data['nim'] . '_LPR_' . $organisasi . '_' . date('m-Y') . '_' . $name;
         } elseif ($type == '3') {
-            $upload = $data['nim'] . '_BWK_' . date('Y') . '_' . $name;
+            $upload = $data['nim'] . '_BWK_' . date('m-Y') . '_' . $name;
             $accAdmin = 1;
         } elseif ($type == '4') {
-            $upload = $data['nim'] . '_BSW_' . date('Y') . '_' . $name;
+            $upload = $data['nim'] . '_BSW_' . date('m-Y') . '_' . $name;
             $accAdmin = 1;
-        } elseif ($type == '5') {
-            $upload = $data['nim'] . '_ALL_' . date('Y') . '_' . $name;
         }
 
         // keterangan
@@ -356,11 +355,9 @@ class User extends BaseController
         }
 
         if ($type == 1 || $type == 2) {
-            # code...
             $organisasi = $this->request->getVar('organisasi');
             $nik = '-';
         } elseif ($type == 3 || $type == 4) {
-            # code...
             $organisasi = '-';
             $nik = $this->request->getVar('nik');
         }
@@ -487,21 +484,6 @@ class User extends BaseController
         $getFile = $this->request->getFile('title');
         // get name
         $name = $getFile->getName();
-        // beri nama type
-        if ($berkas['type'] == '1') {
-            $upload = $berkas['nim'] . '_PRP_' . date('Y') . '_' . $name;
-        } elseif ($berkas['type'] == '2') {
-            $upload = $berkas['nim'] . '_LPR_' . date('Y') . '_' . $name;
-        } elseif ($berkas['type'] == '3') {
-            $upload = $berkas['nim'] . '_BWK_' . date('Y') . '_' . $name;
-        } elseif ($berkas['type'] == '4') {
-            $upload = $berkas['nim'] . '_ALL_' . date('Y') . '_' . $name;
-        }
-        // hapus file lama
-        unlink('doc/' . $berkas['title']);
-
-        // simpad file
-        $getFile->move('doc', $upload);
 
         // cek user role id
         if ($user['role_id'] == 2) {
@@ -509,6 +491,27 @@ class User extends BaseController
         } else {
             $approvedA = 2;
         }
+
+        // beri nama type
+        if ($berkas['type'] == '1') {
+            $upload = $berkas['nim'] . '_PRP_' . $berkas['organisasi'] . '_' . date('m-Y') . '_' . $name;
+        } elseif ($berkas['type'] == '2') {
+            $upload = $berkas['nim'] . '_LPR_' . $berkas['organisasi'] . '_' . date('m-Y') . '_' . $name;
+        } elseif ($berkas['type'] == '3') {
+            $upload = $berkas['nim'] . '_BWK_' . date('m-Y') . '_' . $name;
+            $approvedA = 1;
+        } elseif ($berkas['type'] == '4') {
+            $upload = $berkas['nim'] . '_BSW_' . date('m-Y') . '_' . $name;
+            $approvedA = 1;
+        }
+
+        // hapus file lama
+        unlink('doc/' . $berkas['title']);
+
+        // simpad file
+        $getFile->move('doc', $upload);
+
+
         // keterangan
         if ($user['role_id'] == 2) {
             $keterangan =  $this->request->getVar('keterangan');

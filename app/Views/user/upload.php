@@ -5,6 +5,8 @@
     <?php
     $show = 1;
     ($show == null) ? $show = 1 : $show = session()->get('show');;
+    $btn = (session()->get('role_id') == 2) ? 'red' : 'black';
+
     ?>
     <?php ($show == null) ? $show = 1 : '' ?>
     <!-- Page Heading -->
@@ -59,13 +61,13 @@
                                 </div>
                                 <div class="col my-3">
                                     <div class="row">
-                                        <div class="form-check col-3">
+                                        <div class="form-check col-3" style="min-width: 100px;">
                                             <input class="form-check-input" type="radio" name="type" id="type_1" value="1" checked>
                                             <label class="form-check-label" for="type_1">
                                                 Proposal Kegiatan
                                             </label>
                                         </div>
-                                        <div class="form-check col-3">
+                                        <div class="form-check col-3" style="min-width: 100px;">
                                             <input class="form-check-input" type="radio" name="type" id="type_2" value="2">
                                             <label class="form-check-label" for="type_2">
                                                 Laporan Kegiatan
@@ -83,7 +85,7 @@
                                         <option value="IMPALA">IMPALA</option>
                                         <option value="IMFORSIL">IMFORSIL</option>
                                         <option value="PMK">PMK</option>
-                                        <option value="PADUAN SUARA">Paduan Suara</option>
+                                        <option value="PSIM">PSIM</option>
                                         <option value="TAEKWONDO">Taekwondo</option>
                                     </select>
                                     <div id="validationServer03Feedback" class="invalid-feedback mx-3">
@@ -114,7 +116,7 @@
                                 </div>
                                 <!-- button -->
                                 <div class="text-right my-3">
-                                    <button type="submit" class="btn text-white" style="background: linear-gradient(blue,black);">Kirim</button>
+                                    <button type="submit" class="btn text-white" style="background: linear-gradient(<?= $btn; ?>,black);">Kirim</button>
                                 </div>
                             </form>
                         </div>
@@ -144,13 +146,13 @@
                                 </div>
                                 <div class="col my-3">
                                     <div class="row">
-                                        <div class="form-check col-3">
+                                        <div class="form-check col-3" style="min-width: 100px;">
                                             <input class="form-check-input" type="radio" name="type" id="type_3" value="3" checked>
                                             <label class="form-check-label" for="type_3">
                                                 Beasiswa BAWAKU
                                             </label>
                                         </div>
-                                        <div class="form-check col-3">
+                                        <div class="form-check col-3" style="min-width: 100px;">
                                             <input class="form-check-input" type="radio" name="type" id="type_4" value="4">
                                             <label class="form-check-label" for="type_4">
                                                 Beasiswa Lain
@@ -189,7 +191,7 @@
                                 </div>
                                 <!-- button -->
                                 <div class="text-right my-3">
-                                    <button type="submit" class="btn text-white" style="background: linear-gradient(blue,black);">Kirim</button>
+                                    <button type="submit" class="btn text-white" style="background: linear-gradient(<?= $btn; ?>,black);">Kirim</button>
                                 </div>
                             </form>
                         </div>
@@ -216,12 +218,11 @@
                                     <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 3) ? 'grey' : 'red'; ?>, Black); ">
                                         <th class="text-center">NO</th>
                                         <th class="text-center" style="min-width: 200px;">Nama surat</th>
-                                        <th class="text-center" style="min-width: 200px;">Jenis surat</th>
                                         <th class="text-center">Kemahasiswaan</th>
                                         <th class="text-center">BEM</th>
                                         <th class="text-center" style="min-width: 200px;">User</th>
                                         <th class="text-center" style="min-width: 200px;">Kemahasiswaan</th>
-                                        <th class="text-center" style="min-width: 200px;">Administrator</th>
+                                        <th class="text-center" style="min-width: 200px;">BEM</th>
                                         <th class="text-center">Action</th>
                                         <th class="text-center">Delete</th>
                                     </tr>
@@ -229,18 +230,7 @@
                                     <?php foreach ($requested as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
-                                            <td class="" style="width: 150px;"><?= substr($u['title'], 14, 20) ?></td>
-                                            <!-- cek type surat -->
-                                            <?php if ($u['type'] == '1') {
-                                                $type = 'Proposal kegiatan';
-                                            } elseif ($u['type'] == '2') {
-                                                $type = 'Laporan kegiatan';
-                                            } elseif ($u['type'] == '3') {
-                                                $type = 'Beasiswa Bawaku';
-                                            } elseif ($u['type'] == '4') {
-                                                $type = 'Beasiswa lain';
-                                            } ?>
-                                            <td><?= $type; ?></td>
+                                            <td style="width: 150px;"><a href="<?= base_url('User/download/' . $u['id']); ?>"><?= substr($u['title'], 10, 50) ?></a></td>
                                             <!-- cek status approved super Administrator -->
                                             <?php if ($u['approved_Sadmin'] == '1') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
@@ -295,18 +285,7 @@
                                     <?php foreach ($requestedB as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
-                                            <td><?= substr($u['title'], 14, 20) ?></td>
-                                            <!-- cek type surat -->
-                                            <?php if ($u['type'] == '1') {
-                                                $type = 'Proposal kegiatan';
-                                            } elseif ($u['type'] == '2') {
-                                                $type = 'Laporan kegiatan';
-                                            } elseif ($u['type'] == '3') {
-                                                $type = 'Beasiswa Bawaku';
-                                            } elseif ($u['type'] == '4') {
-                                                $type = 'Beasiswa lain';
-                                            } ?>
-                                            <td class="text-center"><?= $type; ?></td>
+                                            <td><a href="<?= base_url('User/download/' . $u['id']); ?>"><?= substr($u['title'], 10, 50) ?></a></td>
                                             <!-- cek status approved super Administrator -->
                                             <?php if ($u['approved_Sadmin'] == '1') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
@@ -383,14 +362,13 @@
                                     <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 3) ? 'grey' : 'red'; ?>, Black); ">
                                         <th class="text-center">NO</th>
                                         <th class="text-center" style="min-width: 200px;">Nama surat</th>
-                                        <th class="text-center" style="min-width: 200px;">Jenis surat</th>
                                         <th class="text-center">Kemahasiswaan</th>
                                         <th class="text-center">BEM</th>
                                         <th class="text-center" style="min-width: 200px;">User</th>
                                         <th class="text-center" style="min-width: 200px;">BEM</th>
                                         <th class="text-center" style="min-width: 200px;">Kemahasiswaan</th>
                                         <th class="text-center" style="min-width: 200px;">Rejected on</th>
-                                        <th class="text-center">Edit</th>
+                                        <th class="text-center">Revisi</th>
                                         <th class="text-center">download</th>
                                         <th class="text-center">Delete</th>
                                     </tr>
@@ -398,18 +376,7 @@
                                     <?php foreach ($rejectedA as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
-                                            <td><?= $u['title']; ?></td>
-                                            <!-- cek type surat -->
-                                            <?php if ($u['type'] == '1') {
-                                                $type = 'Proposal kegiatan';
-                                            } elseif ($u['type'] == '2') {
-                                                $type = 'Laporan kegiatan';
-                                            } elseif ($u['type'] == '3') {
-                                                $type = 'Beasiswa Bawaku';
-                                            } elseif ($u['type'] == '4') {
-                                                $type = 'Beasiswa lain';
-                                            } ?>
-                                            <td><?= $type; ?></td>
+                                            <td><a href="<?= base_url('User/download/' . $u['id']); ?>"><?= substr($u['title'], 10, 50); ?></a></td>
                                             <!-- cek status approved super Administrator -->
                                             <?php if ($u['approved_Sadmin'] == '1') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
@@ -427,8 +394,8 @@
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
-                                            <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
                                             <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
                                             <td class="text-center"><?= $u['updated_at']; ?></td>
                                             <td class="text-center">
                                                 <a href="<?= base_url('User/revisi/') . '/' . $u['id']; ?>" style="background: linear-gradient(green,black);" class="btn-circle">
@@ -466,18 +433,7 @@
                                     <?php foreach ($rejectedS as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
-                                            <td><?= substr($u['title'], 14, 50); ?></td>
-                                            <!-- cek type surat -->
-                                            <?php if ($u['type'] == '1') {
-                                                $type = 'Proposal kegiatan';
-                                            } elseif ($u['type'] == '2') {
-                                                $type = 'Laporan kegiatan';
-                                            } elseif ($u['type'] == '3') {
-                                                $type = 'Beasiswa Bawaku';
-                                            } elseif ($u['type'] == '4') {
-                                                $type = 'Beasiswa lain';
-                                            } ?>
-                                            <td class="text-center"><?= $type; ?></td>
+                                            <td><a href="<?= base_url('User/download/' . $u['id']); ?>"><?= substr($u['title'], 10, 50); ?></a></td>
                                             <!-- cek status approved super Administrator -->
                                             <?php if ($u['approved_Sadmin'] == '1') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
@@ -495,8 +451,8 @@
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
-                                            <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
                                             <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
                                             <td class="text-center"><?= $u['updated_at']; ?></td>
                                             <td class="text-center">
                                                 <a href="<?= base_url('User/revisi/') . '/' . $u['id']; ?>" style="background: linear-gradient(green,black);" class="btn-circle">
@@ -601,8 +557,8 @@
                                                 <td class="text-center"><i class="far fa-fw fa-times-circle" style="color: red;"></i></td>
                                             <?php endif; ?>
                                             <td><textarea class="form-control" readonly><?= $u['keterangan']; ?></textarea></td>
-                                            <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
                                             <td><textarea class="form-control" readonly><?= $u['keteranganA']; ?></textarea></td>
+                                            <td><textarea class="form-control" readonly><?= $u['keteranganS']; ?></textarea></td>
                                             <td class="text-center"><?= $u['updated_at']; ?></td>
                                             <td class="text-center"><a href="<?= base_url('User/download/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(blue,black);"><i class="fas fa-download text-white"></i></a></td>
                                         </tr>

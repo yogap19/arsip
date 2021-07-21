@@ -31,7 +31,7 @@
                                             <td>
                                                 <div class="custom-control custom-switch ml-4">
                                                     <input type="checkbox" class="custom-control-input" id="approved_admin" <?= ($berkas['approved_admin'] == '1') ? 'checked' : ''; ?> name="approved_admin" value="1">
-                                                    <label class="custom-control-label" for="approved_admin"><?= ($berkas['approved_admin'] == 1) ? 'Enable' : 'Disable' ?></label>
+                                                    <label class="custom-control-label" for="approved_admin"><?= ($berkas['approved_admin'] == 1) ? 'Confirmed' : 'Rejected' ?></label>
                                                 </div>
                                             </td>
                                         </tr>
@@ -53,7 +53,7 @@
                                 </div>
                                 <!-- button -->
                                 <div class="text-right my-3">
-                                    <button type="submit" class="btn text-white" style="background: linear-gradient(blue,black);">Kirim</button>
+                                    <button type="submit" class="btn text-white" style="background: linear-gradient(red,black);">Kirim</button>
                                 </div>
                             </form>
                         </div>

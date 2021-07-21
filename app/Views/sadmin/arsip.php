@@ -9,18 +9,19 @@
     $dll = [];
     $request = [];
     foreach ($allBerkas as $key => $value) {
-        # code...
-        if ($value['type'] == 1) {
-            array_push($proposal, $value);
-        } elseif ($value['type'] == 2) {
-            array_push($laporan, $value);
-        } elseif ($value['type'] == 3) {
-            array_push($beasiswa, $value);
-        } elseif ($value['type'] == 4) {
-            array_push($dll, $value);
-        }
-        if ($value['approved_Sadmin'] == 2) {
-            array_push($request, $value);
+        if ($value['approved_admin'] == 1) {
+            if ($value['type'] == 1) {
+                array_push($proposal, $value);
+            } elseif ($value['type'] == 2) {
+                array_push($laporan, $value);
+            } elseif ($value['type'] == 3) {
+                array_push($beasiswa, $value);
+            } elseif ($value['type'] == 4) {
+                array_push($dll, $value);
+            }
+            if ($value['approved_Sadmin'] == 2 && $value['approved_admin'] == 1) {
+                array_push($request, $value);
+            }
         }
     }
     $jumlah = count($proposal) + count($beasiswa) + count($laporan) + count($dll);
@@ -157,7 +158,6 @@
                 <!-- requested -->
                 <div class="tab-pane <?= ($show == 1) ? 'active' : ''; ?>" id="requested" role="tabpanel">
                     <div class="card shadow mb-4">
-                        <!-- isi -->
                         <!-- search -->
                         <div class="row">
                             <div class="col-1">
@@ -199,11 +199,10 @@
                                         <th class="text-center">NO</th>
                                         <th class="text-center">NIM</th>
                                         <th class="text-center" style="min-width: 200px;">Nama surat</th>
-                                        <th class="text-center" style="min-width: 200px;">Jenis surat</th>
-                                        <th class="text-center" style="min-width: 200px;">kemahasiswaan</th>
+                                        <th class="text-center" style="min-width: 150px;">Status</th>
                                         <th class="text-center" style="min-width: 200px;">BEM</th>
                                         <th class="text-center" style="min-width: 200px;">Keterangan User</th>
-                                        <th class="text-center" style="min-width: 150px;">Tanggal Kiirim</th>
+                                        <th class="text-center" style="min-width: 150px;">Tanggal Kirim</th>
                                         <th class="text-center">Option</th>
                                         <th class="text-center">Download</th>
                                     </tr>
@@ -212,18 +211,7 @@
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
                                             <td><a href="#" data-toggle="modal" data-target="#data<?= $u['nim']; ?>"><?= $u['nim']; ?></a></td>
-                                            <td><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 14, 50); ?></a></td>
-                                            <!-- cek type surat -->
-                                            <?php if ($u['type'] == '1') {
-                                                $type = 'Proposal kegiatan';
-                                            } elseif ($u['type'] == '2') {
-                                                $type = 'Laporan kegiatan';
-                                            } elseif ($u['type'] == '3') {
-                                                $type = 'Surat Beasiswa';
-                                            } elseif ($u['type'] == '4') {
-                                                $type = 'Document lain';
-                                            } ?>
-                                            <td class="text-center"><?= $type; ?></td>
+                                            <td><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 10, 50); ?></a></td>
                                             <!-- cek status approved kemahasiswaan -->
                                             <?php if ($u['approved_Sadmin'] == '1') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
@@ -266,8 +254,7 @@
                                         <th class="text-center">NO</th>
                                         <th class="text-center">NIM</th>
                                         <th class="text-center" style="min-width: 200px;">Nama surat</th>
-                                        <th class="text-center" style="min-width: 200px;">Jenis surat</th>
-                                        <th class="text-center" style="min-width: 200px;">kemahasiswaan</th>
+                                        <th class="text-center" style="min-width: 150px;">kemahasiswaan</th>
                                         <th class="text-center" style="min-width: 200px;">BEM</th>
                                         <th class="text-center" style="min-width: 200px;">Keterangan User</th>
                                         <th class="text-center" style="min-width: 150px;">Rejected At</th>
@@ -280,18 +267,7 @@
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
                                             <td><?= $u['nim']; ?></td>
-                                            <td><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 14, 20); ?></a></td>
-                                            <!-- cek type surat -->
-                                            <?php if ($u['type'] == '1') {
-                                                $type = 'Proposal kegiatan';
-                                            } elseif ($u['type'] == '2') {
-                                                $type = 'Laporan kegiatan';
-                                            } elseif ($u['type'] == '3') {
-                                                $type = 'Surat Beasiswa';
-                                            } elseif ($u['type'] == '4') {
-                                                $type = 'Document lain';
-                                            } ?>
-                                            <td><?= $type; ?></td>
+                                            <td><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 10, 50); ?></a></td>
                                             <!-- cek status approved kemahasiswaan -->
                                             <?php if ($u['approved_Sadmin'] == '1') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>
@@ -359,8 +335,7 @@
                                         <th class="text-center">NO</th>
                                         <th class="text-center">NIM</th>
                                         <th class="text-center" style="min-width: 200px;">Nama surat</th>
-                                        <th class="text-center" style="min-width: 200px;">Jenis surat</th>
-                                        <th class="text-center" style="min-width: 200px;">kemahasiswaan</th>
+                                        <th class="text-center" style="min-width: 150px;">Status</th>
                                         <th class="text-center" style="min-width: 200px;">Kemahasiswaan</th>
                                         <th class="text-center" style="min-width: 200px;">BEM</th>
                                         <th class="text-center" style="min-width: 200px;">Keterangan User</th>
@@ -373,18 +348,7 @@
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
                                             <td><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= $u['nim']; ?></a></td>
-                                            <td><?= substr($u['title'], 14, 50); ?></td>
-                                            <!-- cek type surat -->
-                                            <?php if ($u['type'] == '1') {
-                                                $type = 'Proposal kegiatan';
-                                            } elseif ($u['type'] == '2') {
-                                                $type = 'Laporan kegiatan';
-                                            } elseif ($u['type'] == '3') {
-                                                $type = 'Surat Beasiswa';
-                                            } elseif ($u['type'] == '4') {
-                                                $type = 'Document lain';
-                                            } ?>
-                                            <td class="text-center" style="width: 100px;"><?= $type; ?></td>
+                                            <td><a href="<?= base_url('Admin/download/' . $u['id']); ?>"><?= substr($u['title'], 10, 50); ?></a></td>
                                             <!-- cek status approved super kemahasiswaan -->
                                             <?php if ($u['approved_Sadmin'] == '1') : ?>
                                                 <td class="text-center"><i class="far fa-fw fa-check-circle" style="color: green;"></i></td>

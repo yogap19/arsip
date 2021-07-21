@@ -2,6 +2,15 @@
 
 <?= $this->section('content'); ?>
 <div class="container-fluid">
+    <?php
+    if (session()->get('role_id') == 1) {
+        $btn = 'blue';
+    } elseif (session()->get('role_id') == 2) {
+        $btn = 'red';
+    } else {
+        $btn = 'black';
+    }
+    ?>
 
     <!-- Page Heading -->
     <div class="card row">
@@ -40,7 +49,7 @@
                 </div>
             </div>
             <div class="text-right my-3">
-                <button type="submit" class="btn text-white" style="background: linear-gradient(blue,black);">Change Password</button>
+                <button type="submit" class="btn text-white" style="background: linear-gradient(<?= $btn; ?>,black);">Change Password</button>
             </div>
         </form>
     </div>

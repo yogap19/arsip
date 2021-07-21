@@ -2,7 +2,7 @@
 
 <?= $this->section('content'); ?>
 <div class="container-fluid">
-
+    <?php $btn = (session()->get('role_id') == 2) ? 'red' : 'black'; ?>
     <!-- Page Heading -->
     <div class="tab-pane active" id="upload" role="tabpanel" active>
         <!-- header -->
@@ -93,7 +93,7 @@
                     </div>
                     <!-- button -->
                     <div class="text-right my-3">
-                        <button type="submit" class="btn text-white" style="background: linear-gradient(blue,black);">Kirim</button>
+                        <button type="submit" class="btn text-white" style="background: linear-gradient(<?= $btn; ?>,black);">Kirim</button>
                     </div>
                 </form>
             </div>

@@ -32,7 +32,7 @@ class SuperAdmin extends BaseController
             exit();
         }
     }
-    public function index()
+    public function index($id = null)
     {
         $search     = $this->request->getVar('search');
         $type       = $this->request->getVar('type1');
@@ -41,28 +41,29 @@ class SuperAdmin extends BaseController
 
         //  Filter By
         if ($type == 0 && $jurusan == 0 && $acepted == 0) {
-            $hasil = null;
             unset($_SESSION['pesan']);
+            $hasil = null;
+            $show = 2;
         } elseif ($type == 0 && $jurusan == 0) {
-            $hasil = $this->BerkasModel->where(['approved_Sadmin' => $acepted])->find();
+            $hasil = $this->BerkasModel->where('approved_Sadmin', $acepted)->where('approved_admin', 1)->find();
             $show = 2;
         } elseif ($type == 0 && $acepted == 0) {
-            $hasil = $this->BerkasModel->where(['jurusan' => $jurusan])->find();
+            $hasil = $this->BerkasModel->where('jurusan', $jurusan)->where('approved_admin', 1)->find();
             $show = 2;
         } elseif ($jurusan == 0 && $acepted == 0) {
-            $hasil = $this->BerkasModel->where(['type' => $type])->find();
+            $hasil = $this->BerkasModel->where('type', $type)->where('approved_admin', 1)->find();
             $show = 2;
         } elseif ($jurusan == 0) {
-            $hasil = $this->BerkasModel->where(['type' => $type])->where(['approved_Sadmin' => $acepted])->find();
+            $hasil = $this->BerkasModel->where('type', $type)->where('approved_Sadmin', $acepted)->where('approved_admin', 1)->find();
             $show = 2;
         } elseif ($acepted == 0) {
-            $hasil = $this->BerkasModel->where(['jurusan' => $jurusan])->where(['type' => $type])->find();
+            $hasil = $this->BerkasModel->where('jurusan', $jurusan)->where('type', $type)->where('approved_admin', 1)->find();
             $show = 2;
         } elseif ($type == 0) {
-            $hasil = $this->BerkasModel->where(['jurusan' => $jurusan])->where(['approved_Sadmin' => $acepted])->find();
+            $hasil = $this->BerkasModel->where('jurusan', $jurusan)->where('approved_Sadmin', $acepted)->where('approved_admin', 1)->find();
             $show = 2;
         } else {
-            $hasil = $this->BerkasModel->where(['type' => $type])->where(['jurusan' => $jurusan])->where(['approved_Sadmin' => $acepted])->find();
+            $hasil = $this->BerkasModel->where('type', $type)->where('jurusan', $jurusan)->where('approved_Sadmin', $acepted)->where('approved_admin', 1)->find();
             $show = 2;
         }
 
@@ -137,11 +138,12 @@ class SuperAdmin extends BaseController
             session()->set($show);
         }
         $pages = $this->request->getVar('page_berkas');
-        if ($pages == null && $search == null && $hasil == null) {
+        if ($pages == null && $acepted == null && $jurusan == null && $type == null && $id == null) {
             $show = 1;
         } else {
             $show = 2;
         }
+
         $data = [
             // page required
             'title'         => 'Dashboard',
@@ -323,7 +325,6 @@ class SuperAdmin extends BaseController
             $berkas = $this->BerkasModel->berkas($search);
         } else {
             $berkas = $this->BerkasModel;
-            # code...
         }
         $pages = $this->request->getVar('page_arsip') ? $this->request->getVar('page_arsip') : 1;
         $show = 1;
@@ -332,7 +333,7 @@ class SuperAdmin extends BaseController
             'user'          => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
             'users'         => $this->UserModel->findAll(),
             'allBerkas'     => $this->BerkasModel->find(),
-            'requested'     => $berkas->where(['approved_sadmin' => 2])->like('updated_at', date('Y'))->orderBy('updated_at', 'DESC')->paginate(5, 'arsip'),
+            'requested'     => $berkas->where('approved_Sadmin', 2)->where('approved_admin', 1)->orderBy('updated_at', 'DESC')->paginate(5, 'arsip'),
             'pagers1'       => $this->BerkasModel->pager,
             'rejected'      => $this->BerkasModel->where(['approved_Sadmin' => 3])->find(),
             'confirmed'     => $this->BerkasModel->where(['approved_Sadmin' => 1])->find(),
@@ -419,7 +420,7 @@ class SuperAdmin extends BaseController
         $spreadsheet->getActiveSheet()->getStyle('A1')
             ->getFill()->getStartColor()->setARGB('FFFF0000');
         $sheet = $spreadsheet->getActiveSheet()->mergeCells('A1:I1');
-        $sheet->setCellValue('A1', 'Beasiswa Bawaku');
+        $sheet->setCellValue('A1', 'Beasiswa Bawaku Tahun ' . $years);
         $sheet->setCellValue('A2', 'No');
         $sheet->setCellValue('B2', 'NIM');
         $sheet->setCellValue('C2', 'NAMA');
@@ -430,15 +431,13 @@ class SuperAdmin extends BaseController
         $sheet->setCellValue('H2', 'Alamat');
         $sheet->setCellValue('I2', 'Tanggal Terima');
 
-        // beasiswa lain
-        // $spreadsheet->getActiveSheet()->getStyle('K1')
-        //     ->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+        // Beasiswa Lain
         $spreadsheet->getActiveSheet()->getStyle('K1')
             ->getFill()->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID);
         $spreadsheet->getActiveSheet()->getStyle('K1')
             ->getFill()->getStartColor()->setARGB('FFFF0000');
         $sheet = $spreadsheet->getActiveSheet()->mergeCells('K1:S1');
-        $sheet->setCellValue('K1', 'Beasiswa Lain');
+        $sheet->setCellValue('K1', 'Beasiswa Lain Tahun ' . $years);
         $sheet->setCellValue('K2', 'No');
         $sheet->setCellValue('L2', 'NIM');
         $sheet->setCellValue('M2', 'NAMA');

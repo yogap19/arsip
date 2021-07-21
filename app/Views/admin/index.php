@@ -9,7 +9,7 @@
 <?php $allUser = count($allUsers); ?>
 <?php $confirm = count($confirmed); ?>
 <?php $request = count($requested); ?>
-
+<?php $btn = (session()->get('role_id') == 1) ? 'blue' : 'red' ?>
 <?php ($tahun == 0) ? $tahun = 1 : $tahun = $tahun + 1; ?>
 
 <!-- table navigasi -->
@@ -20,7 +20,7 @@
             <form action="<?= base_url('admin/index/' . $tahun); ?>" method="POST">
                 <button type="submit" style="background: white; border: 0;">
                     <div class="col-1">
-                        <i class="fas fa-step-backward" style="color: blue;"></i>
+                        <i class="fas fa-step-backward" style="color: <?= $btn; ?>;"></i>
                     </div>
                 </button>
             </form>
@@ -32,7 +32,7 @@
             <form action="<?= base_url('admin/index/' . ($tahun - 2)); ?>" method="POST">
                 <button type="submit" style="background: white; border: 0;">
                     <div class="col-1">
-                        <i class="fas fa-step-forward" style="color: blue;"></i>
+                        <i class="fas fa-step-forward" style="color: <?= $btn; ?>;"></i>
                     </div>
                 </button>
             </form>
@@ -58,73 +58,71 @@
                 <!-- header -->
                 <div class="card shadow mb-4">
                     <!-- isi -->
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <!-- Table Users -->
-                            <div class="card">
-                                <!-- session alert -->
-                                <?php if (session()->getFlashdata('pesan')) : ?>
-                                    <div class="alert alert-success" role="alert">
-                                        <?= session()->getFlashdata('pesan'); ?>
-                                    </div>
-                                <?php endif; ?>
-                                <?php if (session()->getFlashdata('danger')) : ?>
-                                    <div class="alert alert-danger" role="alert">
-                                        <?= session()->getFlashdata('danger'); ?>
-                                    </div>
-                                <?php endif; ?>
+                    <div class="table-responsive">
+                        <!-- Table Users -->
+                        <div class="card">
+                            <!-- session alert -->
+                            <?php if (session()->getFlashdata('pesan')) : ?>
+                                <div class="alert alert-success" role="alert">
+                                    <?= session()->getFlashdata('pesan'); ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (session()->getFlashdata('danger')) : ?>
+                                <div class="alert alert-danger" role="alert">
+                                    <?= session()->getFlashdata('danger'); ?>
+                                </div>
+                            <?php endif; ?>
 
-                                <!-- search -->
-                                <div class="row mb-1">
-                                    <div class="col-6"></div>
-                                    <div class="col-6">
-                                        <form class="mr-auto ml-md- my-md-0 mw-100 navbar-search" action="<?= base_url('Admin/index'); ?>" method="POST">
-                                            <?= csrf_field(); ?>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control bg-light " placeholder="Cari dengan kata kunci..." aria-label="Search" autofocus aria-describedby="basic-addon2" name="search" id="search">
-                                                <div class="input-group-append">
-                                                    <button class="btn text-white" style="background: linear-gradient(blue,black);" type="submit" name="submit">
-                                                        <i class="fas fa-search fa-sm"></i>
-                                                    </button>
-                                                </div>
+                            <!-- search -->
+                            <div class="row ">
+                                <div class="col-6"></div>
+                                <div class="col-6">
+                                    <form class="mr-auto ml-md- my-md-0 mw-100 navbar-search" action="<?= base_url('Admin/index'); ?>" method="POST">
+                                        <?= csrf_field(); ?>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control bg-light " placeholder="Cari dengan kata kunci..." aria-label="Search" autofocus aria-describedby="basic-addon2" name="search" id="search">
+                                            <div class="input-group-append">
+                                                <button class="btn text-white" style="background: linear-gradient(<?= $btn; ?>,black);" type="submit" name="submit">
+                                                    <i class="fas fa-search fa-sm"></i>
+                                                </button>
                                             </div>
-                                        </form>
-                                    </div>
+                                        </div>
+                                    </form>
                                 </div>
+                            </div>
 
-                                <table class="table table-hover">
-                                    <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 1) ? 'blue' : 'red'; ?>, Black); ">
-                                        <th>NO</th>
-                                        <th>NIM</th>
-                                        <th>Nama</th>
-                                        <th class="text-center">Gender</th>
-                                        <th>No Telepon</th>
-                                        <th>E-mail</th>
-                                        <th>Status</th>
-                                        <th class="text-center">Action</th>
+                            <table class="table table-hover">
+                                <tr class="text-white" style="background: linear-gradient(<?= ($user['role_id'] == 1) ? 'blue' : 'red'; ?>, Black); ">
+                                    <th>NO</th>
+                                    <th>NIM</th>
+                                    <th>Nama</th>
+                                    <th class="text-center">Gender</th>
+                                    <th>No Telepon</th>
+                                    <th>E-mail</th>
+                                    <th>Status</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                                <?php $i = 1 + (5 * ($page - 1)); ?>
+                                <?php foreach ($users as $key => $u) : ?>
+                                    <tr>
+                                        <td class="text-center"><?= $i; ?></td>
+                                        <td class="text-center"><?= $u['nim']; ?></td>
+                                        <td><?= $u['nama']; ?></td>
+                                        <td class="text-center"><i class="<?= ($u['gender'] == 1) ? 'fas fa-mars' : 'fas fa-venus'; ?>" style="color: <?= ($u['gender'] == 1) ? 'blue' : 'rgb(251,57,101)'; ?>;"></i></td>
+                                        <td><?= $u['telepon']; ?></td>
+                                        <td><?= $u['email']; ?></td>
+                                        <td class="text-center">
+                                            <i class="<?= ($u['is_active']) ? 'far fa-fw fa-check-circle' : 'far fa-fw fa-times-circle'; ?>" style="color: <?= ($u['is_active']) ? 'green' : 'red'; ?>;"></i>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="<?= base_url('Admin/activationRole/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(green,black);"><i class="fas fa-cog" style="color: white;"></i></a>
+                                        </td>
                                     </tr>
-                                    <?php $i = 1 + (5 * ($page - 1)); ?>
-                                    <?php foreach ($users as $key => $u) : ?>
-                                        <tr>
-                                            <td class="text-center"><?= $i; ?></td>
-                                            <td class="text-center"><?= $u['nim']; ?></td>
-                                            <td><?= $u['nama']; ?></td>
-                                            <td class="text-center"><i class="<?= ($u['gender'] == 1) ? 'fas fa-mars' : 'fas fa-venus'; ?>" style="color: <?= ($u['gender'] == 1) ? 'blue' : 'rgb(251,57,101)'; ?>;"></i></td>
-                                            <td><?= $u['telepon']; ?></td>
-                                            <td><?= $u['email']; ?></td>
-                                            <td class="text-center">
-                                                <i class="<?= ($u['is_active']) ? 'far fa-fw fa-check-circle' : 'far fa-fw fa-times-circle'; ?>" style="color: <?= ($u['is_active']) ? 'green' : 'red'; ?>;"></i>
-                                            </td>
-                                            <td class="text-center">
-                                                <a href="<?= base_url('Admin/activationRole/' . $u['id']); ?>" class="btn-circle" style="background: linear-gradient(green,black);"><i class="fas fa-cog" style="color: white;"></i></a>
-                                            </td>
-                                        </tr>
-                                        <?php $i++ ?>
-                                    <?php endforeach; ?>
-                                </table>
-                                <div class="row ml-3">
-                                    <?= $pager->links('users', 'berkas_pager'); ?>
-                                </div>
+                                    <?php $i++ ?>
+                                <?php endforeach; ?>
+                            </table>
+                            <div class="row ml-3">
+                                <?= $pager->links('users', 'berkas_pager'); ?>
                             </div>
                         </div>
                     </div>

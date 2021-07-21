@@ -255,7 +255,7 @@ class Auth extends BaseController
 
 	public function forgotPassword()
 	{
-		unset($_SESSION['logout']);
+		unset($_SESSION['pesan']);
 		if (session('nim')) {
 			header('Location: ' . base_url('User'));
 			exit();
@@ -263,31 +263,22 @@ class Auth extends BaseController
 		$nim = htmlspecialchars($this->request->getVar('nim'));
 		$banned = $this->BannedModel->where(['nim' => $nim])->first();
 
-		// cke nim 
+		// cek nim 
 		$cekNim = $this->UserModel->where(['nim' => $nim])->first();
+
+		if (date('d')) {
+			# code...
+		}
 
 		// cek apa field nim di isi
 		if ($nim != null) {
-			// cek apa nim terdaftar
-			if ($cekNim == null) {
-				$data = [
-					'title' => 'Login',
-					'validation' => \Config\Services::validation()
-				];
-				session()->setFlashdata('pesan', 'NIM is not registered');
-				return view('auth/login', $data);
-			} else {
-				// daftarkan nim ke list banned
+			// daftarkan nim ke list banned dan update jika sudah ada
+			if ($cekNim != null) {
+				// cek isi table banned
 				if ($banned) {
-					unset($_SESSION['pesan']);
-					# nim sudah ada di daftar
-					if (time() - $banned['time'] > (3 * 24)) {
-						// update banned
-						$this->BannedModel->save([
-							'id'      => $banned['id'],
-							'count'   => 3,
-							'time'    => time()
-						]);
+					// cek sisa count
+					if ($banned['count'] != 0) {
+						// success validasi 
 						$data = [
 							'title' 	 => 'Forgot Password',
 							'validation' => \Config\Services::validation(),
@@ -296,28 +287,57 @@ class Auth extends BaseController
 						unset($_SESSION['pesan']);
 						return view('auth/forgotPassword', $data);
 					} else {
-						$data = [
-							'title' => 'Login',
-							'validation' => \Config\Services::validation()
-						];
-						session()->setFlashdata('pesan', 'Account with NIM ' . $nim . ' is BANNED!!!');
-						return view('auth/login', $data);
+						// function time detail
+						$time = (86400 - (time() - $banned['time']));
+						$hours = intdiv($time, 3600);
+						// cek sudah berapa lama di banned
+						if (time() - $banned['time'] > 86400) {
+							// update table banned
+							$this->BannedModel->save([
+								'id'      => $banned['id'],
+								'nim'	  => $nim,
+								'count'   => 3,
+								'time'    => time()
+							]);
+							$data = [
+								'title' 	 => 'Forgot Password',
+								'validation' => \Config\Services::validation(),
+								'nim' 		 => $nim
+							];
+							unset($_SESSION['pesan']);
+							return view('auth/forgotPassword', $data);
+						} else {
+							$data = [
+								'title' => 'Login',
+								'validation' => \Config\Services::validation()
+							];
+							unset($_SESSION['pesan']);
+							session()->setFlashdata('pesan', 'Account with NIM ' . $nim . ' is BANNED for ' . $hours . ' Hours!!!');
+							return view('auth/login', $data);
+						}
 					}
 				} else {
-					// daftarkan nim
 					$this->BannedModel->save([
 						'nim' 		 => $nim,
-						'time' 		 => time(),
-						'count' 	 => 3,
+						'time'		 => time(),
+						'count'		 => 3,
 					]);
 					$data = [
 						'title' 	 => 'Forgot Password',
 						'validation' => \Config\Services::validation(),
 						'nim' 		 => $nim
 					];
-
+					unset($_SESSION['pesan']);
 					return view('auth/forgotPassword', $data);
 				}
+			} else {
+
+				$data = [
+					'title' => 'Login',
+					'validation' => \Config\Services::validation()
+				];
+				session()->setFlashdata('pesan', 'NIM is not registered');
+				return view('auth/login', $data);
 			}
 		} else {
 			$data = [
@@ -332,7 +352,7 @@ class Auth extends BaseController
 
 	public function forgot($nim)
 	{
-
+		unset($_SESSION['pesan']);
 		// validasi input
 		if ($this->validate([
 			'pin' 	=> [
@@ -397,14 +417,8 @@ class Auth extends BaseController
 				session()->setFlashdata('logout', 'Your password has been changed');
 				return view('auth/login', $data);
 			} else {
-				if ($banned['count'] == 0) {
-					$data = [
-						'title' => 'Login',
-						'validation' => \Config\Services::validation()
-					];
-					session()->setFlashdata('pesan', 'Sorry you have 3 mistakes in entering your PIN number and banned for 1 day ');
-					return view('auth/login', $data);
-				} else {
+				// cek sisa count
+				if ($banned['count'] != 0) {
 					$count = $banned['count'] - 1;
 					$this->BannedModel->save([
 						'id'		 => $banned['id'],
@@ -420,6 +434,13 @@ class Auth extends BaseController
 					];
 					session()->setFlashdata('pesan', 'Please enter your correct PIN!, you have ' . $banned['count'] . ' chance');
 					return view('auth/forgotPassword', $data);
+				} else {
+					$data = [
+						'title' => 'Login',
+						'validation' => \Config\Services::validation()
+					];
+					session()->setFlashdata('pesan', 'Sorry you have 3 mistakes in entering your PIN number and banned for 1 day ');
+					return view('auth/login', $data);
 				}
 			}
 		} else {

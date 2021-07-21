@@ -2,6 +2,7 @@
 
 <?= $this->section('content'); ?>
 <div class="container-fluid">
+    <?php $btn = (session()->get('role_id') == 2) ? 'red' : 'black'; ?>
 
     <!-- Page Heading -->
     <div class="card">
@@ -66,7 +67,7 @@
                                     </div>
                                 </div>
                                 <div class=" col-3">
-                                    <label for="desa" class="form-label">Desa / Kelurahan</label>
+                                    <label for="desa" class="form-label">Desa</label>
                                     <input type="text" class="form-control <?= ($validation->hasError('desa')) ? 'is-invalid' : ''; ?>" id="desa" name="desa" placeholder="Desa" value="<?= $user['desa']; ?>">
                                     <div id="validationServer03Feedback" class="invalid-feedback mx-3">
                                         <?= $validation->getError('desa'); ?>
@@ -103,7 +104,7 @@
                                 </div>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn text-white" style="background: linear-gradient(blue,black);">Edit</button>
+                                <button type="submit" class="btn text-white" style="background: linear-gradient(<?= $btn; ?>,black);">Edit</button>
                             </div>
                         </div>
                     </div>

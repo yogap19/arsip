@@ -109,12 +109,34 @@ class Admin extends BaseController
     public function berkas()
     {
         $this->cekSession2();
+        $confirm =  $this->BerkasModel->where(['approved_admin' => 1])->where(['type' => 1])->orderBy('updated_at', 'DESC')->find();
+        $confirm2 =  $this->BerkasModel->where(['approved_admin' => 1])->where(['type' => 2])->orderBy('updated_at', 'DESC')->find();
+        // d($confirm);
+        // dd($confirm2);
+        foreach ($confirm2 as $key => $value) {
+            array_push($confirm, $value);
+        }
+
+        $request =  $this->BerkasModel->where(['approved_admin' => 2])->where(['type' => 1])->find();
+        $request2 =  $this->BerkasModel->where(['approved_admin' => 2])->where(['type' => 2])->find();
+
+        foreach ($request2 as $key => $value) {
+            array_push($request, $value);
+        }
+
+        $reject =  $this->BerkasModel->where(['approved_admin' => 3])->where(['type' => 1])->find();
+        $reject2 =  $this->BerkasModel->where(['approved_admin' => 3])->where(['type' => 2])->find();
+
+        foreach ($reject2 as $key => $value) {
+            array_push($reject, $value);
+        }
+
         $data = [
             'title' => 'Berkas',
             'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
-            'requested' => $this->BerkasModel->where(['approved_admin' => 2])->find(),
-            'confirmed' => $this->BerkasModel->where(['approved_admin' => 1])->find(),
+            'requested' => $request,
             'rejected' => $this->BerkasModel->where(['approved_admin' => 3])->find(),
+            'confirmed' => $confirm,
             'validation' => \Config\Services::validation()
         ];
         // dd($data);
@@ -229,19 +251,4 @@ class Admin extends BaseController
         session()->setFlashdata('danger', 'Berkas dengan nama ' . $data['title'] . ' berhasil dihapus');
         return redirect()->to(base_url('Admin/berkas'));
     }
-    // public function back($id)
-    // {
-    //     $id = $id;
-    //     $data = [
-    //         'title'     => 'Management Account',
-    //         'user'      => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
-    //         'back'      => $id,
-    //         'pager'     => $this->UserModel->pager,
-    //         'allUsers'   => $this->UserModel->findAll(),
-    //         'user'      => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
-    //         'confirmed' => $this->UserModel->where(['is_active' => '1'])->find(),
-    //         'requested' => $this->UserModel->where(['is_active' => '0'])->find(),
-    //     ];
-    //     return view('admin/index', $data);
-    // }
 }
