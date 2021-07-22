@@ -2,7 +2,7 @@
 
 <?= $this->section('content'); ?>
 <div class="container" style="opacity: .9;">
-
+    <?php $rol = (random_int(1, 3)); ?>
     <!-- Outer Row -->
     <div class="row justify-content-center">
 
@@ -15,7 +15,7 @@
                         <div class="col-lg">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <img class="rounded-circle" src="<?= base_url('/img/LOGO2.png'); ?>" alt="" width="100px" height="100px">
+                                    <img class="rounded-circle" src="<?= base_url('/img/icon/logo_' . $rol . 'b.png'); ?>" alt="" width="100px" height="100px">
                                     <h1 class="h4 text-gray-900 mb-4">Login</h1>
                                 </div>
                                 <?php if (session()->getFlashdata('pesan')) : ?>

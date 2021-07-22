@@ -2,15 +2,23 @@
 <html lang="en">
 
 <head>
-
+    <?php
+    $role_id = session()->get('role_id');
+    if ($role_id == 1) {
+        $icon = 'logo_1b.png';
+    } elseif ($role_id == 2) {
+        $icon = 'logo_2b.png';
+    } else {
+        $icon = 'logo_3b.png';
+    }
+    ?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="<?= base_url() ?>/img/ICON.png" type="image/gif">
+    <link rel="icon" href="<?= base_url() ?>/img/icon/<?= $icon; ?>" type="image/gif">
     <title><?= $title; ?></title>
-
     <!-- Custom fonts for this template-->
     <link href="<?= base_url(); ?>/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 

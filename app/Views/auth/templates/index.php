@@ -2,13 +2,14 @@
 <html lang="en">
 
 <head>
+    <?php $rol = (random_int(1, 3)); ?>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="<?= base_url() ?>/img/ICON.png" type="image/gif">
+    <link rel="icon" href="<?= base_url() ?>/img/icon/logo_<?= $rol; ?>b.png" type="image/gif">
     <title><?= $title; ?></title>
 
     <!-- Custom fonts for this template-->
@@ -20,7 +21,7 @@
 
 </head>
 
-<body class="" style="background-image: url(<?= base_url(); ?>/img/background.jpg); background-size:cover; background-repeat: no-repeat; background-attachment: fixed;">
+<body class="" style="background-image: url(<?= base_url(); ?>/img/icon/background_<?= $rol; ?>.jpg); background-size:cover; background-repeat: no-repeat; background-attachment: fixed;">
     <!-- <body class="" style="background: linear-gradient(Blue, Black);"> -->
 
     <?= $this->renderSection('content'); ?>

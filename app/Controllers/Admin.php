@@ -134,6 +134,7 @@ class Admin extends BaseController
         $data = [
             'title' => 'Berkas',
             'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'users' => $this->UserModel->findAll(),
             'requested' => $request,
             'rejected' => $this->BerkasModel->where(['approved_admin' => 3])->find(),
             'confirmed' => $confirm,
