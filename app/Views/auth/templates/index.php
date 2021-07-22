@@ -20,9 +20,11 @@
 
 </head>
 
-<body class="modal-open" style="background: linear-gradient(Blue, Black);">
+<body class="" style="background-image: url(<?= base_url(); ?>/img/background.jpg); background-size:cover; background-repeat: no-repeat; background-attachment: fixed;">
+    <!-- <body class="" style="background: linear-gradient(Blue, Black);"> -->
 
     <?= $this->renderSection('content'); ?>
+
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url(); ?>/vendor/jquery/jquery.min.js"></script>
     <script src="<?= base_url(); ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

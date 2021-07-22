@@ -1,7 +1,7 @@
 <?= $this->extend('auth/templates/index'); ?>
 
 <?= $this->section('content'); ?>
-<div class="container">
+<div class="container" style="opacity: .94;">
     <div class="row justify-content-center">
         <div class="card o-hidden border-0">
             <div class="card-body p-0">
@@ -48,7 +48,7 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="form-group border border-light mx-2">
+                                        <div class="form-group border border-light">
                                             <p class="fs-6">Tempat tanggal lahir</p>
                                             <div class="form-group row">
                                                 <div class="col-sm-6">

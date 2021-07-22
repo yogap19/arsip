@@ -129,12 +129,12 @@ class SuperAdmin extends BaseController
         // pencarian berkas
         if ($search != null) {
             $hasil = $this->BerkasModel->berkas($search)->get()->getResultArray();
-            $show = 2;
             $berkas = $this->BerkasModel;
+            $show = ['show' => 2];
             session()->set($show);
         } else {
             $berkas = $this->BerkasModel;
-            $show = 1;
+            $show = ['show' => 1];
             session()->set($show);
         }
         $pages = $this->request->getVar('page_berkas');

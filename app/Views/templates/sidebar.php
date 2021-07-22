@@ -13,7 +13,7 @@
                         <!-- <div class="sidebar-brand-icon rotate-n-15">
                             <i class="fas fa-file-invoice-dollar"></i>
                         </div> -->
-                        <div class="sidebar-brand-text"><img src="<?= base_url('/img/ICON.png'); ?>" alt="" width="50px" height="50px"></div>
+                        <div class="sidebar-brand-text"><img class="rounded-circle" src="<?= base_url('/img/LOGO2.png'); ?>" alt="" width="50px" height="50px"></div>
                     </a>
 
                     <!-- Divider -->
