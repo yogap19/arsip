@@ -6,6 +6,7 @@ namespace App\Controllers;
 use \App\Models\UserModel;
 use \App\Models\MenuModel;
 use \App\Models\BerkasModel;
+use \App\Models\BroadcastModel;
 use CodeIgniter\HTTP\Request;
 use PhpParser\Node\Stmt\Echo_;
 
@@ -19,6 +20,7 @@ class SuperAdmin extends BaseController
     protected $UserModel;
     protected $MenuModel;
     protected $BerkasModel;
+    protected $BroadcastModel;
     protected $spreadsheet;
     public function __construct()
     {
@@ -26,6 +28,7 @@ class SuperAdmin extends BaseController
         $this->UserModel = new UserModel();
         $this->MenuModel = new MenuModel();
         $this->BerkasModel = new BerkasModel();
+        $this->BroadcastModel = new BroadcastModel();
         $this->cekSession();
         if (!session('nim')) {
             header('Location: ' . base_url('Auth'));
@@ -184,16 +187,6 @@ class SuperAdmin extends BaseController
             'show'          => $show
         ];
         return view('sadmin/index', $data);
-    }
-    public function search()
-    {
-        // ambil data dari form 
-        $search = $this->request->getVar('search');
-
-        // cari data dari database
-        $berkas = $this->BerkasModel->where(['nim' => $search])->find();
-
-        return view('sadmin/index', $berkas);
     }
     public function manageMenu()
     {
@@ -397,6 +390,66 @@ class SuperAdmin extends BaseController
         }
 
         return redirect()->to(base_url('SuperAdmin/arsip'));
+    }
+    public function broadcast()
+    {
+        $data = [
+            'title'      => 'Broadcast',
+            'user'       => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'validation' => \Config\Services::validation()
+        ];
+        return view('Sadmin/broadcast', $data);
+    }
+
+    public function broadcastSave()
+    {
+        if (!$this->validate([
+            'text'     => [
+                'rules'        => 'required',
+                'errors'    => ['required'      => 'Subject harus di isi!']
+            ],
+            'textarea'     => [
+                'rules'        => 'required',
+                'errors'    => ['required'      => 'Pesan harus di isi!']
+            ],
+        ])) {
+            return redirect()->to('/SuperAdmin/broadcast')->withInput();
+        }
+
+        // get data
+        ($this->request->getVar('si') == null) ? $si = '0' : $si =  $this->request->getVar('si');
+        ($this->request->getVar('si3') == null) ? $si3 = '0' : $si3 =  $this->request->getVar('si3');
+        ($this->request->getVar('ti') == null) ? $ti = '0' : $ti =  $this->request->getVar('ti');
+        ($this->request->getVar('ti3') == null) ? $ti3 = '0' : $ti3 =  $this->request->getVar('ti3');
+        ($this->request->getVar('ak') == null) ? $ak = '0' : $ak =  $this->request->getVar('ak');
+        ($this->request->getVar('ak3') == null) ? $ak3 = '0' : $ak3 =  $this->request->getVar('ak3');
+        ($this->request->getVar('mn') == null) ? $mn = '0' : $mn =  $this->request->getVar('mn');
+        ($this->request->getVar('mn3') == null) ? $mn3 = '0' : $mn3 =  $this->request->getVar('mn3');
+        ($this->request->getVar('tahun1') == null) ? $tahun1 = '0' : $tahun1 =  $this->request->getVar('tahun1');
+        ($this->request->getVar('tahun2') == null) ? $tahun2 = '0' : $tahun2 =  $this->request->getVar('tahun2');
+        ($this->request->getVar('tahun3') == null) ? $tahun3 = '0' : $tahun3 =  $this->request->getVar('tahun3');
+        ($this->request->getVar('tahun4') == null) ? $tahun4 = '0' : $tahun4 =  $this->request->getVar('tahun4');
+        ($this->request->getVar('tahun5') == null) ? $tahun5 = '0' : $tahun5 =  $this->request->getVar('tahun5');
+        $lama = $this->request->getVar('lama');
+        $subject = strtoupper($this->request->getVar('text'));
+        $isi = $this->request->getVar('textarea');
+
+        // get code
+        $code = $si . $ti . $ak . $mn . $si3 . $ti3 . $ak3 . $mn . '_' . $tahun1 . $tahun2 . $tahun3 . $tahun4 . $tahun5;
+
+        // count 
+        $count = time() + (86400 * $lama);
+        // save database
+        $this->BroadcastModel->save([
+            'code'      => $code,
+            'subject'   => $subject,
+            'pesan'     => $isi,
+            'count'     => $count,
+            'pengirim'  => session()->get('nim')
+        ]);
+        session()->setFlashdata('subject', $subject);
+        session()->setFlashdata('isi', $isi);
+        return redirect()->to('/SuperAdmin/broadcast')->withInput();
     }
 
     public function delete($id)

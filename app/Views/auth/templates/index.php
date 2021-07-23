@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <?php $rol = (random_int(1, 3)); ?>
+    <?php $rol = (random_int(1, 1)); ?>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

@@ -5,6 +5,7 @@ namespace App\Controllers;
 use \App\Models\UserModel;
 use \App\Models\MenuModel;
 use \App\Models\BerkasModel;
+use \App\Models\BroadcastModel;
 use CodeIgniter\Validation\Rules;
 use PhpParser\Node\Stmt\Echo_;
 
@@ -13,11 +14,13 @@ class User extends BaseController
     protected $UserModel;
     protected $MenuModel;
     protected $BerkasModel;
+    protected $BroadcastModel;
     public function __construct()
     {
         $this->UserModel = new UserModel();
         $this->MenuModel = new MenuModel();
         $this->BerkasModel = new BerkasModel();
+        $this->BroadcastModel = new BroadcastModel();
         if (!session('nim')) {
             header('Location: ' . base_url('Auth'));
             exit();
@@ -25,9 +28,11 @@ class User extends BaseController
     }
     public function index()
     {
+        $broadcast = $this->BroadcastModel->findAll();
         $data = [
-            'title' => 'My Profile',
-            'user' => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'title'     => 'My Profile',
+            'user'      => $this->UserModel->where(['nim' => session()->get('nim')])->first(),
+            'broadcast' => $broadcast
         ];
         return view('user/index', $data);
     }

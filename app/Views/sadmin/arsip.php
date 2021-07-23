@@ -266,7 +266,7 @@
                                     <?php foreach ($rejected as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
-                                            <td><?= $u['nim']; ?></td>
+                                            <td><a href="#" data-toggle="modal" data-target="#data<?= $u['nim']; ?>"><?= $u['nim']; ?></a></td>
                                             <td><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 10, 50); ?></a></td>
                                             <!-- cek status approved kemahasiswaan -->
                                             <?php if ($u['approved_Sadmin'] == '1') : ?>
@@ -347,7 +347,7 @@
                                     <?php foreach ($confirmed as $key => $u) : ?>
                                         <tr>
                                             <td class="text-center"><?= $i; ?></td>
-                                            <td><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= $u['nim']; ?></a></td>
+                                            <td><a href="#" data-toggle="modal" data-target="#data<?= $u['nim']; ?>"><?= $u['nim']; ?></a></td>
                                             <td><a href="<?= base_url('Admin/download/' . $u['id']); ?>"><?= substr($u['title'], 10, 50); ?></a></td>
                                             <!-- cek status approved super kemahasiswaan -->
                                             <?php if ($u['approved_Sadmin'] == '1') : ?>

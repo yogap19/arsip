@@ -76,13 +76,13 @@ class Auth extends BaseController
 							return redirect()->to('/User');
 						}
 					}
-					session()->setFlashdata('pesan', 'Password yang anda masukan tidak sesuai');
+					session()->setFlashdata('pesan', 'Password is <strong>wrong</strong>');
 					return redirect()->to('/Auth')->withInput();
 				}
-				session()->setFlashdata('pesan', 'Akun Belum diaktivasi');
+				session()->setFlashdata('pesan', 'Your account has not been activated');
 				return redirect()->to('/Auth')->withInput();
 			} else {
-				session()->setFlashdata('pesan', 'NIM yang anda masukan tidak sesuai');
+				session()->setFlashdata('pesan', $nim . ' is not registered');
 				return redirect()->to('/Auth')->withInput();
 			}
 		}
@@ -223,7 +223,7 @@ class Auth extends BaseController
 			'password' 	=> password_hash($this->request->getVar('password'), PASSWORD_DEFAULT),
 
 		]);
-		session()->setFlashdata('logout', 'Account has been created, please wait for admin confirmation!');
+		session()->setFlashdata('logout', 'Account has been created, please wait for administrator confirmation!');
 		return redirect()->to('/Auth');
 	}
 
@@ -241,7 +241,7 @@ class Auth extends BaseController
 			$_SESSION['nim'],
 			$_SESSION['role_id']
 		);
-		session()->setFlashdata('logout', 'Anda Berhasil Logout');
+		session()->setFlashdata('logout', 'You have successfully Logout');
 		return redirect()->to('/Auth');
 	}
 
