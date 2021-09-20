@@ -2,8 +2,14 @@
 
 <?= $this->section('content'); ?>
 <div class="container-fluid">
-    <?php $btn = (session()->get('role_id') == 2) ? 'red' : 'black'; ?>
-
+    <?php
+    if (session()->get('role_id') == 1) {
+        $btn = 'blue';
+    } elseif (session()->get('role_id') == 2) {
+        $btn = 'red';
+    } else {
+        $btn = 'black';
+    }; ?>
     <!-- Page Heading -->
     <div class="card">
         <div class="row">

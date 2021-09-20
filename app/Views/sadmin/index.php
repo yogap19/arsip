@@ -192,7 +192,7 @@
                     <a class="nav-link <?= ($show == 1) ? 'active' : ''; ?>" data-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-current="true" href="#">Dashboard </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= ($show == 2) ? 'active' : ''; ?>" data-toggle="tab" href="#berkas" role="tab" aria-controls="berkas" aria-current="true" href="#">Berkas </a>
+                    <a class="nav-link <?= ($show == 2) ? 'active' : ''; ?>" data-toggle="tab" href="#berkas" role="tab" aria-controls="berkas" aria-current="true" href="#">Arsip </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#beasiswa" role="tab" aria-controls="beasiswa">Beasiswa</a>
@@ -350,218 +350,11 @@
                     <hr>
                     <!-- informasi User -->
                     <div>
-                        <!-- Card Information -->
-                        <div>
-                            <div class="text-center mt-3">
-                                <h3>Mahasiswa Tahun <?= date('Y'); ?></h3>
-                            </div>
-                            <div class="row m-2">
-                                <!-- card 1 Si (S-1)  -->
-                                <div class="col-3">
-                                    <div class="card border-left-primary py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Sistem Informasi (S-1)
-                                                    </div>
-                                                    <div class="row no-gutters align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($Si); ?></div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="progress progress-sm mr-2">
-                                                                <div class="progress-bar bg-primary" role="progressbar" style="width: <?= $p_Si; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- card 2 TI (S-1) -->
-                                <div class="col-3">
-                                    <div class="card border-left-success py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Teknik Informatika (S-1)
-                                                    </div>
-                                                    <div class="row no-gutters align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($Ti); ?></div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="progress progress-sm mr-2">
-                                                                <div class="progress-bar bg-success" role="progressbar" style="width: <?= $p_Ti; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- card 3 Ak (S-1) -->
-                                <div class="col-3">
-                                    <div class="card border-left-danger py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Akuntansi (S-1)
-                                                    </div>
-                                                    <div class="row no-gutters align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($Ak); ?></div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="progress progress-sm mr-2">
-                                                                <div class="progress-bar bg-danger" role="progressbar" style="width: <?= $p_beasiswa; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- card 4 Mn (S-1) -->
-                                <div class="col-3">
-                                    <div class="card border-left-dark py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-dark text-uppercase mb-1">Managemen (S-1)
-                                                    </div>
-                                                    <div class="row no-gutters align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($Mn); ?></div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="progress progress-sm mr-2">
-                                                                <div class="progress-bar bg-dark" role="progressbar" style="width: <?= $p_Mn; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row m-2">
-                                <!-- card 1 Si (D-3)  -->
-                                <div class="col-3">
-                                    <div class="card border-left-info py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Managemen Informasi (D-3)
-                                                    </div>
-                                                    <div class="row no-gutters align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($mi); ?></div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="progress progress-sm mr-2">
-                                                                <div class="progress-bar bg-info" role="progressbar" style="width: <?= $p_mi; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- card 2 TI (D-3) -->
-                                <div class="col-3">
-                                    <div class="card border-left-secondary py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1">Teknik Informatika (D-3)
-                                                    </div>
-                                                    <div class="row no-gutters align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($ti); ?></div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="progress progress-sm mr-2">
-                                                                <div class="progress-bar bg-secondary" role="progressbar" style="width: <?= $p_ti; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- card 3 Ak (D-3) -->
-                                <div class="col-3">
-                                    <div class="card border-left-warning py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Akuntansi (D-3)
-                                                    </div>
-                                                    <div class="row no-gutters align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($ak); ?></div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="progress progress-sm mr-2">
-                                                                <div class="progress-bar bg-warning" role="progressbar" style="width: <?= $p_ak; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- card 4 Mn (D-3) -->
-                                <div class="col-3">
-                                    <div class="card border-left-primary py-2">
-                                        <div class="card-body">
-                                            <div class="row no-gutters align-items-center">
-                                                <div class="col mr-2">
-                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Managemen (D-3)
-                                                    </div>
-                                                    <div class="row no-gutters align-items-center">
-                                                        <div class="col-auto">
-                                                            <div class="h5 mb-0 mr-3 font-bold text-gray-800"><?= count($mn); ?></div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="progress progress-sm mr-2">
-                                                                <div class="progress-bar bg-primary" role="progressbar" style="width: <?= $p_mn; ?>%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
-                        <!-- isi -->
-                        <div class="row m-1">
-                            <!-- chart -->
-                            <div class="card col-6">
-                                <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Data Mahasiswa Tahun <?= date('Y'); ?> </h3>
-                                <canvas id="userType" height="300px"></canvas>
-                            </div>
-                            <div class="card col-6">
-                                <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Data Mahasiswa Tahun <?= date('Y'); ?> </h3>
-                                <canvas id="userGender"></canvas>
-                            </div>
-                        </div>
+
                         <br>
                         <div class="card">
                             <div class="row">
                                 <div class="col-1">
-
                                 </div>
                                 <div class="col-10">
                                     <h3 class="mt-2" style="text-align: center; color: black; font-family: Arial, Helvetica, sans-serif;">Mahasiswa Perguruan Tinggi Indonesia Mandiri</h3>
@@ -846,11 +639,11 @@
                                         <div class="row mt-2">
                                             <div class="col">
                                                 <!-- table beasiswa -->
-                                                <div class="rounded m-1">
-                                                    <div class="table-responsive rounded">
+                                                <div class="m-1">
+                                                    <div class="table-responsive">
                                                         <table class="table-striped table-hover">
                                                             <tr style="height: 40px;">
-                                                                <th class="text-center text-white" colspan="8" style="background: linear-gradient(grey,black);">
+                                                                <th class="text-center text-white rounded-top" colspan="8" style="background: linear-gradient(grey,black);">
                                                                     Beasiswa BAWAKU
                                                                 </th>
                                                             </tr>
@@ -858,10 +651,9 @@
                                                                 <th class="text-center">NO</th>
                                                                 <th class="text-center" style="min-width: 100px;">NIM</th>
                                                                 <th class="text-center" style="min-width: 150px;">Nama Pengirim</th>
-                                                                <th class="text-center" style="min-width: 150px;">Jurusan</th>
-                                                                <th class="text-center" style="min-width: 200px;">Nama surat</th>
+                                                                <th class="text-center" style="min-width: 170px;">Jurusan</th>
+                                                                <th class="text-center" style="min-width: 150px;">Nama surat</th>
                                                                 <th class="text-center" style="min-width: 200px;">NIK</th>
-                                                                <th class="text-center" style="min-width: 300px;">Alamat</th>
                                                                 <th class="text-center" style="min-width: 150px;">Dikirim</th>
                                                             </tr>
                                                             <?php $i = 1; ?>
@@ -893,9 +685,8 @@
                                                                         }
                                                                         ?>
                                                                         <td><?= $j; ?></td>
-                                                                        <td style="max-width: 150px;"><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 14, 50); ?></a></td>
+                                                                        <td style="max-width: 150px;"><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 22, 50); ?></a></td>
                                                                         <td><?= $u['nik']; ?></td>
-                                                                        <td><?= $u['rtrw']; ?> <?= $u['desa']; ?> <?= $u['kecamatan']; ?> <?= $u['kota']; ?></td>
                                                                         <td class="text-center"><?= $u['updated_at']; ?></td>
                                                                     </tr>
                                                                     <?php $i++; ?>
@@ -910,11 +701,11 @@
                                                 </div>
                                                 <hr>
                                                 <!-- table beasiswa lain-->
-                                                <div class="rounded m-1">
-                                                    <div class="table-responsive rounded">
+                                                <div class="m-1">
+                                                    <div class="table-responsive">
                                                         <table class="table-striped table-hover ">
                                                             <tr style="height: 40px;">
-                                                                <th class="text-center text-white" colspan="8" style="background: linear-gradient(grey,black);">
+                                                                <th class="text-center text-white rounded-top" colspan="8" style="background: linear-gradient(grey,black);">
                                                                     Beasiswa Lain
                                                                 </th>
                                                             </tr>
@@ -922,10 +713,10 @@
                                                                 <th class="text-center">NO</th>
                                                                 <th class="text-center" style="min-width: 100px;">NIM</th>
                                                                 <th class="text-center" style="min-width: 150px;">Nama Pengirim</th>
-                                                                <th class="text-center" style="min-width: 150px;">Jurusan</th>
-                                                                <th class="text-center" style="min-width: 200px;">Nama surat</th>
+                                                                <th class="text-center" style="min-width: 170px;">Jurusan</th>
+                                                                <th class="text-center" style="min-width: 150px;">Nama surat</th>
                                                                 <th class="text-center" style="min-width: 200px;">NIK</th>
-                                                                <th class="text-center" style="min-width: 300px;">Alamat</th>
+                                                                <!-- <th class="text-center" style="min-width: 300px;">Alamat</th> -->
                                                                 <th class="text-center" style="min-width: 150px;">Dikirim</th>
                                                             </tr>
                                                             <?php $i = 1; ?>
@@ -957,9 +748,8 @@
                                                                         }
                                                                         ?>
                                                                         <td><?= $j; ?></td>
-                                                                        <td style="max-width: 150px;"><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 14, 50); ?></a></td>
+                                                                        <td style="max-width: 150px;"><a href="<?= base_url('SuperAdmin/download/' . $u['id']); ?>"><?= substr($u['title'], 22, 50); ?></a></td>
                                                                         <td><?= $u['nik']; ?></td>
-                                                                        <td><?= $u['rtrw']; ?> <?= $u['desa']; ?> <?= $u['kecamatan']; ?> <?= $u['kota']; ?></td>
                                                                         <td class="text-center"><?= $u['updated_at']; ?></td>
                                                                     </tr>
                                                                     <?php $i++; ?>
@@ -984,6 +774,7 @@
         </div>
     </div>
 </div>
+
 
 <script type='text/javascript'>
     function number_format(number, decimals, dec_point, thousands_sep) {
@@ -1283,116 +1074,6 @@
         options: optType
     });
 
-
-    // user type 
-    var optUsrType = {
-        responsive: true,
-        legend: {
-            position: "bottom",
-            labels: {
-                usePointStyle: true,
-                boxWidth: 6
-            }
-        },
-        title: {
-            display: true,
-            text: "Sumber: Data Kemahasiswaan Tahun <?= date('Y'); ?>"
-        },
-        tooltips: {
-            backgroundColor: "rgb(255,255,255)",
-            bodyFontColor: "#858796",
-            borderColor: '#dddfeb',
-            borderWidth: 1,
-            xPadding: 15,
-            yPadding: 15,
-            displayColors: false,
-            caretPadding: 10,
-        },
-        cutoutPercentage: 80,
-    }
-    var userTypeData = {
-        labels: [
-            'Sistem Informasi S1',
-            'Teknik Informatika S1',
-            'Akuntansi S1',
-            'Manajemen S1',
-            'Manajemen Informasi D3',
-            'Teknik Informatika D3',
-            'Akuntansi D3',
-            'Manajemen D3',
-        ],
-        datasets: [{
-            label: 'My First Dataset',
-            data: [
-                <?= count($Si); ?>,
-                <?= count($Ti); ?>,
-                <?= count($Ak); ?>,
-                <?= count($Mn); ?>,
-                <?= count($mi); ?>,
-                <?= count($ti); ?>,
-                <?= count($ak); ?>,
-                <?= count($mn); ?>
-            ],
-            backgroundColor: [
-                '#4E73DF',
-                '#1CC88A',
-                '#E85547',
-                '#5A5C69',
-                '#36B9CC',
-                '#8C8E9C',
-                '#F6C23E',
-                '#0000F6'
-            ],
-            hoverOffset: 1
-        }]
-    };
-    var userType = document.getElementById("userType").getContext("2d");
-    window.myBar = new Chart(userType, {
-        type: "doughnut",
-        data: userTypeData,
-        options: optUsrType
-    });
-
-
-    // user Gender 
-    var optUsrGender = {
-        responsive: true,
-        legend: {
-            position: "bottom",
-            labels: {
-                usePointStyle: true,
-                boxWidth: 6
-            }
-        },
-        title: {
-            display: true,
-            text: "Sumber: Data Kemahasiswaan Tahun <?= date('Y'); ?>"
-        },
-    }
-    var userGenderData = {
-        labels: [
-            'Laki - laki',
-            'Perempuan',
-        ],
-        datasets: [{
-            label: 'My First Dataset',
-            data: [
-                <?= count($boy); ?>,
-                <?= count($girl); ?>,
-            ],
-            backgroundColor: [
-                'blue',
-                'pink',
-            ],
-            hoverOffset: 1
-        }]
-    };
-    var userGender = document.getElementById("userGender").getContext("2d");
-    window.myBar = new Chart(userGender, {
-        type: "pie",
-        data: userGenderData,
-        options: optUsrGender
-    });
 
 
     // User Lima Tahun terakhir

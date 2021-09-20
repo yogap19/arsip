@@ -212,7 +212,7 @@ class Auth extends BaseController
 			'gender' 	=> $this->request->getVar('gender'),
 			'tmptLahir' => htmlspecialchars($this->request->getVar('tmptLahir')),
 			'tglLahir' 	=> $this->request->getVar('tglLahir'),
-			'rtrw' 		=> substr($this->request->getVar('rtrw'), 0, 2) . '/' . substr($this->request->getVar('rtrw'), 2, 2),
+			'rtrw' 		=> substr($this->request->getVar('rtrw'), 0, 4),
 			'desa' 		=> htmlspecialchars($this->request->getVar('desa')),
 			'kecamatan' => htmlspecialchars($this->request->getVar('kecamatan')),
 			'kota' 		=> htmlspecialchars($this->request->getVar('kota')),

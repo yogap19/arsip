@@ -14,7 +14,6 @@ if ($role_id == 1) {
     $heksa = '0,0,0';
 }
 
-
 // code jurusan
 if (substr($nim, 0, 2) == 35) {
     $codeJurusan = 0;
@@ -32,6 +31,8 @@ if (substr($nim, 0, 2) == 35) {
     $codeJurusan = 6;
 } elseif (substr($nim, 0, 2) == 28) {
     $codeJurusan = 7;
+} else {
+    $codeJurusan = 8;
 }
 $tahun = substr(date('Y'), 2, 2);
 if ($tahun - substr($nim, 2, 2)  == 5) {
@@ -45,6 +46,8 @@ if ($tahun - substr($nim, 2, 2)  == 5) {
 } elseif ($tahun - substr($nim, 2, 2)  == 1) {
     $codeSemester = 9;
 }
+
+
 ?>
 <?php $db = \Config\Database::connect(); ?>
 <?php
@@ -52,8 +55,17 @@ if ($tahun - substr($nim, 2, 2)  == 5) {
 $broadcast = $db->table('user')
     ->join('broadcast', 'user.nim = broadcast.pengirim')
     ->select('user.image')->select('broadcast.pengirim')->select('broadcast.subject')->select('broadcast.pesan')->select('broadcast.created_at')
-    ->select('user.nim')->select('broadcast.count')->select('broadcast.code')->select('broadcast.id')->get()->getResultArray();
-// d($broadcast);
+    ->select('user.nim')->select('user.nama')->select('broadcast.count')->select('broadcast.code')->select('broadcast.id')->get()->getResultArray();
+
+$c = [];
+foreach ($broadcast as $key => $b) {
+    if ($b['count'] > time()) {
+        if (substr($b['code'], $codeJurusan, 1) == 1 && substr($b['code'], $codeSemester, 1) == 1) {
+            array_push($c, $b);
+        }
+    }
+}
+$plus =  count($c);
 ?>
 <!-- Topbar -->
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -70,31 +82,34 @@ $broadcast = $db->table('user')
             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
+                <span class="badge badge-danger badge-counter"><?= $plus; ?>+</span>
             </a>
             <!-- Dropdown - Alerts -->
             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header" style="background: linear-gradient(<?= $color; ?>,black);">
                     Broadcast Message
                 </h6>
-                <?php foreach ($broadcast as $key => $b) : ?>
-                    <?php if ($b['count'] > time()) : ?>
-                        <?php if (substr($b['code'], $codeJurusan, 1) == 1 && substr($b['code'], $codeSemester, 1) == 1) : ?>
-                            <a class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#data<?= $b['id']; ?>">
-                                <div class="mr-3">
-                                    <div>
-                                        <img src="<?= base_url(); ?>/img/<?= $b['image']; ?>" class="img-profile rounded-circle" width="50px" height="50px" alt="Image" srcset="">
+                <div style="height: 200px; overflow-y: auto; overflow-x: hidden;">
+
+                    <?php foreach ($broadcast as $key => $b) : ?>
+                        <?php if ($b['count'] > time()) : ?>
+                            <?php if (substr($b['code'], $codeJurusan, 1) == 1 && substr($b['code'], $codeSemester, 1) == 1) : ?>
+                                <a class="dropdown-item d-flex align-items-center" href="#" data-toggle="modal" data-target="#data<?= $b['id']; ?>">
+                                    <div class="mr-3">
+                                        <div>
+                                            <img src="<?= base_url(); ?>/img/<?= $b['image']; ?>" class="img-profile rounded-circle" width="50px" height="50px" alt="Image" srcset="">
+                                        </div>
                                     </div>
-                                </div>
-                                <div>
-                                    <div class="small text-gray-500"><strong style="color: black;"><?= $b['subject']; ?></strong> (<?= $b['created_at']; ?>)</div>
-                                    <span class="font-weight-bold"><?= substr($b['pesan'], 0, 22); ?> <span class="text-gray-500"> . . .</span> </span>
-                                </div>
-                            </a>
+                                    <div>
+                                        <div class="small text-gray-500"><strong style="color: black;"><?= $b['subject']; ?></strong> (<?= $b['created_at']; ?>)</div>
+                                        <span class="font-weight-bold"><?= substr($b['pesan'], 0, 22); ?> <span class="text-gray-500"> . . .</span> </span>
+                                    </div>
+                                </a>
+                            <?php endif; ?>
                         <?php endif; ?>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Clear All Broadcast</a>
+                    <?php endforeach; ?>
+                </div>
+                <a class="dropdown-item text-center small text-gray-500" href="#">Cancel</a>
             </div>
         </li>
 
@@ -107,7 +122,7 @@ $broadcast = $db->table('user')
                             <div class="row">
                                 <div class="col">
                                     <img src="<?= base_url('/img/' . $u['image']); ?>" class="img-thumbnail" alt="Image" width="50px" height="50px">
-                                    <h5 class="modal-title badge " id="exampleModalLabel"><?= $u['nim']; ?> </h5>
+                                    <h5 class="modal-title badge " id="exampleModalLabel"><?= $u['nama']; ?> </h5>
                                 </div>
                             </div>
                             <div class="row">

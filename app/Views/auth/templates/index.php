@@ -21,7 +21,7 @@
 
 </head>
 
-<body class="" style="background-image: url(<?= base_url(); ?>/img/icon/background_<?= $rol; ?>.jpg); background-size:cover; background-repeat: no-repeat; background-attachment: fixed;">
+<body class="" style="background-image: url(<?= base_url(); ?>/img/icon/background_1.png); background-size:cover; background-repeat: no-repeat; background-attachment: fixed;">
     <!-- <body class="" style="background: linear-gradient(Blue, Black);"> -->
 
     <?= $this->renderSection('content'); ?>

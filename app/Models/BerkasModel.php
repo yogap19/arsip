@@ -8,7 +8,7 @@ class BerkasModel extends Model
 {
     protected $table      = 'berkas';
     protected $useTimestamps = true;
-    protected $allowedFields = ['nim', 'title', 'type', 'approved_Sadmin', 'approved_admin', 'organisasi', 'nik', 'jurusan', 'keterangan', 'keteranganA', 'keteranganS'];
+    protected $allowedFields = ['nim', 'title', 'type', 'approved_Sadmin', 'approved_admin', 'organisasi', 'nik', 'jurusan', 'keterangan', 'keteranganA', 'keteranganS', 'semester', 'orangTua', 'pekerjaan'];
 
     public function berkas($search)
     {

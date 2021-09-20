@@ -71,7 +71,7 @@
                         </tr>
                         <tr>
                             <td>Alamat</td>
-                            <td><?= $user['rtrw']; ?>, <?= $user['desa']; ?>, <?= $user['kecamatan']; ?>, <?= $user['kota']; ?></td>
+                            <td><?= substr($user['rtrw'], 0, 2); ?> / <?= substr($user['rtrw'], 2, 2); ?>, <?= $user['desa']; ?>, <?= $user['kecamatan']; ?>, <?= $user['kota']; ?></td>
                         </tr>
                     </table>
                     <div class="row">

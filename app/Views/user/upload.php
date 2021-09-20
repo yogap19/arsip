@@ -160,13 +160,41 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="keterangan" class="form-label">NIK</label>
-                                    <input type="text" class="form-control <?= ($validation->hasError('nik')) ? 'is-invalid' : ''; ?>" id="nik" name="nik" onkeypress="return event.charCode >= 48 && event.charCode <=57">
-                                    <div id="validationServer03Feedback" class="invalid-feedback mx-3">
-                                        <?= $validation->getError('nik'); ?>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="nik" class="form-label">NIK</label>
+                                            <input type="text" class="form-control <?= ($validation->hasError('nik')) ? 'is-invalid' : ''; ?>" id="nik" name="nik" onkeypress="return event.charCode >= 48 && event.charCode <=57">
+                                            <div id="validationServer03Feedback" class="invalid-feedback mx-3">
+                                                <?= $validation->getError('nik'); ?>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="semester" class="form-label">Semester</label>
+                                            <input type="text" class="form-control <?= ($validation->hasError('semester')) ? 'is-invalid' : ''; ?>" id="semester" name="semester" onkeypress="return event.charCode >= 48 && event.charCode <=57" maxlength="2">
+                                            <div id="validationServer03Feedback" class="invalid-feedback mx-3">
+                                                <?= $validation->getError('semester'); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="mb-3">
+                                            <label for="orangTua" class="form-label">Nama Orang Tua / Wali</label>
+                                            <input type="text" class="form-control <?= ($validation->hasError('orangTua')) ? 'is-invalid' : ''; ?>" id="orangTua" name="orangTua">
+                                            <div id="validationServer03Feedback" class="invalid-feedback mx-3">
+                                                <?= $validation->getError('orangTua'); ?>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="pekerjaan" class="form-label">Pekerjaan Orang Tua / Wali</label>
+                                            <input type="text" class="form-control <?= ($validation->hasError('pekerjaan')) ? 'is-invalid' : ''; ?>" id="pekerjaan" name="pekerjaan">
+                                            <div id="validationServer03Feedback" class="invalid-feedback mx-3">
+                                                <?= $validation->getError('pekerjaan'); ?>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="keterangan" class="form-label">Keterangan</label>
                                     <input type="text" class="form-control <?= ($validation->hasError('keterangan')) ? 'is-invalid' : ''; ?>" id="keterangan" name="keterangan">
@@ -367,7 +395,7 @@
                                         <th class="text-center" style="min-width: 200px;">User</th>
                                         <th class="text-center" style="min-width: 200px;">BEM</th>
                                         <th class="text-center" style="min-width: 200px;">Kemahasiswaan</th>
-                                        <th class="text-center" style="min-width: 200px;">Rejected on</th>
+                                        <th class="text-center" style="min-width: 200px;">Rejected at</th>
                                         <th class="text-center">Revisi</th>
                                         <th class="text-center">download</th>
                                         <th class="text-center">Delete</th>
@@ -521,7 +549,7 @@
                                         <th class="text-center" style="min-width: 200px;">User</th>
                                         <th class="text-center" style="min-width: 200px;">BEM</th>
                                         <th class="text-center" style="min-width: 200px;">Kemahasiswaan</th>
-                                        <th class="text-center" style="min-width: 150px;">Confirmed on</th>
+                                        <th class="text-center" style="min-width: 150px;">Confirmed at</th>
                                         <th class="text-center">Download</th>
                                     </tr>
                                     <?php $i = 1; ?>

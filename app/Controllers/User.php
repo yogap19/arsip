@@ -120,8 +120,8 @@ class User extends BaseController
             // move image
             $getImage->move('img', $upload);
             // delete old image
-            if ($upload != 'default.svg') {
-                unlink('img/' . $oldImage['image']);
+            if ($upload != 'default.svg' && $oldImage["image"] != 'default.svg') {
+                unlink('img/' . $oldImage["image"]);
             }
         }
         // simpan ke database
@@ -130,7 +130,7 @@ class User extends BaseController
             'nama' => $this->request->getVar('nama'),
             'telepon' => $this->request->getVar('telepon'),
             'email' => $this->request->getVar('email'),
-            'rtrw' => substr($this->request->getVar('rtrw'), 0, 2) . '/' . substr($this->request->getVar('rtrw'), 2, 2),
+            'rtrw' => substr($this->request->getVar('rtrw'), 0, 4),
             'desa' => $this->request->getVar('desa'),
             'kecamatan' => $this->request->getVar('kecamatan'),
             'kota' => $this->request->getVar('kota'),
@@ -296,6 +296,25 @@ class User extends BaseController
                         'required'      => 'NIK belum diisi!',
                     ]
                 ],
+                'semester'           => [
+                    'rules'     => 'required',
+                    'errors'    => [
+                        'required'      => 'Semester belum diisi!',
+                    ]
+                ],
+                'orangTua'           => [
+                    'rules'     => 'required',
+                    'errors'    => [
+                        'required'      => 'Nama Orang Tua / Wali belum diisi!',
+                    ]
+                ],
+
+                'pekerjaan'           => [
+                    'rules'     => 'required',
+                    'errors'    => [
+                        'required'      => 'Pekerjaan Orang Tua / Wali belum diisi!',
+                    ]
+                ],
             ])) {
                 $show = ['show' => 2];
                 session()->set($show);
@@ -362,9 +381,15 @@ class User extends BaseController
         if ($type == 1 || $type == 2) {
             $organisasi = $this->request->getVar('organisasi');
             $nik = '-';
+            $semester = '-';
+            $orangTua = '-';
+            $pekerjaan = '-';
         } elseif ($type == 3 || $type == 4) {
             $organisasi = '-';
             $nik = $this->request->getVar('nik');
+            $semester = $this->request->getVar('semester');
+            $orangTua = $this->request->getVar('orangTua');
+            $pekerjaan = $this->request->getVar('pekerjaan');
         }
         // cek isi berkas
         if ($berkas == null) {
@@ -382,6 +407,9 @@ class User extends BaseController
                 'approved_admin'    => $accAdmin,
                 'organisasi'        => $organisasi,
                 'nik'               => $nik,
+                'semester'          => $semester,
+                'orangTua'          => $orangTua,
+                'pekerjaan'         => $pekerjaan,
             ]);
             session()->setFlashdata('success', 'File dengan nama ' . $upload . ' Berhasil dikirim, harap menunggu konfirmasi Kemahasiswaan dan Administrator');
             return redirect()->to('/User/upload')->withInput();
@@ -417,6 +445,9 @@ class User extends BaseController
                     'approved_admin' => $accAdmin,
                     'organisasi'        => $organisasi,
                     'nik'               => $nik,
+                    'semester'          => $semester,
+                    'orangTua'          => $orangTua,
+                    'pekerjaan'         => $pekerjaan,
                 ]);
                 session()->setFlashdata('success', 'File dengan nama ' . $upload . ' Berhasil dikirim, harap menunggu konfirmasi Kemahasiswaan dan Administrator');
                 return redirect()->to('/User/upload')->withInput();
